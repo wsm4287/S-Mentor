@@ -1,16 +1,24 @@
 package com.example.s_mentor;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,14 +31,21 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Objects;
 
+import io.grpc.stub.annotations.GrpcGenerated;
+
 public class RegActivity extends AppCompatActivity {
     EditText regId, regPs, regPs2, regNm, regMj;
-    String id, ps, ps2, name, major;
+    String id, ps, ps2, name, major, encodedImage;
     ProgressBar progressBar;
     Button signUp;
+    ImageView regPh;
+    TextView phText;
+    FrameLayout imageLayout;
     private FirebaseAuth sAuth;
     private FirebaseFirestore database;
 
@@ -47,9 +62,18 @@ public class RegActivity extends AppCompatActivity {
         regMj = (EditText) findViewById(R.id.regMj);
         progressBar = (ProgressBar) findViewById(R.id.progressbar);
         signUp = (Button) findViewById(R.id.btSignUp);
+        regPh = (ImageView) findViewById(R.id.regPh);
+        phText = (TextView) findViewById(R.id.phText);
+        imageLayout = (FrameLayout) findViewById(R.id.imageLayout);
 
         sAuth = FirebaseAuth.getInstance();
         database = FirebaseFirestore.getInstance();
+
+        imageLayout.setOnClickListener(v -> {
+            Intent in = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            in.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+            pickImage.launch(in);
+        });
 
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,13 +127,24 @@ public class RegActivity extends AppCompatActivity {
                                                 public void onComplete(@NonNull Task<Void> task) {
 
                                                     HashMap<String, Object> user = new HashMap<>();
-                                                    user.put("email", id);
+                                                    //user.put("email", id);
                                                     user.put("name", name);
                                                     user.put("major", major);
+                                                    user.put("image", encodedImage);
 
-                                                    database.collection("users")
-                                                            .add(user)
-                                                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                    database.collection("users").document(id)
+                                                            .set(user)
+                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void unused) {
+                                                                    Toast.makeText(RegActivity.this, "이메일 생성이 성공하였습니다.",
+                                                                            Toast.LENGTH_SHORT).show();
+
+                                                                    Intent in= new Intent(RegActivity.this, MainActivity.class);
+                                                                    startActivity(in);
+                                                                }
+                                                            });
+                                                          /*  .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                                                 @Override
                                                                 public void onSuccess(DocumentReference documentReference) {
                                                                     Toast.makeText(RegActivity.this, "이메일 생성이 성공하였습니다.",
@@ -118,7 +153,7 @@ public class RegActivity extends AppCompatActivity {
                                                                     Intent in= new Intent(RegActivity.this, MainActivity.class);
                                                                     startActivity(in);
                                                                 }
-                                                            });
+                                                            });*/
 
                                                 }
                                             });
@@ -138,13 +173,30 @@ public class RegActivity extends AppCompatActivity {
     }
 
     private String EncodeImage(Bitmap bitmap){
-        int previewWidth = 150;
-        int previewHeight = bitmap.getHeight() * previewWidth / bitmap.getWidth();
-        Bitmap prebitmap = Bitmap.createScaledBitmap(bitmap, previewWidth, previewHeight, false);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        prebitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
         byte[] bytes = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(bytes, Base64.DEFAULT);
 
     }
+
+    private final ActivityResultLauncher<Intent> pickImage
+            = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if(result.getResultCode() == RESULT_OK) {
+                    if(result.getData() != null){
+                        Uri imageUri = result.getData().getData();
+                        try {
+                            InputStream inputStream = getContentResolver().openInputStream(imageUri);
+                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                            regPh.setImageBitmap(bitmap);
+                            phText.setVisibility(View.GONE);
+                            encodedImage = EncodeImage(bitmap);
+                        } catch (FileNotFoundException e){
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+    });
 }
