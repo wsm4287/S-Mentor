@@ -32,8 +32,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 
 public class ProfileActivity extends AppCompatActivity {
-    TextView proNm;
-    TextView proMj;
+    TextView proNm, proMj, proPn, proTp;
     Button correct;
     String id, encodedImage;
     ImageView proPh;
@@ -50,6 +49,8 @@ public class ProfileActivity extends AppCompatActivity {
         proNm = (TextView) findViewById(R.id.profile_username);
         proMj = (TextView) findViewById(R.id.profile_usermajor);
         proPh = (ImageView) findViewById(R.id.profile_photo);
+        proPn = (TextView) findViewById(R.id.profile_userphone);
+        proTp = (TextView) findViewById(R.id.profile_type);
         correct = (Button) findViewById(R.id.correct);
 
         database = FirebaseFirestore.getInstance();
@@ -62,6 +63,8 @@ public class ProfileActivity extends AppCompatActivity {
                         proNm.setText(documentSnapshot.getData().get("name").toString());
                         proMj.setText(documentSnapshot.getData().get("major").toString());
                         proPh.setImageBitmap(DecodeImage(documentSnapshot.getData().get("image").toString()));
+                        proPn.setText(documentSnapshot.getData().get("phone").toString());
+                        proTp.setText(documentSnapshot.getData().get("type").toString());
                     }
                 });
                 /*.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
