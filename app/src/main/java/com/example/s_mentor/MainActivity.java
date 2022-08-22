@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -16,11 +17,17 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceIdReceiver;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     EditText mainId, mainPs;
@@ -41,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
 
-        sAuth =FirebaseAuth.getInstance();
+        sAuth = FirebaseAuth.getInstance();
+        database = FirebaseFirestore.getInstance();
         mainId = (EditText) findViewById(R.id.mainId);
         mainPs = (EditText) findViewById(R.id.mainPs);
         autoLogin = (CheckBox) findViewById(R.id.autoLogin);
@@ -118,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
                                         autoLoginEditor.commit();
                                     }
 
+                                    updateToken();
                                     Intent in = new Intent(MainActivity.this, HomeActivity.class);
                                     in.putExtra("email", id);
                                     startActivity(in);
@@ -140,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
             autoLogin.setChecked(true);
             btLogin.performClick();*/
             id = Auto.getString("email", null);
+            updateToken();
             Intent in = new Intent(MainActivity.this, HomeActivity.class);
             in.putExtra("email", id);
             startActivity(in);
@@ -153,7 +163,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+    private void updateToken(){
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if(task.isSuccessful()){
+                    String token;
+                    token = task.getResult();
+                    HashMap<String, Object> user = new HashMap<>();
+                    user.put("token", token);
+                    database.collection("users").document(id)
+                            .update(user)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Toast.makeText(MainActivity.this, "로그인 하셨습니다.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
 
+            }
+        });
 
     }
+
 }

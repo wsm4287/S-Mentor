@@ -17,7 +17,7 @@ import com.example.s_mentor.User;
 
 import java.util.ArrayList;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> implements OnItemClickListener {
+public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder> implements OnItemClickListener {
 
     private ArrayList<User> mDataSet;
     OnItemClickListener mlistener;
@@ -59,7 +59,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     }
 
-    public UserAdapter(ArrayList<User> dataSet) {
+    public ListAdapter(ArrayList<User> dataSet) {
         mDataSet = dataSet;
     }
 
@@ -78,7 +78,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UserAdapter.UserViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ListAdapter.UserViewHolder holder, int position) {
         User user = mDataSet.get(position);
 
         // Get element from your dataset at this position and replace the
@@ -92,6 +92,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     public int getItemCount() {
             return mDataSet.size();
         }
+
+    public User getUser(int position){
+        return mDataSet.get(position);
+    }
 
 
 }

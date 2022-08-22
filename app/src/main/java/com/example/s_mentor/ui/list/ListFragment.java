@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Base64;
@@ -11,49 +13,46 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.s_mentor.ChatActivity;
 import com.example.s_mentor.MainActivity;
 import com.example.s_mentor.ProfileActivity;
 import com.example.s_mentor.R;
-import com.example.s_mentor.RegActivity;
 import com.example.s_mentor.User;
 import com.example.s_mentor.databinding.FragmentListBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ListFragment extends Fragment {
 
-    private ListViewModel listViewModel;
     private FragmentListBinding binding;
     Button setting;
-    String id;
+    String id, id2;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     FirebaseFirestore database = FirebaseFirestore.getInstance();
-    UserAdapter userAdapter;
+    ListAdapter listAdapter;
     ArrayList<User> userArrayList;
     String encodedImage;
     Handler handler;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        listViewModel =
-                new ViewModelProvider(this).get(ListViewModel.class);
 
         id = getActivity().getIntent().getStringExtra("email");
 
@@ -70,8 +69,8 @@ public class ListFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        userAdapter = new UserAdapter(userArrayList);
-        recyclerView.setAdapter(userAdapter);
+        listAdapter = new ListAdapter(userArrayList);
+        recyclerView.setAdapter(listAdapter);
 
         database.collection("users")
                 .get()
@@ -88,10 +87,44 @@ public class ListFragment extends Fragment {
                         encodedImage = document.getData().get("image").toString();
                         user.bitmap = DecodeImage(encodedImage);
                         userArrayList.add(user);
-                        userAdapter.notifyDataSetChanged();
+                        listAdapter.notifyDataSetChanged();
                     }
                 }
 
+            }
+        });
+
+        listAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(ListAdapter.UserViewHolder holder, View view, int position) {
+                User u = listAdapter.getUser(position);
+                id2 = u.email;
+
+                Drawable drawable = new BitmapDrawable(getResources(),u.bitmap);
+                final ImageView iv = new ImageView(getContext());
+                iv.setImageBitmap(u.bitmap);
+                final TextView et = new TextView(getContext());
+                et.setText(u.major);
+                AlertDialog.Builder ad = new AlertDialog.Builder(getContext())
+                        .setView(iv)
+                        .setIcon(drawable)
+                        .setTitle(u.name)
+                        .setMessage(id2).setView(et)
+                        .setPositiveButton("종료", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
+                        .setNeutralButton("상담", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent in = new Intent(getActivity(), ChatActivity.class);
+                                in.putExtra("email1", id);
+                                in.putExtra("email2", id2);
+                                startActivity(in);
+                            }
+                        });
+                ad.show();
             }
         });
 
@@ -111,9 +144,20 @@ public class ListFragment extends Fragment {
                                     startActivity(in);
                                 }
                                 if(which == 2){
-                                    Intent in= new Intent(root.getContext(), MainActivity.class);
-                                    in.putExtra("Logout", true);
-                                    startActivity(in);
+                                    HashMap<String, Object> user = new HashMap<>();
+                                    user.put("token", FieldValue.delete());
+                                    database.collection("users").document(id)
+                                            .update(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                Intent in= new Intent(root.getContext(), MainActivity.class);
+                                                in.putExtra("Logout", true);
+                                                startActivity(in);
+                                            }
+                                        }
+                                    });
+
                                 }
                             }
                         });

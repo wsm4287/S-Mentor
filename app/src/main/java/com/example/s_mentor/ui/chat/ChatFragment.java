@@ -20,15 +20,12 @@ import com.example.s_mentor.databinding.FragmentChatBinding;
 
 public class ChatFragment extends Fragment {
 
-    private ChatViewModel chatViewModel;
     private FragmentChatBinding binding;
     Button  setting;
     String id;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        chatViewModel =
-                new ViewModelProvider(this).get(ChatViewModel.class);
 
         id = getActivity().getIntent().getStringExtra("email");
 

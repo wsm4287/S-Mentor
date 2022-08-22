@@ -7,6 +7,7 @@ public class User {
     public String email;
     public String major;
     public Bitmap bitmap;
+    public String token;
 
     public Bitmap getBitmap() {
         return bitmap;
@@ -38,5 +39,13 @@ public class User {
 
     public void setMajor(String major) {
         this.major = major;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
