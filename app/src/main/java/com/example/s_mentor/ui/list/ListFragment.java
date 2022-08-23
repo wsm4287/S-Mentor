@@ -22,7 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.s_mentor.ChatActivity;
+import com.example.s_mentor.chat.ChatActivity;
 import com.example.s_mentor.MainActivity;
 import com.example.s_mentor.ProfileActivity;
 import com.example.s_mentor.R;
@@ -49,7 +49,6 @@ public class ListFragment extends Fragment {
     ListAdapter listAdapter;
     ArrayList<User> userArrayList;
     String encodedImage;
-    Handler handler;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

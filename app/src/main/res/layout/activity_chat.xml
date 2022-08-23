@@ -4,7 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChatActivity">
+    tools:context=".chat.ChatActivity">
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="?attr/actionModeCloseDrawable"
+        android:id="@+id/chBack"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="5dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,7 +38,6 @@
             android:layout_marginStart="40dp"
             android:textSize="30sp"
             android:textAlignment="center"
-            android:gravity="center"
             />
 
     </LinearLayout>
@@ -41,7 +49,6 @@
         app:layout_constraintBottom_toTopOf="@+id/btSend"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="10dp"
         android:id="@+id/recycler"
         />
 

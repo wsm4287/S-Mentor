@@ -1,4 +1,4 @@
-package com.example.s_mentor.ui.chat;
+package com.example.s_mentor.ui.recentchat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,16 +11,15 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.s_mentor.MainActivity;
 import com.example.s_mentor.ProfileActivity;
 import com.example.s_mentor.R;
-import com.example.s_mentor.databinding.FragmentChatBinding;
+import com.example.s_mentor.databinding.FragmentRecentchatBinding;
 
-public class ChatFragment extends Fragment {
+public class RecentChatFragment extends Fragment {
 
-    private FragmentChatBinding binding;
+    private FragmentRecentchatBinding binding;
     Button  setting;
     String id;
 
@@ -29,7 +28,7 @@ public class ChatFragment extends Fragment {
 
         id = getActivity().getIntent().getStringExtra("email");
 
-        binding = FragmentChatBinding.inflate(inflater, container, false);
+        binding = FragmentRecentchatBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         setting = (Button) root.findViewById(R.id.btLogOut);
