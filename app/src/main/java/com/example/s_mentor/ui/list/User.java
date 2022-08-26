@@ -1,4 +1,4 @@
-package com.example.s_mentor;
+package com.example.s_mentor.ui.list;
 
 import android.graphics.Bitmap;
 

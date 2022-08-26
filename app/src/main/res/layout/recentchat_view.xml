@@ -8,10 +8,10 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardBackgroundColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="10dp"
         app:cardElevation="5dp"
         app:cardUseCompatPadding="true">
@@ -37,10 +37,10 @@
                     android:text="Name"
                     android:textSize="15sp"/>
                 <TextView
-                    android:id="@+id/emailText"
+                    android:id="@+id/lastText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Email"
+                    android:text="LastChat"
                     android:textColor="#FF0000FF"
                     android:textSize="12sp"/>
 

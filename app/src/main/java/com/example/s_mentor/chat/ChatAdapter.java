@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
 
-    private ArrayList<Chat> message;
+    private final ArrayList<Chat> message;
     String id;
 
     public static class ChatViewHolder extends RecyclerView.ViewHolder{

@@ -170,6 +170,18 @@ public class ChatActivity extends AppCompatActivity {
                 database.collection("message").document(id2).collection(id)
                         .add(message);
 
+                Map<String, Object> recent = new HashMap<>();
+
+                recent.put("text", stText);
+
+
+                database.collection("message").document(id).collection("Last")
+                        .document(id2).set(recent);
+
+                database.collection("message").document(id2).collection("Last")
+                        .document(id).set(recent);
+
+
                 etText.setText("\0");
             }
         });

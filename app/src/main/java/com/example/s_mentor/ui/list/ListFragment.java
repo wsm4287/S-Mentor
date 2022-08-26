@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +25,6 @@ import com.example.s_mentor.chat.ChatActivity;
 import com.example.s_mentor.MainActivity;
 import com.example.s_mentor.ProfileActivity;
 import com.example.s_mentor.R;
-import com.example.s_mentor.User;
 import com.example.s_mentor.databinding.FragmentListBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -114,7 +112,7 @@ public class ListFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                             }
                         })
-                        .setNeutralButton("상담", new DialogInterface.OnClickListener() {
+                        .setNeutralButton("채팅", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent in = new Intent(getActivity(), ChatActivity.class);
