@@ -11,7 +11,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.s_mentor.HomeActivity;
 import com.example.s_mentor.R;
+import com.example.s_mentor.notification.SendMessage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -44,7 +44,7 @@ public class ChatActivity extends AppCompatActivity {
     ImageView chBk, opPh;
     Button btSend;
     EditText etText;
-    String id, id2;
+    String id, id2, token, name, encodedImage;
     FirebaseFirestore database;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -68,6 +68,16 @@ public class ChatActivity extends AppCompatActivity {
         id2 = getIntent().getStringExtra("email2");
         chatArrayList = new ArrayList<>();
 
+        database.collection("users").document(id)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        name = documentSnapshot.getData().get("name").toString();
+                        encodedImage = documentSnapshot.getData().get("image").toString();
+                    }
+                });
+
         database.collection("users").document(id2)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -75,7 +85,7 @@ public class ChatActivity extends AppCompatActivity {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         opNm.setText(documentSnapshot.getData().get("name").toString());
                         opPh.setImageBitmap(DecodeImage(documentSnapshot.getData().get("image").toString()));
-
+                        token = documentSnapshot.getData().get("token").toString();
                     }
                 });
 
@@ -183,6 +193,15 @@ public class ChatActivity extends AppCompatActivity {
 
 
                 etText.setText("\0");
+
+                SendMessage.notification(
+                        ChatActivity.this,
+                        token,
+                        id,
+                        stText,
+                        name
+                );
+
             }
         });
     }
