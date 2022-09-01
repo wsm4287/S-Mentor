@@ -34,7 +34,7 @@ import java.util.HashMap;
 public class ProfileActivity extends AppCompatActivity {
     TextView proNm, proMj, proPn, proTp;
     Button correct;
-    String id, encodedImage;
+    String id, encodedImage, type;
     ImageView proPh;
     private FirebaseAuth sAuth;
     private FirebaseFirestore database;
@@ -64,7 +64,8 @@ public class ProfileActivity extends AppCompatActivity {
                         proMj.setText(documentSnapshot.getData().get("major").toString());
                         proPh.setImageBitmap(DecodeImage(documentSnapshot.getData().get("image").toString()));
                         proPn.setText(documentSnapshot.getData().get("phone").toString());
-                        proTp.setText(documentSnapshot.getData().get("type").toString());
+                        type = documentSnapshot.getData().get("type").toString();
+                        proTp.setText(type);
                     }
                 });
                 /*.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {

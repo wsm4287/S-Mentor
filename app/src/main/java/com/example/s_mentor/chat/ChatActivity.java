@@ -2,14 +2,19 @@ package com.example.s_mentor.chat;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.BoringLayout;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
@@ -44,12 +49,14 @@ public class ChatActivity extends AppCompatActivity {
     ImageView chBk, opPh;
     Button btSend;
     EditText etText;
-    String id, id2, token, name, encodedImage;
+    String id, id2, token, name, name2, type;
+    Bitmap bitmap;
     FirebaseFirestore database;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     ChatAdapter chatAdapter;
     ArrayList<Chat> chatArrayList;
+    boolean check;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +73,9 @@ public class ChatActivity extends AppCompatActivity {
         btSend = (Button) findViewById(R.id.btSend);
         id = getIntent().getStringExtra("email1");
         id2 = getIntent().getStringExtra("email2");
+        type = getIntent().getStringExtra("type");
         chatArrayList = new ArrayList<>();
+        check = true;
 
         database.collection("users").document(id)
                 .get()
@@ -74,17 +83,20 @@ public class ChatActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         name = documentSnapshot.getData().get("name").toString();
-                        encodedImage = documentSnapshot.getData().get("image").toString();
+                        if(documentSnapshot.getData().get("mentoring").toString().equals("x")) check = false;
                     }
                 });
+
 
         database.collection("users").document(id2)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        opNm.setText(documentSnapshot.getData().get("name").toString());
-                        opPh.setImageBitmap(DecodeImage(documentSnapshot.getData().get("image").toString()));
+                        name2 = documentSnapshot.getData().get("name").toString();
+                        opNm.setText(name2);
+                        bitmap = DecodeImage(documentSnapshot.getData().get("image").toString());
+                        opPh.setImageBitmap(bitmap);
                         token = documentSnapshot.getData().get("token").toString();
                     }
                 });
@@ -97,6 +109,7 @@ public class ChatActivity extends AppCompatActivity {
                 Toast.makeText(ChatActivity.this, "Finish chat", Toast.LENGTH_LONG).show();
                 Intent in = new Intent(ChatActivity.this, HomeActivity.class);
                 in.putExtra("email", id);
+                in.putExtra("type", type);
                 startActivity(in);
             }
         });
@@ -202,6 +215,60 @@ public class ChatActivity extends AppCompatActivity {
                         name
                 );
 
+            }
+        });
+
+        opPh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(check) {
+                    Drawable drawable = new BitmapDrawable(getResources(), bitmap);
+                    final ImageView iv = new ImageView(ChatActivity.this);
+                    iv.setImageBitmap(bitmap);
+                    final TextView et = new TextView(ChatActivity.this);
+                    et.setText("멘토링을 신청하시겠습니까?");
+                    AlertDialog.Builder ad = new AlertDialog.Builder(ChatActivity.this)
+                            .setView(iv)
+                            .setIcon(drawable)
+                            .setTitle(name2)
+                            .setMessage(id2).setView(et)
+                            .setPositiveButton("종료", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .setNeutralButton("신청", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                                  /*
+                                                  HashMap<String, Object> user = new HashMap<>();
+                                                    user.put("mentoring", id2);
+                                                    database.collection("users").document(id)
+                                                            .update(user)
+                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void unused) {
+
+                                                                }
+                                                            });
+                                                    user.replace("mentoring", id);
+                                                    database.collection("users").document(id2)
+                                                            .update(user)
+                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void unused) {
+
+                                                                }
+                                                            });
+                                                   */
+                                }
+                            });
+
+                    ad.show();
+                }
+                else{
+                    Toast.makeText(ChatActivity.this,"이미 멘토링 상대가 있습니다.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

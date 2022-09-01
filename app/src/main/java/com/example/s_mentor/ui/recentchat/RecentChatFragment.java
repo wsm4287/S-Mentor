@@ -36,7 +36,7 @@ public class RecentChatFragment extends Fragment {
 
     private FragmentRecentchatBinding binding;
     Button  setting;
-    String id;
+    String id, type;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     FirebaseFirestore database = FirebaseFirestore.getInstance();
@@ -49,6 +49,7 @@ public class RecentChatFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         id = getActivity().getIntent().getStringExtra("email");
+        type = getActivity().getIntent().getStringExtra("type");
 
         binding = FragmentRecentchatBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -102,6 +103,7 @@ public class RecentChatFragment extends Fragment {
                 Intent in = new Intent(getContext(), ChatActivity.class);
                 in.putExtra("email1", id);
                 in.putExtra("email2", id2);
+                in.putExtra("type", type);
                 startActivity(in);
 
             }

@@ -90,9 +90,11 @@ public class RegActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 if(which == 0){
                                     type = "Mentor";
+                                    tyPe.setText("멘토");
                                 }
                                 else{
                                     type = "Mentee";
+                                    tyPe.setText("멘티");
                                 }
 
                             }
@@ -172,6 +174,7 @@ public class RegActivity extends AppCompatActivity {
                                                     user.put("image", encodedImage);
                                                     user.put("phone", pn);
                                                     user.put("type", type);
+                                                    user.put("mentoring", "x");
 
                                                     database.collection("users").document(id)
                                                             .set(user)
@@ -185,17 +188,38 @@ public class RegActivity extends AppCompatActivity {
                                                                     startActivity(in);
                                                                 }
                                                             });
-                                                          /*  .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                                                @Override
-                                                                public void onSuccess(DocumentReference documentReference) {
-                                                                    Toast.makeText(RegActivity.this, "이메일 생성이 성공하였습니다.",
-                                                                            Toast.LENGTH_SHORT).show();
 
-                                                                    Intent in= new Intent(RegActivity.this, MainActivity.class);
-                                                                    startActivity(in);
-                                                                }
-                                                            });*/
 
+/*                                                    if(type == "Mentor"){
+                                                        database.collection("users").document("mentor").collection(id)
+                                                                .add(user)
+                                                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                                    @Override
+                                                                    public void onSuccess(DocumentReference documentReference) {
+                                                                        Toast.makeText(RegActivity.this, "이메일 생성이 성공하였습니다.",
+                                                                                Toast.LENGTH_SHORT).show();
+
+                                                                        Intent in= new Intent(RegActivity.this, MainActivity.class);
+                                                                        startActivity(in);
+                                                                    }
+                                                                });
+                                                    }
+                                                    else{
+                                                        database.collection("users").document("mentee").collection(id)
+                                                                .add(user)
+                                                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                                    @Override
+                                                                    public void onSuccess(DocumentReference documentReference) {
+                                                                        Toast.makeText(RegActivity.this, "이메일 생성이 성공하였습니다.",
+                                                                                Toast.LENGTH_SHORT).show();
+
+                                                                        Intent in= new Intent(RegActivity.this, MainActivity.class);
+                                                                        startActivity(in);
+                                                                    }
+                                                                });
+                                                    }
+
+ */
                                                 }
                                             });
 

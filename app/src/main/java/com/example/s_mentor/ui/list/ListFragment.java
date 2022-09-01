@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -40,7 +41,7 @@ public class ListFragment extends Fragment {
 
     private FragmentListBinding binding;
     Button setting;
-    String id, id2;
+    String id, id2, type;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     FirebaseFirestore database = FirebaseFirestore.getInstance();
@@ -52,6 +53,7 @@ public class ListFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         id = getActivity().getIntent().getStringExtra("email");
+        type = getActivity().getIntent().getStringExtra("type");
 
         binding = FragmentListBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -77,6 +79,7 @@ public class ListFragment extends Fragment {
                 if(task.isSuccessful()){
                     for(QueryDocumentSnapshot document : task.getResult()){
                         if(document.getId().equals(id)) continue;
+                        if(document.getData().get("type").toString().equals(type)) continue;
                         User user = new User();
                         user.name = document.getData().get("name").toString();
                         user.major = document.getData().get("major").toString();
@@ -118,6 +121,7 @@ public class ListFragment extends Fragment {
                                 Intent in = new Intent(getActivity(), ChatActivity.class);
                                 in.putExtra("email1", id);
                                 in.putExtra("email2", id2);
+                                in.putExtra("type", type);
                                 startActivity(in);
                             }
                         });

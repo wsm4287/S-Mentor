@@ -31,7 +31,7 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     EditText mainId, mainPs;
-    String id, ps;
+    String id, ps, type;
     CheckBox autoLogin;
     ProgressBar progressBar;
     Button btLogin;
@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor AutoLoginEditor = Auto.edit();
         logout = getIntent().getBooleanExtra("Logout", false);
 
+
         if(logout == true){
             Toast.makeText(MainActivity.this, "로그아웃 하였습니다.",
                     Toast.LENGTH_SHORT).show();
@@ -81,6 +82,17 @@ public class MainActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                database.collection("users").document(id)
+                        .get()
+                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                if(documentSnapshot.getData().get("type").toString().equals("Mentor")) type = "Mentor";
+                                else type = "Mentee";
+                            }
+                        });
+
                 progressBar.setVisibility(View.VISIBLE);
                 sAuth.signInWithEmailAndPassword(id,ps)
                         .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
@@ -112,6 +124,8 @@ public class MainActivity extends AppCompatActivity {
                                                 Toast.LENGTH_SHORT).show();
                                     }
                                     */
+
+
                                     SharedPreferences auto = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
                                     SharedPreferences.Editor autoLoginEditor = auto.edit();
 
@@ -129,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
                                     updateToken();
                                     Intent in = new Intent(MainActivity.this, HomeActivity.class);
                                     in.putExtra("email", id);
+                                    in.putExtra("type", type);
                                     startActivity(in);
 
                                 }
@@ -148,11 +163,23 @@ public class MainActivity extends AppCompatActivity {
             mainPs.setText(Auto.getString("password", null));
             autoLogin.setChecked(true);
             btLogin.performClick();*/
+
             id = Auto.getString("email", null);
-            updateToken();
-            Intent in = new Intent(MainActivity.this, HomeActivity.class);
-            in.putExtra("email", id);
-            startActivity(in);
+            database.collection("users").document(id)
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if(documentSnapshot.getData().get("type").toString().equals("Mentor")) type = "Mentor";
+                            else type = "Mentee";
+
+                            updateToken();
+                            Intent in = new Intent(MainActivity.this, HomeActivity.class);
+                            in.putExtra("email", id);
+                            in.putExtra("type", type);
+                            startActivity(in);
+                        }
+                    });
         }
 
         btReg.setOnClickListener(new View.OnClickListener() {
