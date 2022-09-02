@@ -49,7 +49,7 @@ public class ChatActivity extends AppCompatActivity {
     ImageView chBk, opPh;
     Button btSend;
     EditText etText;
-    String id, id2, token, name, name2, type;
+    String id, id2, token, name, name2, type, type2;
     Bitmap bitmap;
     FirebaseFirestore database;
     private RecyclerView recyclerView;
@@ -71,11 +71,12 @@ public class ChatActivity extends AppCompatActivity {
         opPh = (ImageView) findViewById(R.id.opPhoto);
         etText = (EditText) findViewById(R.id.etText);
         btSend = (Button) findViewById(R.id.btSend);
-        id = getIntent().getStringExtra("email1");
+        id = getIntent().getStringExtra("email");
         id2 = getIntent().getStringExtra("email2");
         type = getIntent().getStringExtra("type");
         chatArrayList = new ArrayList<>();
         check = true;
+
 
         database.collection("users").document(id)
                 .get()
@@ -83,7 +84,7 @@ public class ChatActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         name = documentSnapshot.getData().get("name").toString();
-                        if(documentSnapshot.getData().get("mentoring").toString().equals("x")) check = false;
+                        if(!(documentSnapshot.getData().get("mentoring").toString().equals(" "))) check = false;
                     }
                 });
 
@@ -98,6 +99,8 @@ public class ChatActivity extends AppCompatActivity {
                         bitmap = DecodeImage(documentSnapshot.getData().get("image").toString());
                         opPh.setImageBitmap(bitmap);
                         token = documentSnapshot.getData().get("token").toString();
+                        type2 = documentSnapshot.getData().get("type").toString();
+                        if(!(documentSnapshot.getData().get("mentoring").toString().equals(" "))) check = false;
                     }
                 });
 
@@ -212,11 +215,15 @@ public class ChatActivity extends AppCompatActivity {
                         token,
                         id,
                         stText,
-                        name
+                        name,
+                        id2,
+                        type2
                 );
 
             }
         });
+
+
 
         opPh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -240,27 +247,20 @@ public class ChatActivity extends AppCompatActivity {
                             .setNeutralButton("신청", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                                  /*
-                                                  HashMap<String, Object> user = new HashMap<>();
-                                                    user.put("mentoring", id2);
-                                                    database.collection("users").document(id)
-                                                            .update(user)
-                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                @Override
-                                                                public void onSuccess(Void unused) {
+                                    Map<String, Object> apply = new HashMap<>();
+                                    apply.put("from", id);
+                                    database.collection("signal").document(id2)
+                                            .set(apply);
 
-                                                                }
-                                                            });
-                                                    user.replace("mentoring", id);
-                                                    database.collection("users").document(id2)
-                                                            .update(user)
-                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                @Override
-                                                                public void onSuccess(Void unused) {
-
-                                                                }
-                                                            });
-                                                   */
+                                    SendMessage.notification(
+                                            ChatActivity.this,
+                                            token,
+                                            id,
+                                            name + "님이 멘토링을 신청하였습니다.",
+                                            name,
+                                            id2,
+                                            "XX"
+                                    );
                                 }
                             });
 

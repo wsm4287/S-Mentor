@@ -174,7 +174,8 @@ public class RegActivity extends AppCompatActivity {
                                                     user.put("image", encodedImage);
                                                     user.put("phone", pn);
                                                     user.put("type", type);
-                                                    user.put("mentoring", "x");
+                                                    user.put("mentoring", " ");
+                                                    user.put("token", " ");
 
                                                     database.collection("users").document(id)
                                                             .set(user)

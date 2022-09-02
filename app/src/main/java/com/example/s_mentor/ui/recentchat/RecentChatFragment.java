@@ -101,7 +101,7 @@ public class RecentChatFragment extends Fragment {
                 RecentChat recentChat = recentAdapter.getRecentChat(position);
                 String id2 = recentChat.email;
                 Intent in = new Intent(getContext(), ChatActivity.class);
-                in.putExtra("email1", id);
+                in.putExtra("email", id);
                 in.putExtra("email2", id2);
                 in.putExtra("type", type);
                 startActivity(in);

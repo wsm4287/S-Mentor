@@ -16,6 +16,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.s_mentor.chat.ChatActivity;
+import com.example.s_mentor.notification.SendMessage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -31,7 +33,7 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     EditText mainId, mainPs;
-    String id, ps, type;
+    String id, ps, type, token;
     CheckBox autoLogin;
     ProgressBar progressBar;
     Button btLogin;
@@ -196,7 +198,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<String> task) {
                 if(task.isSuccessful()){
-                    String token;
                     token = task.getResult();
                     HashMap<String, Object> user = new HashMap<>();
                     user.put("token", token);

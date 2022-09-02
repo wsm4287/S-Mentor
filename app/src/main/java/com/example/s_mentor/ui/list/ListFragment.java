@@ -119,7 +119,7 @@ public class ListFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent in = new Intent(getActivity(), ChatActivity.class);
-                                in.putExtra("email1", id);
+                                in.putExtra("email", id);
                                 in.putExtra("email2", id2);
                                 in.putExtra("type", type);
                                 startActivity(in);

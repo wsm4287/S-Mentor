@@ -21,7 +21,7 @@ public class SendMessage {
     private static String BASE_URL = "https://fcm.googleapis.com/fcm/send";
     private static String SERVER_KEY = "key=AAAAQXnj5Eg:APA91bH7_EruDsX1bfgGx087YFR-XZ0qC5sEBLy71YeUQzxm-7KbCxuaeKaXKH3jS-4_-8ei7_ybdXKEXsUJxm7o1QGczC-P-H_JUFRK5rWeonnJq-SxlG4pjYiwxR1Tlve9wKTONwQb";
 
-    public static void notification(Context context, String token, String title, String message, String name){
+    public static void notification(Context context, String token, String title, String message, String name, String email, String type){
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -36,6 +36,8 @@ public class SendMessage {
             notification.put("body", message);
             JSONObject data = new JSONObject();
             data.put("name", name);
+            data.put("email", email);
+            data.put("type", type);
             //data.put("image", encodedImage);
             jsonObject.put("notification", notification);
             jsonObject.put("data", data);
