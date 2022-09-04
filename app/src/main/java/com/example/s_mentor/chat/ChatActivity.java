@@ -49,7 +49,7 @@ public class ChatActivity extends AppCompatActivity {
     ImageView chBk, opPh;
     Button btSend;
     EditText etText;
-    String id, id2, token, name, name2, type, type2;
+    String id, id2, token, token2, name, name2, type, type2, encodedImage, major;
     Bitmap bitmap;
     FirebaseFirestore database;
     private RecyclerView recyclerView;
@@ -84,6 +84,9 @@ public class ChatActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         name = documentSnapshot.getData().get("name").toString();
+                        encodedImage = documentSnapshot.getData().get("image").toString();
+                        major = documentSnapshot.getData().get("major").toString();
+                        token = documentSnapshot.getData().get("token").toString();
                         if(!(documentSnapshot.getData().get("mentoring").toString().equals(" "))) check = false;
                     }
                 });
@@ -98,7 +101,7 @@ public class ChatActivity extends AppCompatActivity {
                         opNm.setText(name2);
                         bitmap = DecodeImage(documentSnapshot.getData().get("image").toString());
                         opPh.setImageBitmap(bitmap);
-                        token = documentSnapshot.getData().get("token").toString();
+                        token2 = documentSnapshot.getData().get("token").toString();
                         type2 = documentSnapshot.getData().get("type").toString();
                         if(!(documentSnapshot.getData().get("mentoring").toString().equals(" "))) check = false;
                     }
@@ -212,7 +215,7 @@ public class ChatActivity extends AppCompatActivity {
 
                 SendMessage.notification(
                         ChatActivity.this,
-                        token,
+                        token2,
                         id,
                         stText,
                         name,
@@ -249,12 +252,18 @@ public class ChatActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int which) {
                                     Map<String, Object> apply = new HashMap<>();
                                     apply.put("from", id);
-                                    database.collection("signal").document(id2)
-                                            .set(apply);
+                                    apply.put("to", id2);
+                                    apply.put("name", name);
+                                    apply.put("major", major);
+                                    apply.put("image", encodedImage);
+                                    apply.put("token", token);
+
+                                    database.collection("apply")
+                                            .add(apply);
 
                                     SendMessage.notification(
                                             ChatActivity.this,
-                                            token,
+                                            token2,
                                             id,
                                             name + "님이 멘토링을 신청하였습니다.",
                                             name,

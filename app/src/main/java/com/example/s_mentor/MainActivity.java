@@ -33,7 +33,7 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     EditText mainId, mainPs;
-    String id, ps, type, token;
+    String id, ps, type, token, name;
     CheckBox autoLogin;
     ProgressBar progressBar;
     Button btLogin;
@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
                                 if(documentSnapshot.getData().get("type").toString().equals("Mentor")) type = "Mentor";
                                 else type = "Mentee";
+                                name = documentSnapshot.getData().get("name").toString();
                             }
                         });
 
@@ -146,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
                                     Intent in = new Intent(MainActivity.this, HomeActivity.class);
                                     in.putExtra("email", id);
                                     in.putExtra("type", type);
+                                    in.putExtra("name", name);
                                     startActivity(in);
 
                                 }
@@ -174,11 +176,13 @@ public class MainActivity extends AppCompatActivity {
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
                             if(documentSnapshot.getData().get("type").toString().equals("Mentor")) type = "Mentor";
                             else type = "Mentee";
+                            name = documentSnapshot.getData().get("name").toString();
 
                             updateToken();
                             Intent in = new Intent(MainActivity.this, HomeActivity.class);
                             in.putExtra("email", id);
                             in.putExtra("type", type);
+                            in.putExtra("name", name);
                             startActivity(in);
                         }
                     });
