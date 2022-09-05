@@ -149,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
                                     in.putExtra("type", type);
                                     in.putExtra("name", name);
                                     startActivity(in);
-
                                 }
                                 else{
                                     Toast.makeText(MainActivity.this, "이메일 혹은 비밀번호가 잘못 되었습니다.",
@@ -176,14 +175,16 @@ public class MainActivity extends AppCompatActivity {
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
                             if(documentSnapshot.getData().get("type").toString().equals("Mentor")) type = "Mentor";
                             else type = "Mentee";
-                            name = documentSnapshot.getData().get("name").toString();
 
+                            name = documentSnapshot.getData().get("name").toString();
                             updateToken();
+
                             Intent in = new Intent(MainActivity.this, HomeActivity.class);
                             in.putExtra("email", id);
                             in.putExtra("type", type);
                             in.putExtra("name", name);
                             startActivity(in);
+
                         }
                     });
         }

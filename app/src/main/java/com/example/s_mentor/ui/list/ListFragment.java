@@ -48,6 +48,7 @@ public class ListFragment extends Fragment {
     ListAdapter listAdapter;
     ArrayList<User> userArrayList;
     String encodedImage;
+    TextView listTitle;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -59,6 +60,11 @@ public class ListFragment extends Fragment {
         View root = binding.getRoot();
 
         setting = (Button) root.findViewById(R.id.btLogOut);
+        listTitle = (TextView) root.findViewById(R.id.listTitle);
+
+        if(type.equals("mentor")){
+            listTitle.setText("멘티 목록");
+        }
 
         userArrayList = new ArrayList<>();
 

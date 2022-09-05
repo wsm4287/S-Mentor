@@ -17,38 +17,22 @@
         android:layout_margin="40dp"
         android:id="@+id/tvTitle" />
 
-    <FrameLayout
-        android:layout_width="wrap_content"
+    <EditText
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:id="@+id/imageLayout"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle"
-        android:layout_marginTop="20dp"
+        android:layout_margin="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:id="@+id/regPh"
-            android:background="#eeeeee"
-            />
-
-        <TextView
-            android:id="@+id/phText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginTop="40dp"
-            android:layout_marginStart="16dp"
-            android:text="프로필 사진"
-            android:textSize="15sp" />
-
-    </FrameLayout>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/regNm"
+        android:hint="이름"
+        android:textSize="14sp"
+        />
 
     <EditText
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/imageLayout"
+        app:layout_constraintTop_toBottomOf="@+id/regNm"
         android:layout_margin="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -84,33 +68,12 @@
         android:inputType="textPassword"
         />
 
-    <EditText
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/regPs2"
-        android:layout_margin="5dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/regNm"
-        android:hint="이름"
-        android:textSize="14sp"
-        />
-    <EditText
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/regNm"
-        android:layout_margin="5dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/regMj"
-        android:hint="전공"
-        android:textSize="14sp"
-        />
+
 
     <EditText
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/regMj"
+        app:layout_constraintTop_toBottomOf="@+id/regPs2"
         android:layout_margin="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -121,28 +84,25 @@
         android:textSize="14sp"
         />
 
-    <Button
+    <TextView
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/regPn"
-        android:layout_margin="15dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/btType"
-        android:text="멘토 / 멘티"
-        android:textSize="14sp"
+        android:text="성균관대 학생임을 인증함으로 반드시 성균관대 학교 이메일로 가입해주세요!"
+        android:textSize="20sp"
         />
 
+
     <Button
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/btType"
-        android:layout_margin="15dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/btSignUp"
-        android:text="Sign Up"
-        android:textSize="14sp"
+        android:id="@+id/btNext"
+        android:background="@drawable/ic_baseline_play_arrow_24"
         />
 
     <ProgressBar

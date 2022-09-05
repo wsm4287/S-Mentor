@@ -4,8 +4,14 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/drawable/chat_bubble.xml" value="0.378125" />
+        <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/drawable/ic_baseline_message_24.xml" value="0.378125" />
+        <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.378125" />
+        <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.378125" />
+        <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/drawable/ic_launcher_background.xml" value="0.378125" />
+        <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.378125" />
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/activity_chat.xml" value="0.25" />
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/activity_home.xml" value="0.1743659420289855" />
+        <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/activity_inform.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/activity_profile.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/activity_reg.xml" value="0.33" />
@@ -16,12 +22,14 @@
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/fragment_mentoring.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/fragment_notifications.xml" value="0.3171875" />
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/fragment_recentchat.xml" value="0.3619791666666667" />
+        <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/inform_view.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/left_text_view.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/recentchat_view.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/right_text_view.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/user_view.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/menu/bottom_nav_menu.xml" value="0.3171875" />
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.378125" />
+        <entry key="..\:/Users/wsm42/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_list_item_multiple_choice.xml" value="0.3619791666666667" />
       </map>
     </option>
   </component>

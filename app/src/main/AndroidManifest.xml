@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SMentor">
         <activity
+            android:name=".InformActivity"
+            android:exported="false" />
+        <activity
             android:name=".chat.ChatActivity"
             android:exported="false" />
         <activity
@@ -34,11 +37,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        <service android:name=".notification.PushNotification"
+
+        <service
+            android:name=".notification.PushNotification"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
     </application>
