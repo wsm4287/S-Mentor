@@ -20,8 +20,8 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:padding="5dp"
                 android:src="@mipmap/ic_launcher"/>
             <LinearLayout
@@ -37,12 +37,25 @@
                     android:text="Name"
                     android:textSize="15sp"/>
                 <TextView
-                    android:id="@+id/emailText"
+                    android:id="@+id/majorText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Email"
+                    android:text="Major"
                     android:textColor="#FF0000FF"
                     android:textSize="13sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:id="@+id/user_choice">
+
+                    <GridView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/user_list"
+                        android:numColumns="4"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 

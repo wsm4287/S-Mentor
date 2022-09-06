@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -22,6 +23,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -40,8 +42,6 @@ public class InformActivity extends AppCompatActivity {
     Button btType, btSignUp;
     String encodedImage, type, id, major, introduction;
 
-    Bitmap bitmap;
-
     FirebaseFirestore database;
 
     @Override
@@ -59,9 +59,10 @@ public class InformActivity extends AppCompatActivity {
 
         database = FirebaseFirestore.getInstance();
 
-        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_baseline_person_outline_24);
+        encodedImage="";
+        type="";
 
-        final String[] items = {"취업", "면접", "학업", "봉사", "동아리"};
+        final String[] items = {"취업", "면접", "학업", "창업", "석사", "봉사", "동아리"};
 
         final ArrayAdapter adapter = new ArrayAdapter(this, R.layout.inform_view, items);
 
@@ -111,13 +112,50 @@ public class InformActivity extends AppCompatActivity {
                 introduction = inform_introduction.getText().toString();
                 major = inform_major.getText().toString();
 
+                if(encodedImage.isEmpty()){
+                    Toast.makeText(InformActivity.this, "사진을 선택하지 않았습니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(major.isEmpty()){
+                    Toast.makeText(InformActivity.this, "전공을 입력하지 않았습니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(introduction.isEmpty()){
+                    Toast.makeText(InformActivity.this, "자기소개를 입력하지 않았습니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(type.isEmpty()){
+                    Toast.makeText(InformActivity.this, "역할을 선택하지 않았습니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 HashMap<String, Object> user = new HashMap<>();
+
                 user.put("image", encodedImage);
                 user.put("major", major);
                 user.put("introduction", introduction);
+                user.put("type", type);
+
+                int count = adapter.getCount();
+
+                SparseBooleanArray check = gridView.getCheckedItemPositions();
+                
+                if(check.size()>0){
+                    for(int i=0; i<count; i++){
+                        if(check.get(i)){
+                            user.put(Integer.toString(i),"o");
+                        }
+                        else{
+                            user.put(Integer.toString(i),"x");
+                        }
+                    }
+                }
+
+
 
                 database.collection("users").document(id)
-                        .set(user)
+                        .update(user)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {

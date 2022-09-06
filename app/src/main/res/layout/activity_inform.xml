@@ -80,8 +80,6 @@
         app:layout_constraintTop_toBottomOf="@id/inform_introduction"
         android:id="@+id/inform_choice">
 
-
-
         <GridView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

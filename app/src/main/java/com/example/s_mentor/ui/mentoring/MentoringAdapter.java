@@ -37,12 +37,12 @@ public class MentoringAdapter extends RecyclerView.Adapter<MentoringAdapter.Appl
 
     class ApplyViewHolder extends RecyclerView.ViewHolder{
         TextView nameText;
-        TextView emailText;
+        TextView majorText;
         ImageView imageView;
         public ApplyViewHolder(View view, OnItemClickListener listener) {
             super(view);
             nameText = itemView.findViewById(R.id.nameText);
-            emailText = itemView.findViewById(R.id.emailText);
+            majorText = itemView.findViewById(R.id.majorText);
             imageView = itemView.findViewById(R.id.imageView);
             // Define click listener for the ViewHolder's View
             view.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +85,7 @@ public class MentoringAdapter extends RecyclerView.Adapter<MentoringAdapter.Appl
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
         holder.nameText.setText(user.getName());
-        holder.emailText.setText(user.getEmail());
+        holder.majorText.setText(user.getMajor());
         holder.imageView.setImageBitmap(user.getBitmap());
     }
 

@@ -11,13 +11,16 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,6 +39,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ListFragment extends Fragment {
 
@@ -61,6 +65,7 @@ public class ListFragment extends Fragment {
 
         setting = (Button) root.findViewById(R.id.btLogOut);
         listTitle = (TextView) root.findViewById(R.id.listTitle);
+
 
         if(type.equals("mentor")){
             listTitle.setText("멘티 목록");
@@ -92,6 +97,19 @@ public class ListFragment extends Fragment {
                         user.email = document.getId();
                         encodedImage = document.getData().get("image").toString();
                         user.bitmap = DecodeImage(encodedImage);
+
+                        List<Integer> field = new ArrayList<>();
+
+
+                        for(int i=0; i<7; i++){
+                            if(((document.getData().get(Integer.toString(i))).toString()).equals("o")){
+                                field.add(i);
+                            }
+                        }
+                        user.field = field;
+
+
+
                         userArrayList.add(user);
                         listAdapter.notifyDataSetChanged();
                     }

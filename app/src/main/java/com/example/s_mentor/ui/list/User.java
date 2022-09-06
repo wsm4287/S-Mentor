@@ -2,12 +2,24 @@ package com.example.s_mentor.ui.list;
 
 import android.graphics.Bitmap;
 
+import java.util.List;
+
 public class User {
     public String name;
     public String email;
     public String major;
     public Bitmap bitmap;
     public String token;
+    public List<Integer> field;
+
+    public List<Integer> getField() {
+        return field;
+    }
+
+    public void setField(List<Integer> field) {
+        this.field = field;
+    }
+
 
     public Bitmap getBitmap() {
         return bitmap;

@@ -2,6 +2,8 @@ package com.example.s_mentor.ui.mentoring;
 
 import android.graphics.Bitmap;
 
+import java.util.List;
+
 public class User {
     public String name;
     public String email;

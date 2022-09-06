@@ -126,16 +126,12 @@ public class RegActivity extends AppCompatActivity {
                                                     user.put("phone", pn);
                                                     user.put("mentoring", " ");
                                                     user.put("token", " ");
-                                                    user.put("first", "o");
 
                                                     database.collection("users").document(id)
                                                             .set(user)
                                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                 @Override
                                                                 public void onSuccess(Void unused) {
-                                                                    Toast.makeText(RegActivity.this, "이메일 생성이 성공하였습니다.",
-                                                                            Toast.LENGTH_SHORT).show();
-
                                                                     Intent in= new Intent(RegActivity.this, InformActivity.class);
                                                                     in.putExtra("email", id);
                                                                     startActivity(in);
