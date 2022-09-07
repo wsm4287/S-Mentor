@@ -115,11 +115,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
             x[i] = items[user.field.get(i)];
         }
 
-        Toast.makeText(context, x[0], Toast.LENGTH_SHORT).show();
-
         ArrayAdapter adapter = new ArrayAdapter(context, R.layout.field_view, x);
-
-
 
         holder.gridView.setAdapter(adapter);
 

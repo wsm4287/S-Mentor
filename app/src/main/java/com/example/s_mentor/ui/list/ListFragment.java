@@ -97,6 +97,7 @@ public class ListFragment extends Fragment {
                         user.email = document.getId();
                         encodedImage = document.getData().get("image").toString();
                         user.bitmap = DecodeImage(encodedImage);
+                        user.introduction = document.getData().get("introduction").toString();
 
                         List<Integer> field = new ArrayList<>();
 
@@ -128,7 +129,7 @@ public class ListFragment extends Fragment {
                 final ImageView iv = new ImageView(getContext());
                 iv.setImageBitmap(u.bitmap);
                 final TextView et = new TextView(getContext());
-                et.setText(u.major);
+                et.setText(u.introduction);
                 AlertDialog.Builder ad = new AlertDialog.Builder(getContext())
                         .setView(iv)
                         .setIcon(drawable)
@@ -170,7 +171,7 @@ public class ListFragment extends Fragment {
                                 }
                                 if(which == 2){
                                     HashMap<String, Object> user = new HashMap<>();
-                                    user.put("token", FieldValue.delete());
+                                    user.put("token", "");
                                     database.collection("users").document(id)
                                             .update(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override

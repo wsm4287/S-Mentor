@@ -168,7 +168,7 @@ public class MentoringFragment extends Fragment {
                                 }
                                 if(which == 2){
                                     HashMap<String, Object> user = new HashMap<>();
-                                    user.put("token", FieldValue.delete());
+                                    user.put("token", "");
                                     database.collection("users").document(id)
                                             .update(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override

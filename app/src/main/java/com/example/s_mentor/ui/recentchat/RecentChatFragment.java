@@ -31,6 +31,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RecentChatFragment extends Fragment {
 
@@ -125,9 +126,19 @@ public class RecentChatFragment extends Fragment {
                                     startActivity(in);
                                 }
                                 else if(which == 2){
-                                    Intent in = new Intent(root.getContext(), MainActivity.class);
-                                    in.putExtra("Logout", true);
-                                    startActivity(in);
+                                    HashMap<String, Object> user = new HashMap<>();
+                                    user.put("token", "");
+                                    database.collection("users").document(id)
+                                            .update(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                Intent in= new Intent(root.getContext(), MainActivity.class);
+                                                in.putExtra("Logout", true);
+                                                startActivity(in);
+                                            }
+                                        }
+                                    });
                                 }
 
                             }

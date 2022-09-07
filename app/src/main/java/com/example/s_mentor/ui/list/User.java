@@ -12,6 +12,16 @@ public class User {
     public String token;
     public List<Integer> field;
 
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
+
+    public String introduction;
+
     public List<Integer> getField() {
         return field;
     }

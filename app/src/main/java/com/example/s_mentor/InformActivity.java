@@ -42,6 +42,10 @@ public class InformActivity extends AppCompatActivity {
     Button btType, btSignUp;
     String encodedImage, type, id, major, introduction;
 
+    String[] items = {"취업", "면접", "학업", "창업", "석사", "봉사", "동아리"};
+    ArrayAdapter adapter;
+    GridView gridView;
+
     FirebaseFirestore database;
 
     @Override
@@ -62,11 +66,10 @@ public class InformActivity extends AppCompatActivity {
         encodedImage="";
         type="";
 
-        final String[] items = {"취업", "면접", "학업", "창업", "석사", "봉사", "동아리"};
 
-        final ArrayAdapter adapter = new ArrayAdapter(this, R.layout.inform_view, items);
+        adapter = new ArrayAdapter(this, R.layout.inform_view, items);
 
-        final GridView gridView = (GridView) findViewById(R.id.inform_list);
+        gridView = (GridView) findViewById(R.id.inform_list);
         gridView.setAdapter(adapter);
 
         id = getIntent().getStringExtra("email");
@@ -130,6 +133,20 @@ public class InformActivity extends AppCompatActivity {
                     return;
                 }
 
+                SparseBooleanArray check = gridView.getCheckedItemPositions();
+
+                if(check.size()<1){
+                    Toast.makeText(InformActivity.this, "멘토링 분야를 최소한 하나는 선택해주세요.", Toast.LENGTH_SHORT).show();
+                    gridView.setAdapter(adapter);
+                    return;
+                }
+
+                if(check.size()>4){
+                    Toast.makeText(InformActivity.this, "멘토링 분야를 너무 많이 선택하셨습니다.", Toast.LENGTH_SHORT).show();
+                    gridView.setAdapter(adapter);
+                    return;
+                }
+
                 HashMap<String, Object> user = new HashMap<>();
 
                 user.put("image", encodedImage);
@@ -137,21 +154,14 @@ public class InformActivity extends AppCompatActivity {
                 user.put("introduction", introduction);
                 user.put("type", type);
 
-                int count = adapter.getCount();
-
-                SparseBooleanArray check = gridView.getCheckedItemPositions();
-                
-                if(check.size()>0){
-                    for(int i=0; i<count; i++){
-                        if(check.get(i)){
-                            user.put(Integer.toString(i),"o");
-                        }
-                        else{
-                            user.put(Integer.toString(i),"x");
-                        }
+                for(int i=0; i<7; i++){
+                    if(check.get(i)){
+                        user.put(Integer.toString(i),"o");
+                    }
+                    else{
+                        user.put(Integer.toString(i),"x");
                     }
                 }
-
 
 
                 database.collection("users").document(id)
