@@ -61,14 +61,15 @@
         android:id="@+id/btSend"
         />
 
+
     <EditText
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/btSend"
+        app:layout_constraintEnd_toStartOf="@+id/btSend"
         android:id="@+id/etText"
         />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

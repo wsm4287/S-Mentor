@@ -4,12 +4,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -107,6 +111,47 @@ public class RecentChatFragment extends Fragment {
                 in.putExtra("type", type);
                 startActivity(in);
 
+            }
+        });
+
+        recentAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(RecentAdapter.RecentViewHolder holder, View view, int position) {
+                RecentChat recentChat = recentAdapter.getRecentChat(position);
+                String id2 = recentChat.email;
+                String name = recentChat.name;
+
+                final TextView et = new TextView(getContext());
+                AlertDialog.Builder ad = new AlertDialog.Builder(getContext())
+                        .setTitle(name)
+                        .setMessage("메시지 기록을 삭제하시겠습니까?").setView(et)
+                        .setPositiveButton("아니요", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
+                        .setNeutralButton("예", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                database.collection("message").document(id).collection("Last").document(id2)
+                                        .delete();
+                                database.collection("message").document(id).collection(id2)
+                                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if(task.getResult().size() > 0){
+                                            for(QueryDocumentSnapshot dc : task.getResult()){
+                                                dc.getReference().delete();
+                                            }
+                                        }
+                                    }
+                                });
+                                recentArrayList.remove(position);
+                                recentAdapter.notifyDataSetChanged();
+                            }
+                        });
+                ad.show();
+                return true;
             }
         });
 

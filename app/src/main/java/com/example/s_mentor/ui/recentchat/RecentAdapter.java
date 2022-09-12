@@ -20,6 +20,7 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.RecentView
 
     private final ArrayList<RecentChat> lastChat;
     OnItemClickListener reListener;
+    OnItemLongClickListener longListener;
 
     @Override
     public void onItemClick(RecentViewHolder holder, View view, int position) {
@@ -32,11 +33,18 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.RecentView
         this.reListener = listener;
     }
 
+    public boolean onItemLongClick(RecentViewHolder holder, View view, int position){
+        if(longListener != null){
+            longListener.onItemLongClick(holder, view, position);
+        }
+        return true;
+    }
+    public void setOnItemLongClickListener(OnItemLongClickListener listener) { this.longListener = listener;}
 
     class RecentViewHolder extends RecyclerView.ViewHolder{
         TextView nameText, lastText;
         ImageView imageView;
-        public RecentViewHolder(View view, OnItemClickListener listener) {
+        public RecentViewHolder(View view, OnItemClickListener listener, OnItemLongClickListener Listener) {
             super(view);
             nameText = itemView.findViewById(R.id.nameText);
             lastText = itemView.findViewById(R.id.lastText);
@@ -53,7 +61,21 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.RecentView
                     }
                 }
             });
+
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION) {
+                        if (Listener != null) {
+                            Listener.onItemLongClick(RecentAdapter.RecentViewHolder.this, v, pos);
+                        }
+                    }
+                    return false;
+                }
+            });
         }
+
 
     }
 
@@ -72,7 +94,7 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.RecentView
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.recentchat_view, viewGroup, false);
 
-        return new RecentAdapter.RecentViewHolder(view,this);
+        return new RecentAdapter.RecentViewHolder(view,reListener,longListener);
     }
 
     @Override

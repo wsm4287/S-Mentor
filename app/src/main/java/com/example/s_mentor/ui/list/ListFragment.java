@@ -1,5 +1,6 @@
 package com.example.s_mentor.ui.list;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -54,6 +55,8 @@ public class ListFragment extends Fragment {
     String encodedImage;
     TextView listTitle;
 
+    private static Context context;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -62,6 +65,8 @@ public class ListFragment extends Fragment {
 
         binding = FragmentListBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        context = this.getContext();
 
         setting = (Button) root.findViewById(R.id.btLogOut);
         listTitle = (TextView) root.findViewById(R.id.listTitle);

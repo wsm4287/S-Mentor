@@ -1,5 +1,7 @@
 package com.example.s_mentor.chat;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -13,7 +15,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.BoringLayout;
 import android.util.Base64;
 import android.view.View;
@@ -37,6 +41,9 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -227,7 +234,6 @@ public class ChatActivity extends AppCompatActivity {
         });
 
 
-
         opPh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -280,6 +286,8 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
         });
+
+
     }
 
 
@@ -288,4 +296,13 @@ public class ChatActivity extends AppCompatActivity {
         byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
+
+    private String EncodeImage(Bitmap bitmap){
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+        byte[] bytes = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(bytes, Base64.DEFAULT);
+
+    }
+
 }

@@ -1,36 +1,59 @@
 package com.example.s_mentor.ui.list;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.s_mentor.HomeActivity;
+import com.example.s_mentor.InformActivity;
 import com.example.s_mentor.MainActivity;
 import com.example.s_mentor.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.ref.Reference;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.ResourceBundle;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder> implements OnItemClickListener {
 
     private final ArrayList<User> mDataSet;
     OnItemClickListener userListener;
-
+    FirebaseFirestore database;
+    String id;
+    CollectionReference collection;
     Context context;
+
+    Drawable drawable, drawable2;
 
     final String[] items = {"취업", "면접", "학업", "창업", "석사", "봉사", "동아리"};
 
@@ -52,6 +75,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
         TextView majorText;
         ImageView imageView;
         GridView gridView;
+        Button favoriteView;
 
         public UserViewHolder(View view, OnItemClickListener listener) {
             super(view);
@@ -59,7 +83,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
             majorText = itemView.findViewById(R.id.majorText);
             imageView = itemView.findViewById(R.id.imageView);
             gridView = (GridView) itemView.findViewById(R.id.user_list);
-
+            favoriteView = itemView.findViewById(R.id.bookMark);
 
             // Define click listener for the ViewHolder's View
             view.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +118,16 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
 
         context = viewGroup.getContext();
 
+        id = ((Activity) context).getIntent().getStringExtra("email");
+
+        database = FirebaseFirestore.getInstance();
+
+        collection = database.collection("users").document(id).collection("favorite");
+
+
+        drawable = ContextCompat.getDrawable(context, R.drawable.ic_baseline_star_24);
+        drawable2 = ContextCompat.getDrawable(context, R.drawable.ic_baseline_star_border_24);
+
         return new UserViewHolder(view,this);
     }
 
@@ -106,6 +140,94 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
         holder.nameText.setText(user.getName());
         holder.majorText.setText(user.getMajor());
         holder.imageView.setImageBitmap(user.getBitmap());
+
+
+        collection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()) {
+                    for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                        if((""+documentSnapshot.getData().get(user.getEmail())).equals("1")){
+                            holder.favoriteView.setBackground(drawable);
+                        }
+                    }
+                }
+            }
+        });
+
+        holder.favoriteView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                collection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for(DocumentSnapshot documentSnapshot : task.getResult()){
+
+                                if((""+documentSnapshot.getData().get(user.getEmail())).equals("1")){
+                                    documentSnapshot.getReference().delete();
+                                }
+                                else{
+
+                                    documentSnapshot.getReference().delete();
+                                }
+                            }
+                            HashMap<String, Integer> mark = new HashMap<>();
+                            if(holder.favoriteView.getBackground().equals(drawable)){
+                                holder.favoriteView.setBackground(drawable2);
+                                mark.put(user.getEmail(), 0);
+                                collection.add(mark);
+                            }
+                            else{
+                                holder.favoriteView.setBackground(drawable);
+                                mark.put(user.getEmail(), 1);
+                                collection.add(mark);
+                            }
+
+
+                        }
+
+                    }
+                });
+            }
+        });
+
+
+
+
+/*        collection.document(user.getEmail()).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Toast.makeText(context, " " + documentSnapshot.getData().get("mark"), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        holder.favoriteView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                collection.document(user.getEmail()).get()
+                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if(task.isSuccessful()){
+                                    HashMap<String, Integer> mark = new HashMap<>();
+                                    if(holder.favoriteView.getBackground().equals(drawable)){
+                                        holder.favoriteView.setBackground(drawable2);
+                                        collection.document(user.getEmail()).set(mark);
+                                    }
+                                    else{
+                                        holder.favoriteView.setBackground(drawable);
+                                        collection.document(user.getEmail()).set(mark);
+                                    }
+                                }
+                            }
+                        });
+            }
+        });
+
+ */
+
 
         int count = user.getField().size();
 
