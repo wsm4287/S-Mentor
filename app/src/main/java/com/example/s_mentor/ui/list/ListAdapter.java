@@ -42,6 +42,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.lang.ref.Reference;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder> implements OnItemClickListener {
@@ -49,7 +50,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
     private final ArrayList<User> mDataSet;
     OnItemClickListener userListener;
     FirebaseFirestore database;
-    String id;
+    String id, encodedImage, type, name, major, phone, introduction, token, mentoring;
     CollectionReference collection;
     Context context;
 
@@ -142,7 +143,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
         holder.imageView.setImageBitmap(user.getBitmap());
 
 
-        collection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+ /*       collection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()) {
@@ -192,14 +193,22 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
             }
         });
 
+*/
 
 
-
-/*        collection.document(user.getEmail()).get()
+        collection.document(user.getEmail()).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        Toast.makeText(context, " " + documentSnapshot.getData().get("mark"), Toast.LENGTH_SHORT).show();
+                        if((""+documentSnapshot.getData()).equals("null")){
+                            holder.favoriteView.setBackground(drawable2);
+                            return;
+                        }
+
+                        else if((""+documentSnapshot.getData().get("mark")).equals("1")){
+                            holder.favoriteView.setBackground(drawable);
+                            return;
+                        }
                     }
                 });
 
@@ -211,14 +220,48 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 if(task.isSuccessful()){
-                                    HashMap<String, Integer> mark = new HashMap<>();
+                                    HashMap<String, Object> mark = new HashMap<>();
                                     if(holder.favoriteView.getBackground().equals(drawable)){
+                                        collection.document(user.getEmail()).delete();
+                                        mark.put("mark", 0);
                                         holder.favoriteView.setBackground(drawable2);
                                         collection.document(user.getEmail()).set(mark);
                                     }
                                     else{
-                                        holder.favoriteView.setBackground(drawable);
-                                        collection.document(user.getEmail()).set(mark);
+                                        database.collection("users").document(user.getEmail())
+                                                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                Toast.makeText(context, task.getResult().getData().get("name").toString(),Toast.LENGTH_SHORT).show();
+
+                                                name = task.getResult().getData().get("name").toString();
+                                                major = task.getResult().getData().get("major").toString();
+                                                encodedImage = task.getResult().getData().get("image").toString();
+                                                introduction = task.getResult().getData().get("introduction").toString();
+                                                phone = task.getResult().getData().get("phone").toString();
+                                                token = task.getResult().getData().get("token").toString();
+                                                mentoring = task.getResult().getData().get("mentoring").toString();
+                                                type = task.getResult().getData().get("type").toString();
+
+                                                String t;
+                                                for(int i=0; i<7; i++){
+                                                    t = Integer.toString(i);
+                                                    mark.put(t, task.getResult().getData().get(Integer.toString(i)).toString());
+                                                }
+                                                mark.put("name", name);
+                                                mark.put("major", major);
+                                                mark.put("image", encodedImage);
+                                                mark.put("introduction", introduction);
+                                                mark.put("phone", phone);
+                                                mark.put("mentoring", mentoring);
+                                                mark.put("type", type);
+                                                mark.put("mark", 1);
+                                                mark.put("token", token);
+                                                holder.favoriteView.setBackground(drawable);
+                                                collection.document(user.getEmail()).set(mark);
+                                            }
+                                        });
+
                                     }
                                 }
                             }
@@ -226,7 +269,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
             }
         });
 
- */
+
 
 
         int count = user.getField().size();
