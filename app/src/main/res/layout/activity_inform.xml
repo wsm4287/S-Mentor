@@ -50,7 +50,7 @@
 
     </FrameLayout>
 
-    <EditText
+    <Button
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:id="@+id/inform_major"

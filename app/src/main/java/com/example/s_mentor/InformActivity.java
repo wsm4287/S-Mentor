@@ -38,8 +38,8 @@ public class InformActivity extends AppCompatActivity {
 
     FrameLayout imageLayout;
     ImageView inform_photo;
-    EditText inform_introduction, inform_major;
-    Button btType, btSignUp;
+    EditText inform_introduction;
+    Button btType, btSignUp, inform_major;
     String encodedImage, type, id, major, introduction;
 
     String[] items = {"취업", "면접", "학업", "창업", "석사", "봉사", "동아리"};
@@ -57,7 +57,7 @@ public class InformActivity extends AppCompatActivity {
         imageLayout = (FrameLayout) findViewById(R.id.imageLayout);
         inform_photo = (ImageView) findViewById(R.id.inform_photo);
         inform_introduction = (EditText) findViewById(R.id.inform_introduction);
-        inform_major = (EditText) findViewById(R.id.inform_major);
+        inform_major = (Button) findViewById(R.id.inform_major);
         btType = (Button) findViewById(R.id.btType);
         btSignUp = (Button) findViewById(R.id.btSignUp);
 
@@ -78,6 +78,13 @@ public class InformActivity extends AppCompatActivity {
             Intent in = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             in.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
             pickImage.launch(in);
+        });
+
+        inform_major.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SelectMajor();
+            }
         });
 
 
@@ -207,4 +214,308 @@ public class InformActivity extends AppCompatActivity {
                 }
 
             });
+
+    private void SelectMajor(){
+        String array[] = {"유학대학", "문과대학", "사회과학대학", "경제대학", "경영대학", "사범대학", "예술대학", "자연과학대학",
+                "정보통신대학", "소프트웨어융합대학", "공과대학", "약학대학", "생명공학대학", "스포츠과학대학", "의과대학", "성균융합원"};
+
+        AlertDialog.Builder setting = new AlertDialog.Builder(InformActivity.this)
+                .setItems(array, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(which == 0){
+                            String a[] = {"유학.동양학과", "돌아가기"};
+
+                            AlertDialog.Builder setting = new AlertDialog.Builder(InformActivity.this)
+                                    .setItems(a, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if(which == 0) major = a[0];
+                                            else SelectMajor();
+                                            inform_major.setText(major);
+                                        }
+                                    });
+
+                            AlertDialog alertDialog = setting.create();
+                            alertDialog.show();
+                        }
+                        else if(which == 1){
+                            String a[] = {"국어국문학과", "영어영문학과", "프랑스어문학과", "중어중문학과", "독어독문학과",
+                            "러시아어문학과", "한문학과", "사학과", "철학과", "문헌정보학과", "돌아가기"};
+
+                            AlertDialog.Builder setting = new AlertDialog.Builder(InformActivity.this)
+                                    .setItems(a, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if(which == 0) major = a[0];
+                                            else if(which == 1) major = a[1];
+                                            else if(which == 2) major = a[2];
+                                            else if(which == 3) major = a[3];
+                                            else if(which == 4) major = a[4];
+                                            else if(which == 5) major = a[5];
+                                            else if(which == 6) major = a[6];
+                                            else if(which == 7) major = a[7];
+                                            else if(which == 8) major = a[8];
+                                            else if(which == 9) major = a[9];
+                                            else SelectMajor();
+                                            inform_major.setText(major);
+                                        }
+                                    });
+
+                            AlertDialog alertDialog = setting.create();
+                            alertDialog.show();
+                        }
+                        else if(which == 2){
+                            String a[] = {"행정학과", "정치외교학과", "미디어커뮤니케이션학과", "사회학과", "사회복지학과",
+                                    "심리학과", "소비자학과", "아동·청소년학과", "글로벌리더학부", "돌아가기"};
+
+                            AlertDialog.Builder setting = new AlertDialog.Builder(InformActivity.this)
+                                    .setItems(a, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if(which == 0) major = a[0];
+                                            else if(which == 1) major = a[1];
+                                            else if(which == 2) major = a[2];
+                                            else if(which == 3) major = a[3];
+                                            else if(which == 4) major = a[4];
+                                            else if(which == 5) major = a[5];
+                                            else if(which == 6) major = a[6];
+                                            else if(which == 7) major = a[7];
+                                            else if(which == 8) major = a[8];
+                                            else SelectMajor();
+                                            inform_major.setText(major);
+                                        }
+                                    });
+
+                            AlertDialog alertDialog = setting.create();
+                            alertDialog.show();
+                        }
+                        else if(which == 3){
+                            String a[] = {"경제학과", "통계학과", "글로벌경제학과", "돌아가기"};
+
+                            AlertDialog.Builder setting = new AlertDialog.Builder(InformActivity.this)
+                                    .setItems(a, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if(which == 0) major = a[0];
+                                            else if(which == 1) major = a[1];
+                                            else if(which == 2) major = a[2];
+                                            else SelectMajor();
+                                            inform_major.setText(major);
+                                        }
+                                    });
+
+                            AlertDialog alertDialog = setting.create();
+                            alertDialog.show();
+                        }
+                        else if(which == 4){
+                            String a[] = {"경영학과", "글로벌경영학과", "돌아가기"};
+
+                            AlertDialog.Builder setting = new AlertDialog.Builder(InformActivity.this)
+                                    .setItems(a, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if(which == 0) major = a[0];
+                                            else if(which == 1) major = a[1];
+                                            else SelectMajor();
+                                            inform_major.setText(major);
+                                        }
+                                    });
+
+                            AlertDialog alertDialog = setting.create();
+                            alertDialog.show();
+                        }
+                        else if(which == 5){
+                            String a[] = {"교육학과", "한문교육과", "수학교육과", "컴퓨터교육과", "돌아가기"};
+
+                            AlertDialog.Builder setting = new AlertDialog.Builder(InformActivity.this)
+                                    .setItems(a, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if(which == 0) major = a[0];
+                                            else if(which == 1) major = a[1];
+                                            else if(which == 2) major = a[2];
+                                            else if(which == 3) major = a[3];
+                                            else SelectMajor();
+                                            inform_major.setText(major);
+                                        }
+                                    });
+
+                            AlertDialog alertDialog = setting.create();
+                            alertDialog.show();
+                        }
+                        else if(which == 6){
+                            String a[] = {"미술학과", "디자인학과", "무용학과", "영상학과", "연기예술학과",
+                                    "의상학과", "돌아가기"};
+
+                            AlertDialog.Builder setting = new AlertDialog.Builder(InformActivity.this)
+                                    .setItems(a, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if(which == 0) major = a[0];
+                                            else if(which == 1) major = a[1];
+                                            else if(which == 2) major = a[2];
+                                            else if(which == 3) major = a[3];
+                                            else if(which == 4) major = a[4];
+                                            else if(which == 5) major = a[5];
+                                            else SelectMajor();
+                                            inform_major.setText(major);
+                                        }
+                                    });
+
+                            AlertDialog alertDialog = setting.create();
+                            alertDialog.show();
+                        }
+                        else if(which == 7){
+                            String a[] = {"생명과학과", "수학과", "물리학과", "화학과", "돌아가기"};
+
+                            AlertDialog.Builder setting = new AlertDialog.Builder(InformActivity.this)
+                                    .setItems(a, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if(which == 0) major = a[0];
+                                            else if(which == 1) major = a[1];
+                                            else if(which == 2) major = a[2];
+                                            else if(which == 3) major = a[3];
+                                            else SelectMajor();
+                                            inform_major.setText(major);
+                                        }
+                                    });
+
+                            AlertDialog alertDialog = setting.create();
+                            alertDialog.show();
+                        }
+                        else if(which == 8){
+                            String a[] = {"전자전기공학부", "반도체시스템공학과", "소재부품융합공학과", "돌아가기"};
+
+                            AlertDialog.Builder setting = new AlertDialog.Builder(InformActivity.this)
+                                    .setItems(a, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if(which == 0) major = a[0];
+                                            else if(which == 1) major = a[1];
+                                            else if(which == 2) major = a[2];
+                                            else SelectMajor();
+                                            inform_major.setText(major);
+                                        }
+                                    });
+
+                            AlertDialog alertDialog = setting.create();
+                            alertDialog.show();
+                        }
+                        else if(which == 9){
+                            String a[] = {"화학공학/고분자공학부", "신소재공학부", "기계공학부", "건설환경공학부",
+                            "시스템경영공학과", "건축학과", "나노공학과", "돌아가기"};
+
+                            AlertDialog.Builder setting = new AlertDialog.Builder(InformActivity.this)
+                                    .setItems(a, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if(which == 0) major = a[0];
+                                            else if(which == 1) major = a[1];
+                                            else if(which == 2) major = a[2];
+                                            else if(which == 3) major = a[3];
+                                            else if(which == 4) major = a[4];
+                                            else if(which == 5) major = a[5];
+                                            else if(which == 6) major = a[6];
+                                            else SelectMajor();
+                                            inform_major.setText(major);
+                                        }
+                                    });
+
+                            AlertDialog alertDialog = setting.create();
+                            alertDialog.show();
+                        }
+                        else if(which == 10){
+                            String a[] = {"약학과", "돌아가기"};
+
+                            AlertDialog.Builder setting = new AlertDialog.Builder(InformActivity.this)
+                                    .setItems(a, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if(which == 0) major = a[0];
+                                            else SelectMajor();
+                                            inform_major.setText(major);
+                                        }
+                                    });
+
+                            AlertDialog alertDialog = setting.create();
+                            alertDialog.show();
+                        }
+                        else if(which == 11){
+                            String a[] = {"식품생명공학과", "바이오메카트로닉스학과", "융합생명공학과", "돌아가기"};
+
+                            AlertDialog.Builder setting = new AlertDialog.Builder(InformActivity.this)
+                                    .setItems(a, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if(which == 0) major = a[0];
+                                            else if(which == 1) major = a[1];
+                                            else if(which == 2) major = a[2];
+                                            else SelectMajor();
+                                            inform_major.setText(major);
+                                        }
+                                    });
+
+                            AlertDialog alertDialog = setting.create();
+                            alertDialog.show();
+                        }
+                        else if(which == 12){
+                            String a[] = {"스포츠과학과", "돌아가기"};
+
+                            AlertDialog.Builder setting = new AlertDialog.Builder(InformActivity.this)
+                                    .setItems(a, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if(which == 0) major = a[0];
+                                            else SelectMajor();
+                                            inform_major.setText(major);
+                                        }
+                                    });
+
+                            AlertDialog alertDialog = setting.create();
+                            alertDialog.show();
+                        }
+                        else if(which == 13){
+                            String a[] = {"의학과", "돌아가기"};
+
+                            AlertDialog.Builder setting = new AlertDialog.Builder(InformActivity.this)
+                                    .setItems(a, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if(which == 0) major = a[0];
+                                            else SelectMajor();
+                                            inform_major.setText(major);
+                                        }
+                                    });
+
+                            AlertDialog alertDialog = setting.create();
+                            alertDialog.show();
+                        }
+                        else if(which == 14){
+                            String a[] = {"글로벌바이오메디컬공학과", "돌아가기"};
+
+                            AlertDialog.Builder setting = new AlertDialog.Builder(InformActivity.this)
+                                    .setItems(a, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if(which == 0) major = a[0];
+                                            else SelectMajor();
+                                            inform_major.setText(major);
+                                        }
+                                    });
+
+                            AlertDialog alertDialog = setting.create();
+                            alertDialog.show();
+                        }
+                        else{
+
+                        }
+                    }
+                });
+
+        AlertDialog alertDialog = setting.create();
+        alertDialog.show();
+    }
+
 }
