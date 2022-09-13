@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +62,7 @@ public class ListFragment extends Fragment {
     ListAdapter listAdapter2;
     ArrayList<User> userArrayList;
     ArrayList<User> userMarkList;
+    List<String> favoriteList;
     String encodedImage;
     TextView listTitle;
     Boolean mark;
@@ -103,7 +105,11 @@ public class ListFragment extends Fragment {
         listAdapter = new ListAdapter(userArrayList);
         listAdapter2 = new ListAdapter(userMarkList);
         recyclerView.setAdapter(listAdapter);
+        favoriteList = new ArrayList<>();
 
+        FavoriteCreate();
+
+/*
         database.collection("users")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -113,6 +119,7 @@ public class ListFragment extends Fragment {
                     for(QueryDocumentSnapshot document : task.getResult()){
                         if(document.getId().equals(id)) continue;
                         if(document.getData().get("type").toString().equals(type)) continue;
+                        if(favoriteList.contains(document.getId())) continue;
                         User user = new User();
                         user.name = document.getData().get("name").toString();
                         user.major = document.getData().get("major").toString();
@@ -140,75 +147,7 @@ public class ListFragment extends Fragment {
             }
         });
 
-/*        database.collection("users").document(id).collection("favorite")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            for(DocumentSnapshot document : task.getResult()){
-                                if((""+document.getData()).equals("null")) continue;
-                                else if((""+document.getData().get("mark")).equals("1")){
-                                    User user = new User();
-                                    user.name = document.getData().get("name").toString();
-                                    user.major = document.getData().get("major").toString();
-                                    user.email = document.getId();
-                                    encodedImage = document.getData().get("image").toString();
-                                    user.bitmap = DecodeImage(encodedImage);
-                                    user.introduction = document.getData().get("introduction").toString();
-
-                                    List<Integer> field = new ArrayList<>();
-
-                                    for(int i=0; i<7; i++){
-                                        if(((document.getData().get(Integer.toString(i))).toString()).equals("o")){
-                                            field.add(i);
-                                        }
-                                    }
-                                    user.field = field;
-
-                                    userMarkList.add(user);
-                                    listAdapter.notifyDataSetChanged();
-                                }
-                            }
-                        }
-
-                    }
-                });
-
  */
-
-        database.collection("users").document(id).collection("favorite")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        userMarkList.clear();
-                        for (QueryDocumentSnapshot document : value) {
-                            if((""+document.getData()).equals("null")) continue;
-                            else if((""+document.getData().get("mark")).equals("1")){
-                                User user = new User();
-                                user.name = document.getData().get("name").toString();
-                                user.major = document.getData().get("major").toString();
-                                user.email = document.getId();
-                                encodedImage = document.getData().get("image").toString();
-                                user.bitmap = DecodeImage(encodedImage);
-                                user.introduction = document.getData().get("introduction").toString();
-
-                                List<Integer> field = new ArrayList<>();
-
-                                for(int i=0; i<7; i++){
-                                    if(((document.getData().get(Integer.toString(i))).toString()).equals("o")){
-                                        field.add(i);
-                                    }
-                                }
-                                user.field = field;
-
-                                userMarkList.add(user);
-                                listAdapter2.notifyDataSetChanged();
-                            }
-                        }
-                    }
-                });
-
 
 
         listAdapter.setOnItemClickListener(new OnItemClickListener() {
@@ -338,6 +277,123 @@ public class ListFragment extends Fragment {
     private Bitmap DecodeImage(String encodedImage){
         byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+    }
+
+    private void ListCreate(){
+
+        database.collection("users")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for(DocumentSnapshot document : task.getResult()){
+                                if(document.getId().equals(id)) continue;
+                                if(document.getData().get("type").toString().equals(type)) continue;
+                                if(favoriteList.contains(document.getId())) continue;
+
+                                User user = new User();
+                                user.name = document.getData().get("name").toString();
+                                user.major = document.getData().get("major").toString();
+                                user.email = document.getId();
+                                encodedImage = document.getData().get("image").toString();
+                                user.bitmap = DecodeImage(encodedImage);
+                                user.introduction = document.getData().get("introduction").toString();
+
+                                List<Integer> field = new ArrayList<>();
+
+                                for(int i=0; i<7; i++){
+                                    if(((document.getData().get(Integer.toString(i))).toString()).equals("o")){
+                                        field.add(i);
+                                    }
+                                }
+                                user.field = field;
+
+                                userArrayList.add(user);
+                                listAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    }
+                });
+        /*
+
+        database.collection("users")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        for (QueryDocumentSnapshot document : value) {
+                            if(document.getId().equals(id)) continue;
+                            if(document.getData().get("type").toString().equals(type)) continue;
+                            if(favoriteList.contains(document.getId())) continue;
+                            User user = new User();
+                            user.name = document.getData().get("name").toString();
+                            user.major = document.getData().get("major").toString();
+                            user.email = document.getId();
+                            encodedImage = document.getData().get("image").toString();
+                            user.bitmap = DecodeImage(encodedImage);
+                            user.introduction = document.getData().get("introduction").toString();
+
+                            List<Integer> field = new ArrayList<>();
+
+                            for(int i=0; i<7; i++){
+                                if(((document.getData().get(Integer.toString(i))).toString()).equals("o")){
+                                    field.add(i);
+                                }
+                            }
+                            user.field = field;
+
+
+                            userArrayList.add(user);
+                            listAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
+
+         */
+    }
+
+    private void FavoriteCreate(){
+
+        database.collection("users").document(id).collection("favorite")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                        userMarkList.clear();
+                        favoriteList.clear();
+                        userArrayList.clear();
+                        for (QueryDocumentSnapshot document : value) {
+                            if((""+document.getData()).equals("null")) continue;
+                            else if((""+document.getData().get("mark")).equals("1")){
+                                User user = new User();
+                                user.name = document.getData().get("name").toString();
+                                user.major = document.getData().get("major").toString();
+                                user.email = document.getId();
+                                encodedImage = document.getData().get("image").toString();
+                                user.bitmap = DecodeImage(encodedImage);
+                                user.introduction = document.getData().get("introduction").toString();
+
+                                List<Integer> field = new ArrayList<>();
+
+                                for(int i=0; i<7; i++){
+                                    if(((document.getData().get(Integer.toString(i))).toString()).equals("o")){
+                                        field.add(i);
+                                    }
+                                }
+                                user.field = field;
+
+                                userMarkList.add(user);
+                                userArrayList.add(user);
+                                favoriteList.add(user.email);
+                                listAdapter.notifyDataSetChanged();
+                                listAdapter2.notifyDataSetChanged();
+                            }
+                        }
+
+                        ListCreate();
+                    }
+                });
+
     }
 
     @Override

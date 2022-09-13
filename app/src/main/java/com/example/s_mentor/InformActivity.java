@@ -404,6 +404,23 @@ public class InformActivity extends AppCompatActivity {
                             alertDialog.show();
                         }
                         else if(which == 9){
+                            String a[] = {"소프트웨어학과", "글로벌융합학부", "돌아가기"};
+
+                            AlertDialog.Builder setting = new AlertDialog.Builder(InformActivity.this)
+                                    .setItems(a, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if(which == 0) major = a[0];
+                                            else if(which == 1) major = a[1];
+                                            else SelectMajor();
+                                            inform_major.setText(major);
+                                        }
+                                    });
+
+                            AlertDialog alertDialog = setting.create();
+                            alertDialog.show();
+                        }
+                        else if(which == 10){
                             String a[] = {"화학공학/고분자공학부", "신소재공학부", "기계공학부", "건설환경공학부",
                             "시스템경영공학과", "건축학과", "나노공학과", "돌아가기"};
 
@@ -426,7 +443,7 @@ public class InformActivity extends AppCompatActivity {
                             AlertDialog alertDialog = setting.create();
                             alertDialog.show();
                         }
-                        else if(which == 10){
+                        else if(which == 11){
                             String a[] = {"약학과", "돌아가기"};
 
                             AlertDialog.Builder setting = new AlertDialog.Builder(InformActivity.this)
@@ -442,7 +459,7 @@ public class InformActivity extends AppCompatActivity {
                             AlertDialog alertDialog = setting.create();
                             alertDialog.show();
                         }
-                        else if(which == 11){
+                        else if(which == 12){
                             String a[] = {"식품생명공학과", "바이오메카트로닉스학과", "융합생명공학과", "돌아가기"};
 
                             AlertDialog.Builder setting = new AlertDialog.Builder(InformActivity.this)
@@ -460,7 +477,7 @@ public class InformActivity extends AppCompatActivity {
                             AlertDialog alertDialog = setting.create();
                             alertDialog.show();
                         }
-                        else if(which == 12){
+                        else if(which == 13){
                             String a[] = {"스포츠과학과", "돌아가기"};
 
                             AlertDialog.Builder setting = new AlertDialog.Builder(InformActivity.this)
@@ -476,7 +493,7 @@ public class InformActivity extends AppCompatActivity {
                             AlertDialog alertDialog = setting.create();
                             alertDialog.show();
                         }
-                        else if(which == 13){
+                        else if(which == 14){
                             String a[] = {"의학과", "돌아가기"};
 
                             AlertDialog.Builder setting = new AlertDialog.Builder(InformActivity.this)
@@ -492,7 +509,7 @@ public class InformActivity extends AppCompatActivity {
                             AlertDialog alertDialog = setting.create();
                             alertDialog.show();
                         }
-                        else if(which == 14){
+                        else if(which == 15){
                             String a[] = {"글로벌바이오메디컬공학과", "돌아가기"};
 
                             AlertDialog.Builder setting = new AlertDialog.Builder(InformActivity.this)

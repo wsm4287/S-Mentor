@@ -22,6 +22,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,7 +37,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.lang.ref.Reference;
@@ -195,7 +198,23 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
 
 */
 
+        collection.document(user.getEmail())
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if((""+value.getData()).equals("null")){
+                            holder.favoriteView.setBackground(drawable2);
+                            return;
+                        }
+                        else if((""+value.getData().get("mark")).equals("1")){
+                            holder.favoriteView.setBackground(drawable);
+                            return;
+                        }
 
+                    }
+                });
+
+/*
         collection.document(user.getEmail()).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -212,6 +231,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
                     }
                 });
 
+ */
+
         holder.favoriteView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -223,17 +244,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
                                     HashMap<String, Object> mark = new HashMap<>();
                                     if(holder.favoriteView.getBackground().equals(drawable)){
                                         collection.document(user.getEmail()).delete();
-                                        mark.put("mark", 0);
                                         holder.favoriteView.setBackground(drawable2);
-                                        collection.document(user.getEmail()).set(mark);
                                     }
                                     else{
                                         database.collection("users").document(user.getEmail())
                                                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                             @Override
                                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                Toast.makeText(context, task.getResult().getData().get("name").toString(),Toast.LENGTH_SHORT).show();
-
                                                 name = task.getResult().getData().get("name").toString();
                                                 major = task.getResult().getData().get("major").toString();
                                                 encodedImage = task.getResult().getData().get("image").toString();
