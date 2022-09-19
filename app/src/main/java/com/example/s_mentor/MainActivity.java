@@ -118,8 +118,11 @@ public class MainActivity extends AppCompatActivity {
                                             autoLoginEditor.commit();
                                         }
 
+                                        updateToken();
                                         Intent in = new Intent(MainActivity.this, HomeActivity.class);
                                         in.putExtra("email", id);
+                                        in.putExtra("type", type);
+                                        in.putExtra("name", name);
                                         startActivity(in);
                                     }
                                     else{

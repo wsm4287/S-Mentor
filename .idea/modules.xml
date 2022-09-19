@@ -4,6 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/S-Mentor.iml" filepath="$PROJECT_DIR$/.idea/modules/S-Mentor.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/S-Mentor.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/S-Mentor.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/S-Mentor.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/S-Mentor.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/S-Mentor.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/S-Mentor.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/S-Mentor.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/S-Mentor.app.unitTest.iml" />
     </modules>
   </component>
 </project>
