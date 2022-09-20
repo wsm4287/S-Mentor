@@ -4,4 +4,7 @@
     <string name="title_chat">RecentChat</string>
     <string name="title_list">List</string>
     <string name="title_mentoring">Mentoring</string>
+    <string name="major">전공</string>
+    <string name="field">분야</string>
+    <string name="search">검색</string>
 </resources>

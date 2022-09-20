@@ -50,7 +50,7 @@ import java.util.ResourceBundle;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder> implements OnItemClickListener {
 
-    private final ArrayList<User> mDataSet;
+    private ArrayList<User> mDataSet;
     OnItemClickListener userListener;
     FirebaseFirestore database;
     String id, encodedImage, type, name, major, phone, introduction, token, mentoring;
@@ -146,58 +146,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
         holder.imageView.setImageBitmap(user.getBitmap());
 
 
- /*       collection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()) {
-                    for (DocumentSnapshot documentSnapshot : task.getResult()) {
-                        if((""+documentSnapshot.getData().get(user.getEmail())).equals("1")){
-                            holder.favoriteView.setBackground(drawable);
-                        }
-                    }
-                }
-            }
-        });
-
-        holder.favoriteView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                collection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            for(DocumentSnapshot documentSnapshot : task.getResult()){
-
-                                if((""+documentSnapshot.getData().get(user.getEmail())).equals("1")){
-                                    documentSnapshot.getReference().delete();
-                                }
-                                else{
-
-                                    documentSnapshot.getReference().delete();
-                                }
-                            }
-                            HashMap<String, Integer> mark = new HashMap<>();
-                            if(holder.favoriteView.getBackground().equals(drawable)){
-                                holder.favoriteView.setBackground(drawable2);
-                                mark.put(user.getEmail(), 0);
-                                collection.add(mark);
-                            }
-                            else{
-                                holder.favoriteView.setBackground(drawable);
-                                mark.put(user.getEmail(), 1);
-                                collection.add(mark);
-                            }
-
-
-                        }
-
-                    }
-                });
-            }
-        });
-
-*/
-
         collection.document(user.getEmail())
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
@@ -213,25 +161,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
 
                     }
                 });
-
-/*
-        collection.document(user.getEmail()).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if((""+documentSnapshot.getData()).equals("null")){
-                            holder.favoriteView.setBackground(drawable2);
-                            return;
-                        }
-
-                        else if((""+documentSnapshot.getData().get("mark")).equals("1")){
-                            holder.favoriteView.setBackground(drawable);
-                            return;
-                        }
-                    }
-                });
-
- */
 
         holder.favoriteView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -287,8 +216,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
         });
 
 
-
-
         int count = user.getField().size();
 
         String[] x = new String[count];
@@ -309,9 +236,18 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
             return mDataSet.size();
         }
 
+
     public User getUser(int position){
         return mDataSet.get(position);
     }
 
+    public void filterList(ArrayList<User> filterList){
+        mDataSet = filterList;
+        notifyDataSetChanged();
+    }
+
+    public ArrayList<User> getList(){
+        return mDataSet;
+    }
 
 }

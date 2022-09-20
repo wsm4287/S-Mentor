@@ -230,7 +230,10 @@ public class InformActivity extends AppCompatActivity {
                                     .setItems(a, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            if(which == 0) major = a[0];
+                                            if(which == 0){
+                                                major = a[0];
+                                                return;
+                                            }
                                             else SelectMajor();
                                             inform_major.setText(major);
                                         }
@@ -247,16 +250,46 @@ public class InformActivity extends AppCompatActivity {
                                     .setItems(a, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            if(which == 0) major = a[0];
-                                            else if(which == 1) major = a[1];
-                                            else if(which == 2) major = a[2];
-                                            else if(which == 3) major = a[3];
-                                            else if(which == 4) major = a[4];
-                                            else if(which == 5) major = a[5];
-                                            else if(which == 6) major = a[6];
-                                            else if(which == 7) major = a[7];
-                                            else if(which == 8) major = a[8];
-                                            else if(which == 9) major = a[9];
+                                            if(which == 0){
+                                                major = a[0];
+                                                return;
+                                            }
+                                            else if(which == 1){
+                                                major = a[1];
+                                                return;
+                                            }
+                                            else if(which == 2){
+                                                major = a[2];
+                                                return;
+                                            }
+                                            else if(which == 3){
+                                                major = a[3];
+                                                return;
+                                            }
+                                            else if(which == 4){
+                                                major = a[4];
+                                                return;
+                                            }
+                                            else if(which == 5){
+                                                major = a[5];
+                                                return;
+                                            }
+                                            else if(which == 6){
+                                                major = a[6];
+                                                return;
+                                            }
+                                            else if(which == 7){
+                                                major = a[7];
+                                                return;
+                                            }
+                                            else if(which == 8){
+                                                major = a[8];
+                                                return;
+                                            }
+                                            else if(which == 9){
+                                                major = a[9];
+                                                return;
+                                            }
                                             else SelectMajor();
                                             inform_major.setText(major);
                                         }
@@ -273,15 +306,42 @@ public class InformActivity extends AppCompatActivity {
                                     .setItems(a, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            if(which == 0) major = a[0];
-                                            else if(which == 1) major = a[1];
-                                            else if(which == 2) major = a[2];
-                                            else if(which == 3) major = a[3];
-                                            else if(which == 4) major = a[4];
-                                            else if(which == 5) major = a[5];
-                                            else if(which == 6) major = a[6];
-                                            else if(which == 7) major = a[7];
-                                            else if(which == 8) major = a[8];
+                                            if(which == 0){
+                                                major = a[0];
+                                                return;
+                                            }
+                                            else if(which == 1){
+                                                major = a[1];
+                                                return;
+                                            }
+                                            else if(which == 2){
+                                                major = a[2];
+                                                return;
+                                            }
+                                            else if(which == 3){
+                                                major = a[3];
+                                                return;
+                                            }
+                                            else if(which == 4){
+                                                major = a[4];
+                                                return;
+                                            }
+                                            else if(which == 5){
+                                                major = a[5];
+                                                return;
+                                            }
+                                            else if(which == 6){
+                                                major = a[6];
+                                                return;
+                                            }
+                                            else if(which == 7){
+                                                major = a[7];
+                                                return;
+                                            }
+                                            else if(which == 8){
+                                                major = a[8];
+                                                return;
+                                            }
                                             else SelectMajor();
                                             inform_major.setText(major);
                                         }
@@ -297,9 +357,18 @@ public class InformActivity extends AppCompatActivity {
                                     .setItems(a, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            if(which == 0) major = a[0];
-                                            else if(which == 1) major = a[1];
-                                            else if(which == 2) major = a[2];
+                                            if(which == 0){
+                                                major = a[0];
+                                                return;
+                                            }
+                                            else if(which == 1){
+                                                major = a[1];
+                                                return;
+                                            }
+                                            else if(which == 2){
+                                                major = a[2];
+                                                return;
+                                            }
                                             else SelectMajor();
                                             inform_major.setText(major);
                                         }
@@ -315,8 +384,14 @@ public class InformActivity extends AppCompatActivity {
                                     .setItems(a, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            if(which == 0) major = a[0];
-                                            else if(which == 1) major = a[1];
+                                            if(which == 0){
+                                                major = a[0];
+                                                return;
+                                            }
+                                            else if(which == 1){
+                                                major = a[1];
+                                                return;
+                                            }
                                             else SelectMajor();
                                             inform_major.setText(major);
                                         }
@@ -332,10 +407,22 @@ public class InformActivity extends AppCompatActivity {
                                     .setItems(a, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            if(which == 0) major = a[0];
-                                            else if(which == 1) major = a[1];
-                                            else if(which == 2) major = a[2];
-                                            else if(which == 3) major = a[3];
+                                            if(which == 0){
+                                                major = a[0];
+                                                return;
+                                            }
+                                            else if(which == 1){
+                                                major = a[1];
+                                                return;
+                                            }
+                                            else if(which == 2){
+                                                major = a[2];
+                                                return;
+                                            }
+                                            else if(which == 3){
+                                                major = a[3];
+                                                return;
+                                            }
                                             else SelectMajor();
                                             inform_major.setText(major);
                                         }
@@ -352,12 +439,30 @@ public class InformActivity extends AppCompatActivity {
                                     .setItems(a, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            if(which == 0) major = a[0];
-                                            else if(which == 1) major = a[1];
-                                            else if(which == 2) major = a[2];
-                                            else if(which == 3) major = a[3];
-                                            else if(which == 4) major = a[4];
-                                            else if(which == 5) major = a[5];
+                                            if(which == 0){
+                                                major = a[0];
+                                                return;
+                                            }
+                                            else if(which == 1){
+                                                major = a[1];
+                                                return;
+                                            }
+                                            else if(which == 2){
+                                                major = a[2];
+                                                return;
+                                            }
+                                            else if(which == 3){
+                                                major = a[3];
+                                                return;
+                                            }
+                                            else if(which == 4){
+                                                major = a[4];
+                                                return;
+                                            }
+                                            else if(which == 5){
+                                                major = a[5];
+                                                return;
+                                            }
                                             else SelectMajor();
                                             inform_major.setText(major);
                                         }
@@ -373,10 +478,22 @@ public class InformActivity extends AppCompatActivity {
                                     .setItems(a, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            if(which == 0) major = a[0];
-                                            else if(which == 1) major = a[1];
-                                            else if(which == 2) major = a[2];
-                                            else if(which == 3) major = a[3];
+                                            if(which == 0){
+                                                major = a[0];
+                                                return;
+                                            }
+                                            else if(which == 1){
+                                                major = a[1];
+                                                return;
+                                            }
+                                            else if(which == 2){
+                                                major = a[2];
+                                                return;
+                                            }
+                                            else if(which == 3){
+                                                major = a[3];
+                                                return;
+                                            }
                                             else SelectMajor();
                                             inform_major.setText(major);
                                         }
@@ -392,9 +509,18 @@ public class InformActivity extends AppCompatActivity {
                                     .setItems(a, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            if(which == 0) major = a[0];
-                                            else if(which == 1) major = a[1];
-                                            else if(which == 2) major = a[2];
+                                            if(which == 0){
+                                                major = a[0];
+                                                return;
+                                            }
+                                            else if(which == 1){
+                                                major = a[1];
+                                                return;
+                                            }
+                                            else if(which == 2){
+                                                major = a[2];
+                                                return;
+                                            }
                                             else SelectMajor();
                                             inform_major.setText(major);
                                         }
@@ -410,8 +536,14 @@ public class InformActivity extends AppCompatActivity {
                                     .setItems(a, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            if(which == 0) major = a[0];
-                                            else if(which == 1) major = a[1];
+                                            if(which == 0){
+                                                major = a[0];
+                                                return;
+                                            }
+                                            else if(which == 1){
+                                                major = a[1];
+                                                return;
+                                            }
                                             else SelectMajor();
                                             inform_major.setText(major);
                                         }
@@ -428,13 +560,34 @@ public class InformActivity extends AppCompatActivity {
                                     .setItems(a, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            if(which == 0) major = a[0];
-                                            else if(which == 1) major = a[1];
-                                            else if(which == 2) major = a[2];
-                                            else if(which == 3) major = a[3];
-                                            else if(which == 4) major = a[4];
-                                            else if(which == 5) major = a[5];
-                                            else if(which == 6) major = a[6];
+                                            if(which == 0){
+                                                major = a[0];
+                                                return;
+                                            }
+                                            else if(which == 1){
+                                                major = a[1];
+                                                return;
+                                            }
+                                            else if(which == 2){
+                                                major = a[2];
+                                                return;
+                                            }
+                                            else if(which == 3){
+                                                major = a[3];
+                                                return;
+                                            }
+                                            else if(which == 4){
+                                                major = a[4];
+                                                return;
+                                            }
+                                            else if(which == 5){
+                                                major = a[5];
+                                                return;
+                                            }
+                                            else if(which == 6){
+                                                major = a[6];
+                                                return;
+                                            }
                                             else SelectMajor();
                                             inform_major.setText(major);
                                         }
@@ -450,7 +603,10 @@ public class InformActivity extends AppCompatActivity {
                                     .setItems(a, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            if(which == 0) major = a[0];
+                                            if(which == 0){
+                                                major = a[0];
+                                                return;
+                                            }
                                             else SelectMajor();
                                             inform_major.setText(major);
                                         }
@@ -466,9 +622,18 @@ public class InformActivity extends AppCompatActivity {
                                     .setItems(a, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            if(which == 0) major = a[0];
-                                            else if(which == 1) major = a[1];
-                                            else if(which == 2) major = a[2];
+                                            if(which == 0){
+                                                major = a[0];
+                                                return;
+                                            }
+                                            else if(which == 1){
+                                                major = a[1];
+                                                return;
+                                            }
+                                            else if(which == 2){
+                                                major = a[2];
+                                                return;
+                                            }
                                             else SelectMajor();
                                             inform_major.setText(major);
                                         }
@@ -484,7 +649,10 @@ public class InformActivity extends AppCompatActivity {
                                     .setItems(a, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            if(which == 0) major = a[0];
+                                            if(which == 0){
+                                                major = a[0];
+                                                return;
+                                            }
                                             else SelectMajor();
                                             inform_major.setText(major);
                                         }
@@ -500,7 +668,10 @@ public class InformActivity extends AppCompatActivity {
                                     .setItems(a, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            if(which == 0) major = a[0];
+                                            if(which == 0){
+                                                major = a[0];
+                                                return;
+                                            }
                                             else SelectMajor();
                                             inform_major.setText(major);
                                         }
@@ -516,7 +687,10 @@ public class InformActivity extends AppCompatActivity {
                                     .setItems(a, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            if(which == 0) major = a[0];
+                                            if(which == 0){
+                                                major = a[0];
+                                                return;
+                                            }
                                             else SelectMajor();
                                             inform_major.setText(major);
                                         }
