@@ -5,14 +5,23 @@ public class Chat {
     public String text;
     public String email;
     public String type;
-    public String upImage;
+    public String uri;
+    public String fileName;
 
-    public String getUpImage() {
-        return upImage;
+    public String getUri() {
+        return uri;
     }
 
-    public void setUpImage(String upImage) {
-        this.upImage = upImage;
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public String getType() {

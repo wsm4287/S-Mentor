@@ -16,13 +16,16 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.text.BoringLayout;
 import android.util.Base64;
 import android.view.View;
@@ -52,6 +55,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -225,8 +229,11 @@ public class ChatActivity extends AppCompatActivity {
                                 chat.text = document.getData().get("text").toString();
                                 chat.email = document.getData().get("email").toString();
                                 chat.type = document.getData().get("type").toString();
-                                if(chat.type.equals("2") || chat.type.equals("3")){
-                                    chat.upImage = document.getData().get("uri").toString();
+                                if(chat.type.equals("0") || chat.type.equals("1")){
+                                }
+                                else{
+                                    chat.uri = document.getData().get("uri").toString();
+                                    chat.fileName = document.getData().get("fileName").toString();
                                 }
                                 chatArrayList.add(chat);
                             }
@@ -250,8 +257,11 @@ public class ChatActivity extends AppCompatActivity {
                             chat.text = document.getData().get("text").toString();
                             chat.email = document.getData().get("email").toString();
                             chat.type = document.getData().get("type").toString();
-                            if(chat.type.equals("2") || chat.type.equals("3")){
-                                chat.upImage = document.getData().get("uri").toString();
+                            if(chat.type.equals("0") || chat.type.equals("1")){
+                            }
+                            else{
+                                chat.uri = document.getData().get("uri").toString();
+                                chat.fileName = document.getData().get("fileName").toString();
                             }
                             chatArrayList.add(chat);
                         }
@@ -392,10 +402,13 @@ public class ChatActivity extends AppCompatActivity {
 
     private void uploadImage(Uri imageUri) {
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_DD_HH_mm_ss", Locale.CANADA);
-        Date now = new Date();
-        String fileName = format.format(now);
+        String fileName = getFileName(imageUri);
         StorageReference storageReference = storage.getReference();
+
+        if(fileName == null){
+            Toast.makeText(this,"파일 전송에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         Bitmap bitmap = null;
         try {
@@ -419,15 +432,6 @@ public class ChatActivity extends AppCompatActivity {
                         while(!uriTask.isSuccessful());
                         String downloadUri = uriTask.getResult().toString();
 
-                        if(uriTask.isSuccessful()){
-                            HashMap<String, Object> image = new HashMap<>();
-                            image.put("sender", id);
-                            image.put("receiver", id2);
-                            image.put("uri", downloadUri);
-                            image.put("isSeen", "false");
-
-                            database.collection("image").add(image);
-                        }
                         Calendar c = Calendar.getInstance();
                         TimeZone tz;
                         tz = TimeZone.getTimeZone("Asia/Seoul");
@@ -441,6 +445,7 @@ public class ChatActivity extends AppCompatActivity {
                         message.put("text", "사진");
                         message.put("uri", downloadUri);
                         message.put("email", id);
+                        message.put("fileName", fileName);
                         message.put("type", 2);
 
                         database.collection("message").document(id).collection(id2)
@@ -492,12 +497,19 @@ public class ChatActivity extends AppCompatActivity {
 
     private void uploadFile(Uri FileUri){
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_DD_HH_mm_ss", Locale.CANADA);
-        Date now = new Date();
-        String fileName = format.format(now);
+        //SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_DD_HH_mm_ss", Locale.CANADA);
+        //Date now = new Date();
+        //String fileName = format.format(now);
+
+        String fileName = getFileName(FileUri);
         StorageReference storageReference = storage.getReference();
 
         progressBar.setVisibility(View.VISIBLE);
+
+        if(fileName == null){
+            Toast.makeText(this,"파일 전송에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         storageReference.child(id).child(fileName).putFile(FileUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -506,7 +518,9 @@ public class ChatActivity extends AppCompatActivity {
                         storageReference.child(id).child(fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                String url = uri.toString();
+                                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                                while(!uriTask.isSuccessful());
+                                String downloadUri = uriTask.getResult().toString();
 
                                 Calendar c = Calendar.getInstance();
                                 TimeZone tz;
@@ -518,14 +532,17 @@ public class ChatActivity extends AppCompatActivity {
 
                                 Map<String, Object> message = new HashMap<>();
                                 message.put("time", datetime);
-                                message.put("text", name + "님이 파일을 전송하였습니다.");
+                                message.put("text", "파일을 전송하였습니다.");
+                                message.put("uri", downloadUri);
                                 message.put("email", id);
-                                message.put("type", 2);
+                                message.put("fileName", fileName);
+                                message.put("type", 4);
 
                                 database.collection("message").document(id).collection(id2)
                                         .add(message);
 
-                                message.replace("type", 3);
+                                message.replace("type", 5);
+                                message.replace("text", name + "님이 파일을 전송하였습니다.");
 
                                 database.collection("message").document(id2).collection(id)
                                         .add(message);
@@ -566,6 +583,30 @@ public class ChatActivity extends AppCompatActivity {
                 });
     }
 
+    private String getFileName(Uri uri){
+        String name = null;
+        if(uri.getScheme().equals("content")){
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            try {
+                if(cursor != null && cursor.moveToFirst()){
+                    int c = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                    if(c>=0) name = cursor.getString(c);
+                }
+            } finally {
+                cursor.close();
+            }
+            if(name == null){
+                name = uri.getPath();
+                int last = name.lastIndexOf("/");
+                return name.substring(last+1);
+
+            }
+            else{
+                return name;
+            }
+        }
+        return null;
+    }
 
 
     private Bitmap DecodeImage(String encodedImage){
