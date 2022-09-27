@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="S-멘토"
+        android:text="@string/S_Mentor"
         android:textSize="30sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -25,8 +25,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/mainId"
-        android:hint="이메일"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
+        android:importantForAutofill="no"
         />
 
     <EditText
@@ -37,8 +38,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/mainPs"
-        android:hint="비밀번호"
+        android:hint="@string/password"
         android:inputType="textPassword"
+        android:importantForAutofill="no"
         />
 
     <CheckBox
@@ -49,7 +51,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/autoLogin"
-        android:text="자동 로그인"
+        android:text="@string/autoLogin"
+        android:importantForAutofill="no"
         />
 
     <Button
@@ -60,7 +63,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/btLogin"
-        android:text="Login"
+        android:text="@string/login"
+        android:importantForAutofill="no"
         />
 
     <Button
@@ -71,7 +75,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/btReg"
-        android:text="회원가입"
+        android:text="@string/signUp"
+        android:importantForAutofill="no"
         />
 
 

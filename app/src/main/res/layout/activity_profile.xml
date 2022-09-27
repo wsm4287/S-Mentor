@@ -15,7 +15,7 @@
         android:layout_marginEnd="8dp"
         android:textAlignment="center"
         android:textSize="30sp"
-        android:text="프로필"
+        android:text="@string/name_profile"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +30,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:background="#eeeeee"
-        />
+        android:contentDescription="@string/todo" />
 
     <TextView
         android:id="@+id/profile_name"
@@ -40,7 +40,7 @@
         android:layout_marginTop="10dp"
         android:textSize="20sp"
         android:textColor="@color/teal_200"
-        android:text="이름"
+        android:text="@string/name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_photo"
         />
@@ -65,7 +65,7 @@
         android:layout_marginStart="80dp"
         android:layout_marginTop="10dp"
         android:textSize="20sp"
-        android:text="전공"
+        android:text="@string/major"
         android:textColor="@color/teal_200"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_name"/>
@@ -89,7 +89,7 @@
         android:layout_marginStart="80dp"
         android:layout_marginTop="10dp"
         android:textSize="20sp"
-        android:text="핸드폰 번호"
+        android:text="@string/phone"
         android:textColor="@color/teal_200"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_major"/>
@@ -112,7 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:textSize="20sp"
-        android:text="멘토"
+        android:text="@string/mentor"
         android:textColor="@color/teal_200"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -125,7 +125,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:textSize="20sp"
-        android:text="자기소개"
+        android:text="@string/introduction"
         android:textColor="@color/teal_200"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -140,8 +140,10 @@
         android:layout_marginEnd="10dp"
         android:textSize="14sp"
         android:text=""
+        android:hint="@string/introduction"
         app:layout_constraintTop_toBottomOf="@+id/profile_intro"
-        />
+        android:importantForAutofill="no"
+        android:inputType="text" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -168,7 +170,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="30dp"
-        android:text="정보 수정"
+        android:text="@string/correction"
         />
 
 

@@ -1,4 +1,4 @@
-package com.example.s_mentor.ui.recentchat;
+package com.example.s_mentor.ui.recentChat;
 
 import android.graphics.Bitmap;
 
@@ -28,15 +28,8 @@ public class RecentChat {
         return bitmap;
     }
 
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
-    }
-
     public String getLastText() {
         return lastText;
     }
 
-    public void setLastText(String lastText) {
-        this.lastText = lastText;
-    }
 }

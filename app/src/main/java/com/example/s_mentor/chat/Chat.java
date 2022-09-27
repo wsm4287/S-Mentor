@@ -12,16 +12,9 @@ public class Chat {
         return uri;
     }
 
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
 
     public String getFileName() {
         return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
     }
 
     public String getType() {
@@ -42,10 +35,6 @@ public class Chat {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public void setDatetime(String datetime) {
-        this.datetime = datetime;
     }
 
     public String getText() {

@@ -2,51 +2,27 @@ package com.example.s_mentor.ui.list;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.s_mentor.HomeActivity;
-import com.example.s_mentor.InformActivity;
-import com.example.s_mentor.MainActivity;
 import com.example.s_mentor.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.lang.ref.Reference;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.Objects;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder> implements OnItemClickListener {
 
@@ -74,7 +50,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
     }
 
 
-    class UserViewHolder extends RecyclerView.ViewHolder{
+    static class UserViewHolder extends RecyclerView.ViewHolder{
         TextView nameText;
         TextView majorText;
         ImageView imageView;
@@ -90,14 +66,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
             favoriteView = itemView.findViewById(R.id.bookMark);
 
             // Define click listener for the ViewHolder's View
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int pos = getAdapterPosition();
-                    if (pos != RecyclerView.NO_POSITION) {
-                        if (listener != null) {
-                            listener.onItemClick(UserViewHolder.this, v, pos);
-                        }
+            view.setOnClickListener(v -> {
+                int pos = getAdapterPosition();
+                if (pos != RecyclerView.NO_POSITION) {
+                    if (listener != null) {
+                        listener.onItemClick(UserViewHolder.this, v, pos);
                     }
                 }
             });
@@ -109,11 +82,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
         mDataSet = dataSet;
     }
 
-    private Bitmap getUserImage(String encodedImage) {
-        byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-    }
-
+    @NonNull
     @Override
     public UserViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
@@ -132,7 +101,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
         drawable = ContextCompat.getDrawable(context, R.drawable.ic_baseline_star_24);
         drawable2 = ContextCompat.getDrawable(context, R.drawable.ic_baseline_star_border_24);
 
-        return new UserViewHolder(view,this);
+        return new UserViewHolder(view, this);
     }
 
     @Override
@@ -147,73 +116,58 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
 
 
         collection.document(user.getEmail())
-                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if((""+value.getData()).equals("null")){
-                            holder.favoriteView.setBackground(drawable2);
-                            return;
-                        }
-                        else if((""+value.getData().get("mark")).equals("1")){
-                            holder.favoriteView.setBackground(drawable);
-                            return;
-                        }
-
+                .addSnapshotListener((value, error) -> {
+                    assert value != null;
+                    if((""+value.getData()).equals("null")){
+                        holder.favoriteView.setBackground(drawable2);
                     }
+                    else if((""+ Objects.requireNonNull(value.getData()).get("mark")).equals("1")){
+                        holder.favoriteView.setBackground(drawable);
+                    }
+
                 });
 
-        holder.favoriteView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                collection.document(user.getEmail()).get()
-                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if(task.isSuccessful()){
-                                    HashMap<String, Object> mark = new HashMap<>();
-                                    if(holder.favoriteView.getBackground().equals(drawable)){
-                                        collection.document(user.getEmail()).delete();
-                                        holder.favoriteView.setBackground(drawable2);
-                                    }
-                                    else{
-                                        database.collection("users").document(user.getEmail())
-                                                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                name = task.getResult().getData().get("name").toString();
-                                                major = task.getResult().getData().get("major").toString();
-                                                encodedImage = task.getResult().getData().get("image").toString();
-                                                introduction = task.getResult().getData().get("introduction").toString();
-                                                phone = task.getResult().getData().get("phone").toString();
-                                                token = task.getResult().getData().get("token").toString();
-                                                mentoring = task.getResult().getData().get("mentoring").toString();
-                                                type = task.getResult().getData().get("type").toString();
+        holder.favoriteView.setOnClickListener(v -> collection.document(user.getEmail()).get()
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        HashMap<String, Object> mark = new HashMap<>();
+                        if(holder.favoriteView.getBackground().equals(drawable)){
+                            collection.document(user.getEmail()).delete();
+                            holder.favoriteView.setBackground(drawable2);
+                        }
+                        else{
+                            database.collection("users").document(user.getEmail())
+                                    .get().addOnCompleteListener(task1 -> {
+                                        name = Objects.requireNonNull(Objects.requireNonNull(task1.getResult().getData()).get("name")).toString();
+                                        major = Objects.requireNonNull(task1.getResult().getData().get("major")).toString();
+                                        encodedImage = Objects.requireNonNull(task1.getResult().getData().get("image")).toString();
+                                        introduction = Objects.requireNonNull(task1.getResult().getData().get("introduction")).toString();
+                                        phone = Objects.requireNonNull(task1.getResult().getData().get("phone")).toString();
+                                        token = Objects.requireNonNull(task1.getResult().getData().get("token")).toString();
+                                        mentoring = Objects.requireNonNull(task1.getResult().getData().get("mentoring")).toString();
+                                        type = Objects.requireNonNull(task1.getResult().getData().get("type")).toString();
 
-                                                String t;
-                                                for(int i=0; i<7; i++){
-                                                    t = Integer.toString(i);
-                                                    mark.put(t, task.getResult().getData().get(Integer.toString(i)).toString());
-                                                }
-                                                mark.put("name", name);
-                                                mark.put("major", major);
-                                                mark.put("image", encodedImage);
-                                                mark.put("introduction", introduction);
-                                                mark.put("phone", phone);
-                                                mark.put("mentoring", mentoring);
-                                                mark.put("type", type);
-                                                mark.put("mark", 1);
-                                                mark.put("token", token);
-                                                holder.favoriteView.setBackground(drawable);
-                                                collection.document(user.getEmail()).set(mark);
-                                            }
-                                        });
+                                        String t;
+                                        for(int i=0; i<7; i++){
+                                            t = Integer.toString(i);
+                                            mark.put(t, Objects.requireNonNull(task1.getResult().getData().get(Integer.toString(i))).toString());
+                                        }
+                                        mark.put("name", name);
+                                        mark.put("major", major);
+                                        mark.put("image", encodedImage);
+                                        mark.put("introduction", introduction);
+                                        mark.put("phone", phone);
+                                        mark.put("mentoring", mentoring);
+                                        mark.put("type", type);
+                                        mark.put("mark", 1);
+                                        mark.put("token", token);
+                                        holder.favoriteView.setBackground(drawable);
+                                        collection.document(user.getEmail()).set(mark);
+                                    });
 
-                                    }
-                                }
-                            }
-                        });
-            }
-        });
+                        }
+                    }
+                }));
 
 
         int count = user.getField().size();
@@ -224,7 +178,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
             x[i] = items[user.field.get(i)];
         }
 
-        ArrayAdapter adapter = new ArrayAdapter(context, R.layout.field_view, x);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.field_view, x);
 
         holder.gridView.setAdapter(adapter);
 

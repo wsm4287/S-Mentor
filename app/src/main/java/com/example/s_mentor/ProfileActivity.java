@@ -1,10 +1,5 @@
 package com.example.s_mentor;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,7 +8,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.SparseBooleanArray;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,24 +16,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Objects;
 
 public class ProfileActivity extends AppCompatActivity {
     TextView proNm, proMj, proPn, proTp;
@@ -50,15 +37,21 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseFirestore database;
 
     String[] items = {"취업", "면접", "학업", "창업", "석사", "봉사", "동아리"};
-    ArrayAdapter adapter;
+    ArrayAdapter<String> adapter;
     GridView gridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
+        InitProfile();
+        GetProfile();
+        CorrectProfile();
+    }
+
+    private void InitProfile(){
         id = getIntent().getStringExtra("email");
 
         proNm = (TextView) findViewById(R.id.profile_userName);
@@ -70,89 +63,83 @@ public class ProfileActivity extends AppCompatActivity {
         proIn = (EditText) findViewById(R.id.profile_userIntro);
 
 
-        adapter = new ArrayAdapter(this, R.layout.inform_view, items);
+        adapter = new ArrayAdapter<>(this, R.layout.inform_view, items);
 
         gridView = (GridView) findViewById(R.id.profile_list);
         gridView.setAdapter(adapter);
 
         database = FirebaseFirestore.getInstance();
+    }
 
+    private void GetProfile(){
         database.collection("users").document(id)
                 .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        proNm.setText(documentSnapshot.getData().get("name").toString());
-                        proMj.setText(documentSnapshot.getData().get("major").toString());
+                .addOnSuccessListener(documentSnapshot -> {
+                    proNm.setText(Objects.requireNonNull(Objects.requireNonNull(documentSnapshot.getData()).get("name")).toString());
+                    proMj.setText(Objects.requireNonNull(documentSnapshot.getData().get("major")).toString());
 
-                        encodedImage = documentSnapshot.getData().get("image").toString();
-                        proPh.setImageBitmap(DecodeImage(encodedImage));
+                    encodedImage = Objects.requireNonNull(documentSnapshot.getData().get("image")).toString();
+                    proPh.setImageBitmap(DecodeImage(encodedImage));
 
-                        proPn.setText(documentSnapshot.getData().get("phone").toString());
+                    proPn.setText(Objects.requireNonNull(documentSnapshot.getData().get("phone")).toString());
 
-                        introduction = documentSnapshot.getData().get("introduction").toString();
-                        proIn.setText(introduction);
+                    introduction = Objects.requireNonNull(documentSnapshot.getData().get("introduction")).toString();
+                    proIn.setText(introduction);
 
-                        type = documentSnapshot.getData().get("type").toString();
-                        proTp.setText(type);
+                    type = Objects.requireNonNull(documentSnapshot.getData().get("type")).toString();
+                    proTp.setText(type);
 
-                        for(int i=0; i<7; i++){
-                            if(((documentSnapshot.getData().get(Integer.toString(i))).toString()).equals("o")){
-                                gridView.setItemChecked(i,true);
-                            }
+                    for(int i=0; i<7; i++){
+                        if(((Objects.requireNonNull(documentSnapshot.getData().get(Integer.toString(i)))).toString()).equals("o")){
+                            gridView.setItemChecked(i,true);
                         }
-
                     }
+
                 });
-
-
+    }
+    private void CorrectProfile(){
         proPh.setOnClickListener(v -> {
             Intent in = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             in.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
             pickImage.launch(in);
         });
 
-        correct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        correct.setOnClickListener(v -> {
 
-                SparseBooleanArray check = gridView.getCheckedItemPositions();
+            SparseBooleanArray check = gridView.getCheckedItemPositions();
 
-                if(check.size()<1){
-                    Toast.makeText(ProfileActivity.this, "멘토링 분야를 최소한 하나는 선택해주세요.", Toast.LENGTH_SHORT).show();
-                    gridView.setAdapter(adapter);
-                    return;
-                }
-
-                if(check.size()>4){
-                    Toast.makeText(ProfileActivity.this, "멘토링 분야를 너무 많이 선택하셨습니다.", Toast.LENGTH_SHORT).show();
-                    gridView.setAdapter(adapter);
-                    return;
-                }
-
-                introduction = proIn.getText().toString();
-                HashMap<String, Object> user = new HashMap<>();
-                user.put("image", encodedImage);
-                user.put("introduction", introduction);
-
-                for(int i=0; i<7; i++){
-                    if(check.get(i)){
-                        user.put(Integer.toString(i),"o");
-                    }
-                    else{
-                        user.put(Integer.toString(i),"x");
-                    }
-                }
-
-                database.collection("users").document(id)
-                        .update(user);
-                Toast.makeText(ProfileActivity.this, "개인정보 변경이 완료되었습니다.",
-                        Toast.LENGTH_SHORT).show();
-
+            if(check.size()<1){
+                Toast.makeText(ProfileActivity.this, "멘토링 분야를 최소한 하나는 선택해주세요.", Toast.LENGTH_SHORT).show();
+                gridView.setAdapter(adapter);
+                return;
             }
+
+            if(check.size()>4){
+                Toast.makeText(ProfileActivity.this, "멘토링 분야를 너무 많이 선택하셨습니다.", Toast.LENGTH_SHORT).show();
+                gridView.setAdapter(adapter);
+                return;
+            }
+
+            introduction = proIn.getText().toString();
+            HashMap<String, Object> user = new HashMap<>();
+            user.put("image", encodedImage);
+            user.put("introduction", introduction);
+
+            for(int i=0; i<7; i++){
+                if(check.get(i)){
+                    user.put(Integer.toString(i),"o");
+                }
+                else{
+                    user.put(Integer.toString(i),"x");
+                }
+            }
+
+            database.collection("users").document(id)
+                    .update(user);
+            Toast.makeText(ProfileActivity.this, "개인정보 변경이 완료되었습니다.",
+                    Toast.LENGTH_SHORT).show();
+
         });
-
-
     }
 
     private Bitmap DecodeImage(String encodedImage){

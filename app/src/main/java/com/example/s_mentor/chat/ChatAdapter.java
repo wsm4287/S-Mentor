@@ -140,7 +140,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         }
         else if(getItemViewType(position) == 4){
             String fileName = message.get(position).getFileName();
-            String uri = message.get(position).getUri();
 
             holder.rightImage.setVisibility(View.GONE);
             holder.rightFrame.setVisibility(View.VISIBLE);

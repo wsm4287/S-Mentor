@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="회원가입"
+        android:text="@string/signUp"
         android:textSize="30sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -25,8 +25,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/regNm"
-        android:hint="이름"
+        android:hint="@string/name"
         android:textSize="14sp"
+        android:inputType="text"
+        android:importantForAutofill="no"
         />
 
     <EditText
@@ -37,9 +39,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/regId"
-        android:hint="이메일 주소"
+        android:hint="@string/email"
         android:textSize="14sp"
         android:inputType="textEmailAddress"
+
+        android:importantForAutofill="no"
         />
 
     <EditText
@@ -50,9 +54,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/regPs"
-        android:hint="비밀번호"
+        android:hint="@string/password"
         android:textSize="14sp"
         android:inputType="textPassword"
+        android:importantForAutofill="no"
         />
 
     <EditText
@@ -63,9 +68,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/regPs2"
-        android:hint="비밀번호 확인"
+        android:hint="@string/passwordCheck"
         android:textSize="14sp"
         android:inputType="textPassword"
+        android:importantForAutofill="no"
         />
 
 
@@ -78,10 +84,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/regPn"
-        android:hint="핸드폰 번호(010********)"
+        android:hint="@string/phone"
         android:maxLength="11"
         android:inputType="number"
         android:textSize="14sp"
+        android:importantForAutofill="no"
         />
 
     <TextView
@@ -91,8 +98,9 @@
         android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="성균관대 학생임을 인증함으로 반드시 성균관대 학교 이메일로 가입해주세요!"
+        android:text="@string/warning"
         android:textSize="20sp"
+        android:importantForAutofill="no"
         />
 
 

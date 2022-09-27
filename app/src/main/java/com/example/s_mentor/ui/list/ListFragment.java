@@ -1,7 +1,6 @@
 package com.example.s_mentor.ui.list;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,29 +19,24 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.s_mentor.chat.ChatActivity;
 import com.example.s_mentor.MainActivity;
 import com.example.s_mentor.ProfileActivity;
 import com.example.s_mentor.R;
+import com.example.s_mentor.chat.ChatActivity;
 import com.example.s_mentor.databinding.FragmentListBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.EventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class ListFragment extends Fragment {
 
@@ -54,8 +48,6 @@ public class ListFragment extends Fragment {
             "정보통신대학", "소프트웨어융합대학", "공과대학", "약학대학", "생명공학대학", "스포츠과학대학", "의과대학", "성균융합원"};
     Button setting, search;
     String id, id2, type, major, encodedImage;
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
     FirebaseFirestore database = FirebaseFirestore.getInstance();
     ListAdapter listAdapter;
     ArrayList<User> userArrayList, userMarkList, filterList, beforeList;
@@ -72,7 +64,7 @@ public class ListFragment extends Fragment {
 
         binding = FragmentListBinding.inflate(inflater, container, false);
         root = binding.getRoot();
-        StartListFragment();
+        InitUserList();
 
         SelectMajor();
         SelectField();
@@ -93,36 +85,32 @@ public class ListFragment extends Fragment {
 
         database.collection("users")
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            for(DocumentSnapshot document : task.getResult()){
-                                if(document.getId().equals(id)) continue;
-                                if(document.getData().get("type").toString().equals(type)) continue;
-                                if(favoriteList.contains(document.getId())) continue;
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        for(DocumentSnapshot document : task.getResult()){
+                            if(document.getId().equals(id)) continue;
+                            if(Objects.requireNonNull(Objects.requireNonNull(document.getData()).get("type")).toString().equals(type)) continue;
+                            if(favoriteList.contains(document.getId())) continue;
 
-                                User user = new User();
-                                user.name = document.getData().get("name").toString();
-                                user.major = document.getData().get("major").toString();
-                                user.email = document.getId();
-                                encodedImage = document.getData().get("image").toString();
-                                user.bitmap = DecodeImage(encodedImage);
-                                user.introduction = document.getData().get("introduction").toString();
+                            User user = new User();
+                            user.name = Objects.requireNonNull(document.getData().get("name")).toString();
+                            user.major = Objects.requireNonNull(document.getData().get("major")).toString();
+                            user.email = document.getId();
+                            encodedImage = Objects.requireNonNull(document.getData().get("image")).toString();
+                            user.bitmap = DecodeImage(encodedImage);
+                            user.introduction = Objects.requireNonNull(document.getData().get("introduction")).toString();
 
-                                List<Integer> field = new ArrayList<>();
+                            List<Integer> field = new ArrayList<>();
 
-                                for(int i=0; i<7; i++){
-                                    if(((document.getData().get(Integer.toString(i))).toString()).equals("o")){
-                                        field.add(i);
-                                    }
+                            for(int i=0; i<7; i++){
+                                if(((Objects.requireNonNull(document.getData().get(Integer.toString(i)))).toString()).equals("o")){
+                                    field.add(i);
                                 }
-                                user.field = field;
-
-                                userArrayList.add(user);
-                                listAdapter.notifyDataSetChanged();
                             }
+                            user.field = field;
+                            userArrayList.add(user);
                         }
+                        listAdapter.notifyDataSetChanged();
                     }
                 });
     }
@@ -130,123 +118,76 @@ public class ListFragment extends Fragment {
     private void FavoriteCreate(){
 
         database.collection("users").document(id).collection("favorite")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                .addSnapshotListener((value, error) -> {
 
-                        userMarkList.clear();
-                        favoriteList.clear();
-                        userArrayList.clear();
-                        for (QueryDocumentSnapshot document : value) {
-                            if((""+document.getData()).equals("null")) continue;
-                            else if((""+document.getData().get("mark")).equals("1")){
-                                User user = new User();
-                                user.name = document.getData().get("name").toString();
-                                user.major = document.getData().get("major").toString();
-                                user.email = document.getId();
-                                encodedImage = document.getData().get("image").toString();
-                                user.bitmap = DecodeImage(encodedImage);
-                                user.introduction = document.getData().get("introduction").toString();
+                    userMarkList.clear();
+                    favoriteList.clear();
+                    userArrayList.clear();
+                    assert value != null;
+                    for (QueryDocumentSnapshot document : value) {
+                        if((""+document.getData()).equals("null")) continue;
+                        if((""+document.getData().get("mark")).equals("1")){
+                            User user = new User();
+                            user.name = Objects.requireNonNull(document.getData().get("name")).toString();
+                            user.major = Objects.requireNonNull(document.getData().get("major")).toString();
+                            user.email = document.getId();
+                            encodedImage = Objects.requireNonNull(document.getData().get("image")).toString();
+                            user.bitmap = DecodeImage(encodedImage);
+                            user.introduction = Objects.requireNonNull(document.getData().get("introduction")).toString();
 
-                                List<Integer> field = new ArrayList<>();
+                            List<Integer> field = new ArrayList<>();
 
-                                for(int i=0; i<7; i++){
-                                    if(((document.getData().get(Integer.toString(i))).toString()).equals("o")){
-                                        field.add(i);
-                                    }
+                            for(int i=0; i<7; i++){
+                                if(((Objects.requireNonNull(document.getData().get(Integer.toString(i)))).toString()).equals("o")){
+                                    field.add(i);
                                 }
-                                user.field = field;
-
-                                userMarkList.add(user);
-                                userArrayList.add(user);
-                                favoriteList.add(user.email);
-                                listAdapter.notifyDataSetChanged();
                             }
-                        }
+                            user.field = field;
 
-                        ListCreate();
+                            userMarkList.add(user);
+                            userArrayList.add(user);
+                            favoriteList.add(user.email);
+                        }
                     }
+                    listAdapter.notifyDataSetChanged();
+                    ListCreate();
                 });
 
     }
 
     public void SelectUser(){
-        listAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(ListAdapter.UserViewHolder holder, View view, int position) {
-                User u = listAdapter.getUser(position);
-                id2 = u.email;
+        listAdapter.setOnItemClickListener((holder, view, position) -> {
+            User u = listAdapter.getUser(position);
+            id2 = u.email;
 
-                Drawable drawable = new BitmapDrawable(getResources(),u.bitmap);
-                final ImageView iv = new ImageView(getContext());
-                iv.setImageBitmap(u.bitmap);
-                final TextView et = new TextView(getContext());
-                et.setText(u.introduction);
-                AlertDialog.Builder ad = new AlertDialog.Builder(getContext())
-                        .setView(iv)
-                        .setIcon(drawable)
-                        .setTitle(u.name)
-                        .setMessage(id2).setView(et)
-                        .setPositiveButton("종료", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        })
-                        .setNeutralButton("채팅", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent in = new Intent(getActivity(), ChatActivity.class);
-                                in.putExtra("email", id);
-                                in.putExtra("email2", id2);
-                                in.putExtra("type", type);
-                                startActivity(in);
-                            }
-                        });
-                ad.show();
-            }
+            Drawable drawable = new BitmapDrawable(getResources(),u.bitmap);
+            final ImageView iv = new ImageView(getContext());
+            iv.setImageBitmap(u.bitmap);
+            final TextView et = new TextView(getContext());
+            et.setText(u.introduction);
+            AlertDialog.Builder ad = new AlertDialog.Builder(requireContext())
+                    .setView(iv)
+                    .setIcon(drawable)
+                    .setTitle(u.name)
+                    .setMessage(id2).setView(et)
+                    .setPositiveButton("종료", (dialog, which) -> {
+                    })
+                    .setNeutralButton("채팅", (dialog, which) -> {
+                        Intent in = new Intent(getActivity(), ChatActivity.class);
+                        in.putExtra("email", id);
+                        in.putExtra("email2", id2);
+                        in.putExtra("type", type);
+                        startActivity(in);
+                    });
+            ad.show();
         });
 
-/*        listAdapter2.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(ListAdapter.UserViewHolder holder, View view, int position) {
-                User u = listAdapter.getUser(position);
-                id2 = u.email;
-
-                Drawable drawable = new BitmapDrawable(getResources(),u.bitmap);
-                final ImageView iv = new ImageView(getContext());
-                iv.setImageBitmap(u.bitmap);
-                final TextView et = new TextView(getContext());
-                et.setText(u.introduction);
-                AlertDialog.Builder ad = new AlertDialog.Builder(getContext())
-                        .setView(iv)
-                        .setIcon(drawable)
-                        .setTitle(u.name)
-                        .setMessage(id2).setView(et)
-                        .setPositiveButton("종료", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        })
-                        .setNeutralButton("채팅", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent in = new Intent(getActivity(), ChatActivity.class);
-                                in.putExtra("email", id);
-                                in.putExtra("email2", id2);
-                                in.putExtra("type", type);
-                                startActivity(in);
-                            }
-                        });
-                ad.show();
-            }
-        });
-*/
     }
 
-    public void StartListFragment(){
+    public void InitUserList(){
 
-        id = getActivity().getIntent().getStringExtra("email");
-        type = getActivity().getIntent().getStringExtra("type");
+        id = requireActivity().getIntent().getStringExtra("email");
+        type = requireActivity().getIntent().getStringExtra("type");
 
         context = this.getContext();
 
@@ -259,8 +200,11 @@ public class ListFragment extends Fragment {
         search = root.findViewById(R.id.btSearch);
         mark = false;
 
-        if(type.equals("mentor")){
+        if(type.equals("Mentor")){
             listTitle.setText("멘티 목록");
+        }
+        else{
+            listTitle.setText("멘토 목록");
         }
 
         userArrayList = new ArrayList<>();
@@ -268,127 +212,68 @@ public class ListFragment extends Fragment {
         filterList = new ArrayList<>();
         beforeList = new ArrayList<>();
 
-        recyclerView = root.findViewById(R.id.recycler);
+        RecyclerView recyclerView = root.findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
 
-        layoutManager = new LinearLayoutManager(getContext());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
         listAdapter = new ListAdapter(userArrayList);
         recyclerView.setAdapter(listAdapter);
         favoriteList = new ArrayList<>();
 
-        ArrayAdapter<String> majorAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, major_items);
+        ArrayAdapter<String> majorAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, major_items);
         majorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         majorSpinner.setAdapter(majorAdapter);
 
-        ArrayAdapter<String> fieldAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, field_items);
+        ArrayAdapter<String> fieldAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, field_items);
         fieldAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         fieldSpinner.setAdapter(fieldAdapter);
 
 
-        setting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String array[] = {"프로필", "즐겨찾기 목록", "로그아웃"};
+        setting.setOnClickListener(v -> {
+            String[] array = {"프로필", "즐겨찾기 목록", "로그아웃"};
 
-                if(mark == true) array[1] = "전체 목록";
+            if(mark) array[1] = "전체 목록";
 
-                AlertDialog.Builder setting = new AlertDialog.Builder(getContext())
-                        .setItems(array, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if(which == 0){
-                                    Intent in = new Intent(root.getContext(), ProfileActivity.class);
-                                    in.putExtra("email", id);
-                                    startActivity(in);
-                                }
-                                if(which == 1){
-                                    if(mark == false) {
-                                        listAdapter.filterList(userMarkList);
-                                        mark = true;
-                                    }
-                                    else{
-                                        listAdapter.filterList(userArrayList);
-                                        mark = false;
-                                    }
-                                }
-                                if(which == 2){
-                                    HashMap<String, Object> user = new HashMap<>();
-                                    user.put("token", "");
-                                    database.collection("users").document(id)
-                                            .update(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if(task.isSuccessful()){
-                                                        Intent in= new Intent(root.getContext(), MainActivity.class);
-                                                        in.putExtra("Logout", true);
-                                                        startActivity(in);
-                                                    }
-                                                }
-                                            });
-
-                                }
+            AlertDialog.Builder setting = new AlertDialog.Builder(requireContext())
+                    .setItems(array, (dialog, which) -> {
+                        if(which == 0){
+                            Intent in = new Intent(root.getContext(), ProfileActivity.class);
+                            in.putExtra("email", id);
+                            startActivity(in);
+                        }
+                        if(which == 1){
+                            if(!mark) {
+                                listAdapter.filterList(userMarkList);
+                                mark = true;
                             }
-                        });
+                            else{
+                                listAdapter.filterList(userArrayList);
+                                mark = false;
+                            }
+                        }
+                        if(which == 2){
+                            HashMap<String, Object> user = new HashMap<>();
+                            user.put("token", "");
+                            database.collection("users").document(id)
+                                    .update(user).addOnCompleteListener(task -> {
+                                        if(task.isSuccessful()){
+                                            Intent in= new Intent(root.getContext(), MainActivity.class);
+                                            in.putExtra("Logout", true);
+                                            startActivity(in);
+                                        }
+                                    });
 
-                AlertDialog alertDialog = setting.create();
-                alertDialog.show();
-            }
+                        }
+                    });
+
+            AlertDialog alertDialog = setting.create();
+            alertDialog.show();
         });
 
     }
 
-    public void MajorFilter(String s){
-        filterList.clear();
-
-        if(mark == false){
-            for(int i=0; i<userArrayList.size(); i++){
-                if(userArrayList.get(i).getMajor().toLowerCase().contains(s.toLowerCase())){
-                    filterList.add(userArrayList.get(i));
-                }
-            }
-        }
-
-        else{
-            for(int i=0; i<userMarkList.size(); i++){
-                if(userMarkList.get(i).getMajor().toLowerCase().contains(s.toLowerCase())){
-                    filterList.add(userMarkList.get(i));
-                }
-            }
-        }
-        listAdapter.filterList(filterList);
-
-    }
-
-    public void FieldFilter(int t){
-        filterList.clear();
-
-        if(field == 0){
-            if(mark == false) listAdapter.filterList(userArrayList);
-            else listAdapter.filterList(userMarkList);
-            return;
-        }
-
-        if(mark == false){
-            for(int i=0; i<userArrayList.size(); i++){
-                if(userArrayList.get(i).getField().contains(t-1)){
-                    filterList.add(userArrayList.get(i));
-                }
-            }
-        }
-
-        else{
-            for(int i=0; i<userMarkList.size(); i++){
-                if(userMarkList.get(i).getField().contains(t-1)){
-                    filterList.add(userMarkList.get(i));
-                }
-            }
-        }
-
-        listAdapter.filterList(filterList);
-
-    }
 
     public void SelectMajor(){
         majorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -399,244 +284,196 @@ public class ListFragment extends Fragment {
                     return;
                 }
                 if(position == 1){
-                    String a[] = {"유학.동양학과", "돌아가기"};
+                    String[] a = {"유학.동양학과", "돌아가기"};
 
                     AlertDialog.Builder setting = new AlertDialog.Builder(context)
-                            .setItems(a, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if(which>0) return;
-                                    major = a[which];
-                                }
+                            .setItems(a, (dialog, which) -> {
+                                if(which>0) return;
+                                major = a[which];
                             });
 
                     AlertDialog alertDialog = setting.create();
                     alertDialog.show();
                 }
                 else if(position == 2){
-                    String a[] = {"국어국문학과", "영어영문학과", "프랑스어문학과", "중어중문학과", "독어독문학과",
+                    String[] a = {"국어국문학과", "영어영문학과", "프랑스어문학과", "중어중문학과", "독어독문학과",
                             "러시아어문학과", "한문학과", "사학과", "철학과", "문헌정보학과", "돌아가기"};
 
                     AlertDialog.Builder setting = new AlertDialog.Builder(context)
-                            .setItems(a, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if(which>9) return;
-                                    major = a[which];
-                                }
+                            .setItems(a, (dialog, which) -> {
+                                if(which>9) return;
+                                major = a[which];
                             });
 
                     AlertDialog alertDialog = setting.create();
                     alertDialog.show();
                 }
                 else if(position == 3){
-                    String a[] = {"행정학과", "정치외교학과", "미디어커뮤니케이션학과", "사회학과", "사회복지학과",
+                    String[] a = {"행정학과", "정치외교학과", "미디어커뮤니케이션학과", "사회학과", "사회복지학과",
                             "심리학과", "소비자학과", "아동·청소년학과", "글로벌리더학부", "돌아가기"};
 
                     AlertDialog.Builder setting = new AlertDialog.Builder(context)
-                            .setItems(a, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if(which>8) return;
-                                    major = a[which];
-                                }
+                            .setItems(a, (dialog, which) -> {
+                                if(which>8) return;
+                                major = a[which];
                             });
 
                     AlertDialog alertDialog = setting.create();
                     alertDialog.show();
                 }
                 else if(position == 4){
-                    String a[] = {"경제학과", "통계학과", "글로벌경제학과", "돌아가기"};
+                    String[] a = {"경제학과", "통계학과", "글로벌경제학과", "돌아가기"};
 
                     AlertDialog.Builder setting = new AlertDialog.Builder(context)
-                            .setItems(a, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if(which>2) return;
-                                    major = a[which];
-                                }
+                            .setItems(a, (dialog, which) -> {
+                                if(which>2) return;
+                                major = a[which];
                             });
 
                     AlertDialog alertDialog = setting.create();
                     alertDialog.show();
                 }
                 else if(position == 5){
-                    String a[] = {"경영학과", "글로벌경영학과", "돌아가기"};
+                    String[] a = {"경영학과", "글로벌경영학과", "돌아가기"};
 
                     AlertDialog.Builder setting = new AlertDialog.Builder(context)
-                            .setItems(a, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if(which>1) return;
-                                    major = a[which];
-                                }
+                            .setItems(a, (dialog, which) -> {
+                                if(which>1) return;
+                                major = a[which];
                             });
 
                     AlertDialog alertDialog = setting.create();
                     alertDialog.show();
                 }
                 else if(position == 6){
-                    String a[] = {"교육학과", "한문교육과", "수학교육과", "컴퓨터교육과", "돌아가기"};
+                    String[] a = {"교육학과", "한문교육과", "수학교육과", "컴퓨터교육과", "돌아가기"};
 
                     AlertDialog.Builder setting = new AlertDialog.Builder(context)
-                            .setItems(a, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if(which>3) return;
-                                    major = a[which];
-                                }
+                            .setItems(a, (dialog, which) -> {
+                                if(which>3) return;
+                                major = a[which];
                             });
 
                     AlertDialog alertDialog = setting.create();
                     alertDialog.show();
                 }
                 else if(position == 7){
-                    String a[] = {"미술학과", "디자인학과", "무용학과", "영상학과", "연기예술학과",
+                    String[] a = {"미술학과", "디자인학과", "무용학과", "영상학과", "연기예술학과",
                             "의상학과", "돌아가기"};
 
                     AlertDialog.Builder setting = new AlertDialog.Builder(context)
-                            .setItems(a, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if(which>5) return;
-                                    major = a[which];
-                                }
+                            .setItems(a, (dialog, which) -> {
+                                if(which>5) return;
+                                major = a[which];
                             });
 
                     AlertDialog alertDialog = setting.create();
                     alertDialog.show();
                 }
                 else if(position == 8){
-                    String a[] = {"생명과학과", "수학과", "물리학과", "화학과", "돌아가기"};
+                    String[] a = {"생명과학과", "수학과", "물리학과", "화학과", "돌아가기"};
 
                     AlertDialog.Builder setting = new AlertDialog.Builder(context)
-                            .setItems(a, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if(which>3) return;
-                                    major = a[which];
-                                }
+                            .setItems(a, (dialog, which) -> {
+                                if(which>3) return;
+                                major = a[which];
                             });
 
                     AlertDialog alertDialog = setting.create();
                     alertDialog.show();
                 }
                 else if(position == 9){
-                    String a[] = {"전자전기공학부", "반도체시스템공학과", "소재부품융합공학과", "돌아가기"};
+                    String[] a = {"전자전기공학부", "반도체시스템공학과", "소재부품융합공학과", "돌아가기"};
 
                     AlertDialog.Builder setting = new AlertDialog.Builder(context)
-                            .setItems(a, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if(which>2) return;
-                                    major = a[which];
-                                }
+                            .setItems(a, (dialog, which) -> {
+                                if(which>2) return;
+                                major = a[which];
                             });
 
                     AlertDialog alertDialog = setting.create();
                     alertDialog.show();
                 }
                 else if(position == 10){
-                    String a[] = {"소프트웨어학과", "글로벌융합학부", "돌아가기"};
+                    String[] a = {"소프트웨어학과", "글로벌융합학부", "돌아가기"};
 
                     AlertDialog.Builder setting = new AlertDialog.Builder(context)
-                            .setItems(a, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if(which>1) return;
-                                    major = a[which];
-                                }
+                            .setItems(a, (dialog, which) -> {
+                                if(which>1) return;
+                                major = a[which];
                             });
 
                     AlertDialog alertDialog = setting.create();
                     alertDialog.show();
                 }
                 else if(position == 11){
-                    String a[] = {"화학공학/고분자공학부", "신소재공학부", "기계공학부", "건설환경공학부",
+                    String[] a = {"화학공학/고분자공학부", "신소재공학부", "기계공학부", "건설환경공학부",
                             "시스템경영공학과", "건축학과", "나노공학과", "돌아가기"};
 
                     AlertDialog.Builder setting = new AlertDialog.Builder(context)
-                            .setItems(a, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if(which>6) return;
-                                    major = a[which];
-                                }
+                            .setItems(a, (dialog, which) -> {
+                                if(which>6) return;
+                                major = a[which];
                             });
 
                     AlertDialog alertDialog = setting.create();
                     alertDialog.show();
                 }
                 else if(position == 12){
-                    String a[] = {"약학과", "돌아가기"};
+                    String[] a = {"약학과", "돌아가기"};
 
                     AlertDialog.Builder setting = new AlertDialog.Builder(context)
-                            .setItems(a, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if(which>0) return;
-                                    major = a[which];
-                                }
+                            .setItems(a, (dialog, which) -> {
+                                if(which>0) return;
+                                major = a[which];
                             });
 
                     AlertDialog alertDialog = setting.create();
                     alertDialog.show();
                 }
                 else if(position == 13){
-                    String a[] = {"식품생명공학과", "바이오메카트로닉스학과", "융합생명공학과", "돌아가기"};
+                    String[] a = {"식품생명공학과", "바이오메카트로닉스학과", "융합생명공학과", "돌아가기"};
 
                     AlertDialog.Builder setting = new AlertDialog.Builder(context)
-                            .setItems(a, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if(which>2) return;
-                                    major = a[which];
-                                }
+                            .setItems(a, (dialog, which) -> {
+                                if(which>2) return;
+                                major = a[which];
                             });
 
                     AlertDialog alertDialog = setting.create();
                     alertDialog.show();
                 }
                 else if(position == 14){
-                    String a[] = {"스포츠과학과", "돌아가기"};
+                    String[] a = {"스포츠과학과", "돌아가기"};
 
                     AlertDialog.Builder setting = new AlertDialog.Builder(context)
-                            .setItems(a, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if(which>0) return;
-                                    major = a[which];
-                                }
+                            .setItems(a, (dialog, which) -> {
+                                if(which>0) return;
+                                major = a[which];
                             });
 
                     AlertDialog alertDialog = setting.create();
                     alertDialog.show();
                 }
                 else if(position == 15){
-                    String a[] = {"의학과", "돌아가기"};
+                    String[] a = {"의학과", "돌아가기"};
 
                     AlertDialog.Builder setting = new AlertDialog.Builder(context)
-                            .setItems(a, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if(which>0) return;
-                                    major = a[which];
-                                }
+                            .setItems(a, (dialog, which) -> {
+                                if(which>0) return;
+                                major = a[which];
                             });
 
                     AlertDialog alertDialog = setting.create();
                     alertDialog.show();
                 }
                 else if(position == 16){
-                    String a[] = {"글로벌바이오메디컬공학과", "돌아가기"};
+                    String[] a = {"글로벌바이오메디컬공학과", "돌아가기"};
 
                     AlertDialog.Builder setting = new AlertDialog.Builder(context)
-                            .setItems(a, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if(which>0) return;
-                                    major = a[which];
-                                }
+                            .setItems(a, (dialog, which) -> {
+                                if(which>0) return;
+                                major = a[which];
                             });
 
                     AlertDialog alertDialog = setting.create();
@@ -644,10 +481,8 @@ public class ListFragment extends Fragment {
                 }
                 else{
                     major="";
-                    return;
                 }
 
-                return;
             }
 
             @Override
@@ -674,33 +509,12 @@ public class ListFragment extends Fragment {
     }
 
     public void SearchFilter(){
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                filterList.clear();
-                if(field == 0){
-                    if(mark == false){
-                        for(int i=0; i<userArrayList.size(); i++){
-                            if(userArrayList.get(i).getMajor().toLowerCase().contains(major.toLowerCase())){
-                                filterList.add(userArrayList.get(i));
-                            }
-                        }
-                    }
-
-                    else{
-                        for(int i=0; i<userMarkList.size(); i++){
-                            if(userMarkList.get(i).getMajor().toLowerCase().contains(major.toLowerCase())){
-                                filterList.add(userMarkList.get(i));
-                            }
-                        }
-                    }
-                    listAdapter.filterList(filterList);
-                    return;
-                }
-
-                if(mark == false){
+        search.setOnClickListener(v -> {
+            filterList.clear();
+            if(field == 0){
+                if(!mark){
                     for(int i=0; i<userArrayList.size(); i++){
-                        if((userArrayList.get(i).getField().contains(field-1)) && (userArrayList.get(i).getMajor().toLowerCase().contains(major.toLowerCase()))){
+                        if(userArrayList.get(i).getMajor().toLowerCase().contains(major.toLowerCase())){
                             filterList.add(userArrayList.get(i));
                         }
                     }
@@ -708,14 +522,32 @@ public class ListFragment extends Fragment {
 
                 else{
                     for(int i=0; i<userMarkList.size(); i++){
-                        if((userMarkList.get(i).getField().contains(field-1)) && (userMarkList.get(i).getMajor().toLowerCase().contains(major.toLowerCase()))){
+                        if(userMarkList.get(i).getMajor().toLowerCase().contains(major.toLowerCase())){
                             filterList.add(userMarkList.get(i));
                         }
                     }
                 }
-
                 listAdapter.filterList(filterList);
+                return;
             }
+
+            if(!mark){
+                for(int i=0; i<userArrayList.size(); i++){
+                    if((userArrayList.get(i).getField().contains(field-1)) && (userArrayList.get(i).getMajor().toLowerCase().contains(major.toLowerCase()))){
+                        filterList.add(userArrayList.get(i));
+                    }
+                }
+            }
+
+            else{
+                for(int i=0; i<userMarkList.size(); i++){
+                    if((userMarkList.get(i).getField().contains(field-1)) && (userMarkList.get(i).getMajor().toLowerCase().contains(major.toLowerCase()))){
+                        filterList.add(userMarkList.get(i));
+                    }
+                }
+            }
+
+            listAdapter.filterList(filterList);
         });
 
     }

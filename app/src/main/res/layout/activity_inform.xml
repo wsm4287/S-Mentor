@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="추가 정보 등록"
+        android:text="@string/name_inform"
         android:textSize="30sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -26,27 +26,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <LinearLayout
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/inform_photo"
+            android:background="@drawable/ic_baseline_person_outline_24"
+            android:contentDescription="@string/todo" />
+
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:id="@+id/inform_photo"
-                android:background="#eeeeee"
-                />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="사용하실 프로필 사진을 등록해주세요."
-                android:layout_marginStart="10dp"
-                android:layout_gravity="center"
-                android:textAlignment="center"
-                />
-
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:text="@string/photo_inform"
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            />
 
     </FrameLayout>
 
@@ -56,7 +50,7 @@
         android:id="@+id/inform_major"
         app:layout_constraintTop_toBottomOf="@+id/imageLayout"
         android:layout_marginTop="15dp"
-        android:hint="전공"
+        android:hint="@string/major"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -69,10 +63,11 @@
         android:layout_marginTop="15dp"
         app:layout_constraintStart_toStartOf="@id/imageLayout"
         android:id="@+id/inform_introduction"
-        android:hint="자신에 대해 소개해주세요."
+        android:hint="@string/introduction_inform"
         android:textSize="14sp"
         android:textAlignment="center"
-        />
+        android:importantForAutofill="no"
+        android:inputType="text" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -98,7 +93,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/btType"
-        android:text="멘토 / 멘티"
+        android:text="@string/mentor_mentee"
         android:textSize="14sp"
         />
 
@@ -110,7 +105,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/btSignUp"
-        android:text="Sign Up"
+        android:text="@string/signUp"
         android:textSize="14sp"
         />
 

@@ -9,27 +9,13 @@ public class User {
     public String email;
     public String major;
     public Bitmap bitmap;
-    public String token;
     public List<Integer> field;
-
-    public String getIntroduction() {
-        return introduction;
-    }
-
-    public void setIntroduction(String introduction) {
-        this.introduction = introduction;
-    }
 
     public String introduction;
 
     public List<Integer> getField() {
         return field;
     }
-
-    public void setField(List<Integer> field) {
-        this.field = field;
-    }
-
 
     public Bitmap getBitmap() {
         return bitmap;
@@ -63,11 +49,5 @@ public class User {
         this.major = major;
     }
 
-    public String getToken() {
-        return token;
-    }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
 }

@@ -2,8 +2,6 @@ package com.example.s_mentor.ui.mentoring;
 
 import android.graphics.Bitmap;
 
-import java.util.List;
-
 public class User {
     public String name;
     public String email;
@@ -11,22 +9,10 @@ public class User {
     public Bitmap bitmap;
     public String token;
 
-    public String getDocName() {
-        return docName;
-    }
-
-    public void setDocName(String docName) {
-        this.docName = docName;
-    }
-
     public String docName;
 
     public Bitmap getBitmap() {
         return bitmap;
-    }
-
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
     }
 
     public String getName() {
@@ -53,11 +39,4 @@ public class User {
         this.major = major;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 }

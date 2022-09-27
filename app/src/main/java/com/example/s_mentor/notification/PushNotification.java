@@ -6,24 +6,16 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.example.s_mentor.ProfileActivity;
 import com.example.s_mentor.R;
-import com.example.s_mentor.RegActivity;
 import com.example.s_mentor.chat.ChatActivity;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import java.util.Random;
+import java.util.Objects;
 
 public class PushNotification extends FirebaseMessagingService {
 
@@ -36,7 +28,7 @@ public class PushNotification extends FirebaseMessagingService {
         super.onMessageReceived(message);
 
         name = message.getData().get("name");
-        id = message.getNotification().getTitle();
+        id = Objects.requireNonNull(message.getNotification()).getTitle();
         text = message.getNotification().getBody();
         id2 = message.getData().get("email");
         type = message.getData().get("type");
@@ -61,7 +53,7 @@ public class PushNotification extends FirebaseMessagingService {
             intent.putExtra("email", id2);
             intent.putExtra("email2", id);
             intent.putExtra("type", type);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+            @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
             notification.setContentIntent(pendingIntent);
         }
         NotificationManagerCompat.from(this).notify(1, notification.build());

@@ -1,8 +1,5 @@
 package com.example.s_mentor.ui.mentoring;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.s_mentor.R;
-import com.example.s_mentor.ui.mentoring.OnItemClickListener;
-import com.example.s_mentor.ui.mentoring.User;
 
 import java.util.ArrayList;
 
@@ -35,7 +30,7 @@ public class MentoringAdapter extends RecyclerView.Adapter<MentoringAdapter.Appl
     }
 
 
-    class ApplyViewHolder extends RecyclerView.ViewHolder{
+    static class ApplyViewHolder extends RecyclerView.ViewHolder{
         TextView nameText;
         TextView majorText;
         ImageView imageView;
@@ -45,14 +40,11 @@ public class MentoringAdapter extends RecyclerView.Adapter<MentoringAdapter.Appl
             majorText = itemView.findViewById(R.id.majorText);
             imageView = itemView.findViewById(R.id.imageView);
             // Define click listener for the ViewHolder's View
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int pos = getAdapterPosition();
-                    if (pos != RecyclerView.NO_POSITION) {
-                        if (listener != null) {
-                            listener.onItemClick(ApplyViewHolder.this, v, pos);
-                        }
+            view.setOnClickListener(v -> {
+                int pos = getAdapterPosition();
+                if (pos != RecyclerView.NO_POSITION) {
+                    if (listener != null) {
+                        listener.onItemClick(ApplyViewHolder.this, v, pos);
                     }
                 }
             });
@@ -64,18 +56,15 @@ public class MentoringAdapter extends RecyclerView.Adapter<MentoringAdapter.Appl
         mDataSet = dataSet;
     }
 
-    private Bitmap getUserImage(String encodedImage) {
-        byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-    }
 
+    @NonNull
     @Override
     public ApplyViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.user_view, viewGroup, false);
 
-        return new ApplyViewHolder(view,this);
+        return new ApplyViewHolder(view, this);
     }
 
     @Override

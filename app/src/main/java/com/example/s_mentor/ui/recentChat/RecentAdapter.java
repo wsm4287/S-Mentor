@@ -1,8 +1,5 @@
-package com.example.s_mentor.ui.recentchat;
+package com.example.s_mentor.ui.recentChat;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,15 +30,10 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.RecentView
         this.reListener = listener;
     }
 
-    public boolean onItemLongClick(RecentViewHolder holder, View view, int position){
-        if(longListener != null){
-            longListener.onItemLongClick(holder, view, position);
-        }
-        return true;
-    }
+
     public void setOnItemLongClickListener(OnItemLongClickListener listener) { this.longListener = listener;}
 
-    class RecentViewHolder extends RecyclerView.ViewHolder{
+    static class RecentViewHolder extends RecyclerView.ViewHolder{
         TextView nameText, lastText;
         ImageView imageView;
         public RecentViewHolder(View view, OnItemClickListener listener, OnItemLongClickListener Listener) {
@@ -50,29 +42,23 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.RecentView
             lastText = itemView.findViewById(R.id.lastText);
             imageView = itemView.findViewById(R.id.imageView);
             // Define click listener for the ViewHolder's View
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int pos = getAdapterPosition();
-                    if (pos != RecyclerView.NO_POSITION) {
-                        if (listener != null) {
-                            listener.onItemClick(RecentAdapter.RecentViewHolder.this, v, pos);
-                        }
+            view.setOnClickListener(v -> {
+                int pos = getAdapterPosition();
+                if (pos != RecyclerView.NO_POSITION) {
+                    if (listener != null) {
+                        listener.onItemClick(RecentViewHolder.this, v, pos);
                     }
                 }
             });
 
-            view.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    int pos = getAdapterPosition();
-                    if (pos != RecyclerView.NO_POSITION) {
-                        if (Listener != null) {
-                            Listener.onItemLongClick(RecentAdapter.RecentViewHolder.this, v, pos);
-                        }
+            view.setOnLongClickListener(v -> {
+                int pos = getAdapterPosition();
+                if (pos != RecyclerView.NO_POSITION) {
+                    if (Listener != null) {
+                        Listener.onItemLongClick(RecentViewHolder.this, v, pos);
                     }
-                    return false;
                 }
+                return false;
             });
         }
 
@@ -83,18 +69,15 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.RecentView
         this.lastChat = lastChat;
     }
 
-    private Bitmap getUserImage(String encodedImage) {
-        byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-    }
 
+    @NonNull
     @Override
     public RecentAdapter.RecentViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.recentchat_view, viewGroup, false);
 
-        return new RecentAdapter.RecentViewHolder(view,reListener,longListener);
+        return new RecentViewHolder(view, reListener, longListener);
     }
 
     @Override
