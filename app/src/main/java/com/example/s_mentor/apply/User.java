@@ -1,4 +1,4 @@
-package com.example.s_mentor.ui.mentoring;
+package com.example.s_mentor.apply;
 
 import android.graphics.Bitmap;
 

@@ -1,4 +1,4 @@
-package com.example.s_mentor.ui.mentoring;
+package com.example.s_mentor.apply;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +13,7 @@ import com.example.s_mentor.R;
 
 import java.util.ArrayList;
 
-public class MentoringAdapter extends RecyclerView.Adapter<MentoringAdapter.ApplyViewHolder> implements OnItemClickListener {
+public class ApplyListAdapter extends RecyclerView.Adapter<ApplyListAdapter.ApplyViewHolder> implements OnItemClickListener {
 
     private final ArrayList<User> mDataSet;
     OnItemClickListener userListener;
@@ -52,7 +52,7 @@ public class MentoringAdapter extends RecyclerView.Adapter<MentoringAdapter.Appl
 
     }
 
-    public MentoringAdapter(ArrayList<User> dataSet) {
+    public ApplyListAdapter(ArrayList<User> dataSet) {
         mDataSet = dataSet;
     }
 

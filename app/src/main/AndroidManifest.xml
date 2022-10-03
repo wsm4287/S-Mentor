@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SMentor">
         <activity
+            android:name=".apply.ApplyListActivity"
+            android:exported="false" />
+        <activity
             android:name=".ImageActivity"
             android:exported="false" />
         <activity

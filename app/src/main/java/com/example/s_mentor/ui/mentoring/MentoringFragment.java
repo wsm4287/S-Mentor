@@ -3,32 +3,34 @@ package com.example.s_mentor.ui.mentoring;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.s_mentor.MainActivity;
 import com.example.s_mentor.ProfileActivity;
 import com.example.s_mentor.R;
+import com.example.s_mentor.apply.ApplyListActivity;
 import com.example.s_mentor.databinding.FragmentMentoringBinding;
-import com.example.s_mentor.notification.SendMessage;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -37,13 +39,15 @@ public class MentoringFragment extends Fragment {
     private FragmentMentoringBinding binding;
     View root;
 
-    String id, id2, name;
+    TextView proNm, proMj, proPn, title, name_empty, major_empty, phone_empty, pro_date;
+    String id, id2, name, mentoring_date;
     Button setting;
+    ImageView proPh;
     FirebaseFirestore database = FirebaseFirestore.getInstance();
-    MentoringAdapter mentoringAdapter;
-    ArrayList<User> userArrayList;
     String encodedImage;
 
+    String[] items = {"취업", "면접", "학업", "창업", "석사", "봉사", "동아리"};
+    GridView gridView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -51,38 +55,43 @@ public class MentoringFragment extends Fragment {
         binding = FragmentMentoringBinding.inflate(inflater, container, false);
         root = binding.getRoot();
 
-        InitMentoringList();
-        GetMentoringList();
-        ViewMentoringList();
+        InitMentoring();
+        GetMentoring();
 
         return root;
     }
 
-    private void InitMentoringList(){
+    private void InitMentoring(){
         id = requireActivity().getIntent().getStringExtra("email");
         name = requireActivity().getIntent().getStringExtra("name");
 
         setting = (Button) root.findViewById(R.id.btLogOut);
+        proNm = (TextView) root.findViewById(R.id.mentoring_userName);
+        proMj = (TextView) root.findViewById(R.id.mentoring_userMajor);
+        proPh = (ImageView) root.findViewById(R.id.mentoring_photo);
+        proPn = (TextView) root.findViewById(R.id.mentoring_userPhone);
+        title = (TextView) root.findViewById(R.id.mentoring_title);
+        name_empty = (TextView) root.findViewById(R.id.mentoring_name);
+        major_empty = (TextView) root.findViewById(R.id.mentoring_major);
+        phone_empty =  (TextView) root.findViewById(R.id.mentoring_phone);
+        pro_date = (TextView) root.findViewById(R.id.mentoring_date);
 
-        userArrayList = new ArrayList<>();
-
-        RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.recycler);
-        recyclerView.setHasFixedSize(true);
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-
-        mentoringAdapter = new MentoringAdapter(userArrayList);
-        recyclerView.setAdapter(mentoringAdapter);
+        gridView = (GridView) root.findViewById(R.id.mentoring_list);
 
         setting.setOnClickListener(v -> {
-            String[] array = {"프로필", "b", "로그아웃"};
+            String[] array = {"프로필", "멘토링 신청 목록", "로그아웃"};
 
             AlertDialog.Builder setting = new AlertDialog.Builder(requireContext())
                     .setItems(array, (dialog, which) -> {
                         if(which == 0){
                             Intent in = new Intent(root.getContext(), ProfileActivity.class);
                             in.putExtra("email", id);
+                            startActivity(in);
+                        }
+                        if(which == 1){
+                            Intent in = new Intent(getActivity(), ApplyListActivity.class);
+                            in.putExtra("email", id);
+                            in.putExtra("name", name);
                             startActivity(in);
                         }
                         if(which == 2){
@@ -105,74 +114,72 @@ public class MentoringFragment extends Fragment {
         });
     }
 
-    private void GetMentoringList(){
-        database.collection("apply")
-                .whereEqualTo("to", id)
+    private void GetMentoring(){
+        database.collection("users").document(id)
                 .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            User user = new User();
-                            user.name = Objects.requireNonNull(document.getData().get("name")).toString();
-                            user.major = Objects.requireNonNull(document.getData().get("major")).toString();
-                            user.email = Objects.requireNonNull(document.getData().get("from")).toString();
-                            encodedImage = Objects.requireNonNull(document.getData().get("image")).toString();
-                            user.bitmap = DecodeImage(encodedImage);
-                            user.docName = document.getId();
-                            user.token = Objects.requireNonNull(document.getData().get("token")).toString();
-                            userArrayList.add(user);
-                            mentoringAdapter.notifyDataSetChanged();
-                        }
-                    }
+                .addOnSuccessListener(documentSnapshot -> {
+                   id2 = Objects.requireNonNull(Objects.requireNonNull(documentSnapshot.getData()).get("mentoring")).toString();
+                   if(id2.contains("@")){
+                       ViewMentoring();
+                   }
+                   else{
+                       title.setText("멘토링 상대가 없습니다.");
+                       proNm.setVisibility(View.GONE);
+                       proMj.setVisibility(View.GONE);
+                       proPh.setVisibility(View.GONE);
+                       proPn.setVisibility(View.GONE);
+                       gridView.setVisibility(View.GONE);
+                       pro_date.setVisibility(View.GONE);
+                       name_empty.setVisibility(View.GONE);
+                       major_empty.setVisibility(View.GONE);
+                       phone_empty.setVisibility(View.GONE);
+                   }
                 });
     }
 
-    private void ViewMentoringList(){
-        mentoringAdapter.setOnItemClickListener((holder, view, position) -> {
-            User u = mentoringAdapter.getUser(position);
-            id2 = u.email;
+    private void ViewMentoring(){
+        database.collection("users").document(id2)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    proNm.setText(Objects.requireNonNull(Objects.requireNonNull(documentSnapshot.getData()).get("name")).toString());
+                    proMj.setText(Objects.requireNonNull(documentSnapshot.getData().get("major")).toString());
+                    encodedImage = Objects.requireNonNull(documentSnapshot.getData().get("image")).toString();
+                    proPh.setImageBitmap(DecodeImage(encodedImage));
+                    proPn.setText(Objects.requireNonNull(documentSnapshot.getData().get("phone")).toString());
+                    mentoring_date = Objects.requireNonNull(documentSnapshot.getData().get("mentoring_date")).toString();
 
-            Drawable drawable = new BitmapDrawable(getResources(),u.bitmap);
-            final ImageView iv = new ImageView(getContext());
-            iv.setImageBitmap(u.bitmap);
-            final TextView et = new TextView(getContext());
-            et.setText(u.major);
-            HashMap<String, Object> m = new HashMap<>();
-            AlertDialog.Builder ad = new AlertDialog.Builder(requireContext())
-                    .setView(iv)
-                    .setIcon(drawable)
-                    .setTitle(u.name)
-                    .setMessage(id2).setView(et)
-                    .setPositiveButton("거절", (dialog, which) -> {
-                        database.collection("apply").document(u.docName)
-                                .delete();
-                        userArrayList.remove(position);
-                        mentoringAdapter.notifyDataSetChanged();
-                    })
-                    .setNeutralButton("수락", (dialog, which) -> {
-                        SendMessage.notification(
-                                getContext(),
-                                u.token,
-                                id,
-                                name + "님이 멘토링 신청을 수락하였습니다.",
-                                name,
-                                id2,
-                                "XX"
-                        );
-                        database.collection("apply").document(u.docName)
-                                .delete();
-                        m.put("mentoring", id2);
-                        database.collection("users").document(id)
-                                .update(m);
-                        m.replace("mentoring", id);
-                        database.collection("users").document(id2)
-                                .update(m);
-                        userArrayList.remove(position);
-                        mentoringAdapter.notifyDataSetChanged();
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = null;
+                    try {
+                        date = dateFormat.parse(mentoring_date);
 
-                    });
-            ad.show();
-        });
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    Calendar c = Calendar.getInstance();
+
+                    assert date != null;
+                    long diffSec = (c.getTime().getTime() -date.getTime()) / 1000;
+                    long diffDays = diffSec / (24*60*60) +1;
+
+                    pro_date.setText("D+ " + diffDays);
+
+                    String[] x = {"", "", "", "", "", "", ""};
+                    int count = 0;
+
+                    for(int i=0; i<7; i++){
+                        if(((Objects.requireNonNull(documentSnapshot.getData().get(Integer.toString(i)))).toString()).equals("o")){
+                            x[count++] = items[i];
+                        }
+                    }
+
+                    for(int i=0; i<count; i++) Toast.makeText(getContext(), x[i], Toast.LENGTH_SHORT).show();
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.field_view, x);
+                    gridView.setAdapter(adapter);
+
+                });
     }
 
     private Bitmap DecodeImage(String encodedImage){
