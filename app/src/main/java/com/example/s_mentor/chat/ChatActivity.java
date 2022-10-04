@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.util.Base64;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,16 +56,18 @@ public class ChatActivity extends AppCompatActivity {
     ImageView chBk, opPh;
     Button btSend, btFile, btImage;
     EditText etText;
-    String id, id2, token, token2, name, name2, type, type2, encodedImage, major;
+    String id, id2, token, token2, name, name2, type, type2, encodedImage, major, mentoring;
     Bitmap bitmap;
     FirebaseFirestore database;
     private RecyclerView.LayoutManager layoutManager;
     ChatAdapter chatAdapter;
     ArrayList<Chat> chatArrayList;
     boolean check;
+    boolean match = false;
     Uri fileUri, imageUri;
     FirebaseStorage storage;
     ProgressBar progressBar;
+    int limit = 50;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,14 +87,14 @@ public class ChatActivity extends AppCompatActivity {
         database = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
 
-        opNm = (TextView) findViewById(R.id.opName);
-        chBk = (ImageView) findViewById(R.id.chBack);
-        opPh = (ImageView) findViewById(R.id.opPhoto);
-        etText = (EditText) findViewById(R.id.etText);
-        btSend = (Button) findViewById(R.id.btSend);
-        btFile = (Button) findViewById(R.id.btFile);
-        btImage = (Button) findViewById(R.id.btImage);
-        progressBar = (ProgressBar) findViewById(R.id.progress_file);
+        opNm = findViewById(R.id.opName);
+        chBk = findViewById(R.id.chBack);
+        opPh = findViewById(R.id.opPhoto);
+        etText = findViewById(R.id.etText);
+        btSend = findViewById(R.id.btSend);
+        btFile = findViewById(R.id.btFile);
+        btImage = findViewById(R.id.btImage);
+        progressBar = findViewById(R.id.progress_file);
 
         id = getIntent().getStringExtra("email");
         id2 = getIntent().getStringExtra("email2");
@@ -100,7 +103,7 @@ public class ChatActivity extends AppCompatActivity {
         check = true;
         opNm.setText(id2);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler);
+        RecyclerView recyclerView = findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
 
         layoutManager = new LinearLayoutManager(this);
@@ -150,7 +153,9 @@ public class ChatActivity extends AppCompatActivity {
                     encodedImage = Objects.requireNonNull(documentSnapshot.getData().get("image")).toString();
                     major = Objects.requireNonNull(documentSnapshot.getData().get("major")).toString();
                     token = Objects.requireNonNull(documentSnapshot.getData().get("token")).toString();
-                    if(!(Objects.requireNonNull(documentSnapshot.getData().get("mentoring")).toString().equals(" "))) check = false;
+                    mentoring = Objects.requireNonNull(documentSnapshot.getData().get("mentoring")) + "";
+                    if(!(mentoring.equals(" "))) check = false;
+                    match = mentoring.equals(id2);
                 });
 
 
@@ -188,6 +193,7 @@ public class ChatActivity extends AppCompatActivity {
                                 chat.fileName = Objects.requireNonNull(document.getData().get("fileName")).toString();
                             }
                             chatArrayList.add(chat);
+                            limit--;
                         }
                     }
                     chatAdapter.notifyDataSetChanged();
@@ -213,6 +219,7 @@ public class ChatActivity extends AppCompatActivity {
                             chat.fileName = Objects.requireNonNull(document.getData().get("fileName")).toString();
                         }
                         chatArrayList.add(chat);
+                        limit--;
                     }
                     chatAdapter.notifyDataSetChanged();
                     layoutManager.scrollToPosition(chatArrayList.size()-1);
@@ -225,6 +232,11 @@ public class ChatActivity extends AppCompatActivity {
     private void SendChat(){
 
         btSend.setOnClickListener(v -> {
+            if(!match && limit<0){
+                Toast.makeText(this, "사용 가능한 메시지를 모두 사용하셨습니다.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             String stText = etText.getText().toString();
 
             Calendar c = Calendar.getInstance();
@@ -240,6 +252,8 @@ public class ChatActivity extends AppCompatActivity {
             message.put("text", stText);
             message.put("email", id);
             message.put("type", 0);
+
+            if(!match) Toast.makeText(this, "사용할 수 있는 메시지가 " + limit+ "만큼 남았습니다.", Toast.LENGTH_SHORT).show();
 
             database.collection("message").document(id).collection(id2)
                     .add(message);
@@ -338,6 +352,11 @@ public class ChatActivity extends AppCompatActivity {
 
     private void uploadImage(Uri imageUri) {
 
+        if(!match && limit<0){
+            Toast.makeText(this, "사용 가능한 메시지를 모두 사용하셨습니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         String fileName = getFileName(imageUri);
         StorageReference storageReference = storage.getReference();
 
@@ -384,6 +403,8 @@ public class ChatActivity extends AppCompatActivity {
                     message.put("email", id);
                     message.put("fileName", fileName);
                     message.put("type", 2);
+
+                    if(!match) Toast.makeText(this, "사용할 수 있는 메시지가 " + limit+ "만큼 남았습니다.", Toast.LENGTH_SHORT).show();
 
                     database.collection("message").document(id).collection(id2)
                             .add(message);
@@ -432,7 +453,10 @@ public class ChatActivity extends AppCompatActivity {
     });
 
     private void uploadFile(Uri FileUri){
-
+        if(!match && limit<0){
+            Toast.makeText(this, "사용 가능한 메시지를 모두 사용하셨습니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         String fileName = getFileName(FileUri);
         StorageReference storageReference = storage.getReference();
@@ -459,7 +483,6 @@ public class ChatActivity extends AppCompatActivity {
                     dateFormat.setTimeZone(tz);
                     String datetime = dateFormat.format(c.getTime());
 
-
                     Map<String, Object> message = new HashMap<>();
                     message.put("time", datetime);
                     message.put("text", "파일을 전송하였습니다.");
@@ -467,6 +490,8 @@ public class ChatActivity extends AppCompatActivity {
                     message.put("email", id);
                     message.put("fileName", fileName);
                     message.put("type", 4);
+
+                    if(!match) Toast.makeText(this, "사용할 수 있는 메시지가 " + limit+ "만큼 남았습니다.", Toast.LENGTH_SHORT).show();
 
                     database.collection("message").document(id).collection(id2)
                             .add(message);

@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -65,18 +64,18 @@ public class MentoringFragment extends Fragment {
         id = requireActivity().getIntent().getStringExtra("email");
         name = requireActivity().getIntent().getStringExtra("name");
 
-        setting = (Button) root.findViewById(R.id.btLogOut);
-        proNm = (TextView) root.findViewById(R.id.mentoring_userName);
-        proMj = (TextView) root.findViewById(R.id.mentoring_userMajor);
-        proPh = (ImageView) root.findViewById(R.id.mentoring_photo);
-        proPn = (TextView) root.findViewById(R.id.mentoring_userPhone);
-        title = (TextView) root.findViewById(R.id.mentoring_title);
-        name_empty = (TextView) root.findViewById(R.id.mentoring_name);
-        major_empty = (TextView) root.findViewById(R.id.mentoring_major);
-        phone_empty =  (TextView) root.findViewById(R.id.mentoring_phone);
-        pro_date = (TextView) root.findViewById(R.id.mentoring_date);
+        setting = root.findViewById(R.id.btLogOut);
+        proNm = root.findViewById(R.id.mentoring_userName);
+        proMj = root.findViewById(R.id.mentoring_userMajor);
+        proPh = root.findViewById(R.id.mentoring_photo);
+        proPn = root.findViewById(R.id.mentoring_userPhone);
+        title = root.findViewById(R.id.mentoring_title);
+        name_empty = root.findViewById(R.id.mentoring_name);
+        major_empty = root.findViewById(R.id.mentoring_major);
+        phone_empty =  root.findViewById(R.id.mentoring_phone);
+        pro_date = root.findViewById(R.id.mentoring_date);
 
-        gridView = (GridView) root.findViewById(R.id.mentoring_list);
+        gridView = root.findViewById(R.id.mentoring_list);
 
         setting.setOnClickListener(v -> {
             String[] array = {"프로필", "멘토링 신청 목록", "로그아웃"};
@@ -173,8 +172,6 @@ public class MentoringFragment extends Fragment {
                             x[count++] = items[i];
                         }
                     }
-
-                    for(int i=0; i<count; i++) Toast.makeText(getContext(), x[i], Toast.LENGTH_SHORT).show();
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.field_view, x);
                     gridView.setAdapter(adapter);

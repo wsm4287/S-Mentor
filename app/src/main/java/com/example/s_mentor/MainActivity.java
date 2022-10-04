@@ -48,12 +48,12 @@ public class MainActivity extends AppCompatActivity {
     private void InitMain(){
         sAuth = FirebaseAuth.getInstance();
         database = FirebaseFirestore.getInstance();
-        mainId = (EditText) findViewById(R.id.mainId);
-        mainPs = (EditText) findViewById(R.id.mainPs);
-        autoLogin = (CheckBox) findViewById(R.id.autoLogin);
-        progressBar = (ProgressBar) findViewById(R.id.progressbar);
-        btLogin = (Button) findViewById(R.id.btLogin);
-        btReg = (Button) findViewById(R.id.btReg);
+        mainId = findViewById(R.id.mainId);
+        mainPs = findViewById(R.id.mainPs);
+        autoLogin = findViewById(R.id.autoLogin);
+        progressBar = findViewById(R.id.progressbar);
+        btLogin = findViewById(R.id.btLogin);
+        btReg = findViewById(R.id.btReg);
 
         Auto = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
         SharedPreferences.Editor AutoLoginEditor = Auto.edit();

@@ -29,8 +29,8 @@ public class ImageActivity extends AppCompatActivity {
 
         image = getIntent().getStringExtra("image");
         fileName = getIntent().getStringExtra("fileName");
-        dnImage = (ImageView) findViewById(R.id.dnImage);
-        btDown = (Button) findViewById(R.id.btDown);
+        dnImage = findViewById(R.id.dnImage);
+        btDown = findViewById(R.id.btDown);
         storage = FirebaseStorage.getInstance();
 
         Picasso.get().load(image).into(dnImage);

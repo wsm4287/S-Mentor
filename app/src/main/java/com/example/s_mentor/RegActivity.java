@@ -39,13 +39,13 @@ public class RegActivity extends AppCompatActivity {
     }
 
     private void InitReg(){
-        regId = (EditText) findViewById(R.id.regId);
-        regPs = (EditText) findViewById(R.id.regPs);
-        regPs2 = (EditText) findViewById(R.id.regPs2);
-        regNm = (EditText) findViewById(R.id.regNm);
-        regPn = (EditText) findViewById(R.id.regPn);
-        progressBar = (ProgressBar) findViewById(R.id.progressbar);
-        btNext = (Button) findViewById(R.id.btNext);
+        regId = findViewById(R.id.regId);
+        regPs = findViewById(R.id.regPs);
+        regPs2 = findViewById(R.id.regPs2);
+        regNm = findViewById(R.id.regNm);
+        regPn = findViewById(R.id.regPn);
+        progressBar = findViewById(R.id.progressbar);
+        btNext = findViewById(R.id.btNext);
         sAuth = FirebaseAuth.getInstance();
         database = FirebaseFirestore.getInstance();
     }

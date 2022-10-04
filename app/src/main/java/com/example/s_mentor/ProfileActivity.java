@@ -54,18 +54,18 @@ public class ProfileActivity extends AppCompatActivity {
     private void InitProfile(){
         id = getIntent().getStringExtra("email");
 
-        proNm = (TextView) findViewById(R.id.profile_userName);
-        proMj = (TextView) findViewById(R.id.profile_userMajor);
-        proPh = (ImageView) findViewById(R.id.profile_photo);
-        proPn = (TextView) findViewById(R.id.profile_userPhone);
-        proTp = (TextView) findViewById(R.id.profile_type);
-        correct = (Button) findViewById(R.id.correct);
-        proIn = (EditText) findViewById(R.id.profile_userIntro);
+        proNm = findViewById(R.id.profile_userName);
+        proMj = findViewById(R.id.profile_userMajor);
+        proPh = findViewById(R.id.profile_photo);
+        proPn = findViewById(R.id.profile_userPhone);
+        proTp = findViewById(R.id.profile_type);
+        correct = findViewById(R.id.correct);
+        proIn = findViewById(R.id.profile_userIntro);
 
 
         adapter = new ArrayAdapter<>(this, R.layout.inform_view, items);
 
-        gridView = (GridView) findViewById(R.id.profile_list);
+        gridView = findViewById(R.id.profile_list);
         gridView.setAdapter(adapter);
 
         database = FirebaseFirestore.getInstance();

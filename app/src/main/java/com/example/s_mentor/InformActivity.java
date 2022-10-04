@@ -341,12 +341,12 @@ public class InformActivity extends AppCompatActivity {
     }
 
     private void InitInform(){
-        imageLayout = (FrameLayout) findViewById(R.id.imageLayout);
-        inform_photo = (ImageView) findViewById(R.id.inform_photo);
-        inform_introduction = (EditText) findViewById(R.id.inform_introduction);
-        inform_major = (Button) findViewById(R.id.inform_major);
-        btType = (Button) findViewById(R.id.btType);
-        btSignUp = (Button) findViewById(R.id.btSignUp);
+        imageLayout = findViewById(R.id.imageLayout);
+        inform_photo = findViewById(R.id.inform_photo);
+        inform_introduction = findViewById(R.id.inform_introduction);
+        inform_major = findViewById(R.id.inform_major);
+        btType = findViewById(R.id.btType);
+        btSignUp = findViewById(R.id.btSignUp);
 
         database = FirebaseFirestore.getInstance();
 
@@ -356,7 +356,7 @@ public class InformActivity extends AppCompatActivity {
 
         adapter = new ArrayAdapter<>(this, R.layout.inform_view, items);
 
-        gridView = (GridView) findViewById(R.id.inform_list);
+        gridView = findViewById(R.id.inform_list);
         gridView.setAdapter(adapter);
 
         id = getIntent().getStringExtra("email");
