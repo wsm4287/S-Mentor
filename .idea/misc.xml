@@ -17,6 +17,7 @@
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.378125" />
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/activity_apply_list.xml" value="0.33695652173913043" />
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/activity_applylist.xml" value="0.3463541666666667" />
+        <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/activity_board.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/activity_chat.xml" value="0.33" />
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/activity_home.xml" value="0.1743659420289855" />
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/activity_image.xml" value="0.3619791666666667" />
@@ -25,7 +26,10 @@
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/activity_main3.xml" value="0.3463541666666667" />
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/activity_profile.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/activity_reg.xml" value="0.33" />
+        <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/activity_write.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/board_view.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/field_view.xml" value="0.37447916666666664" />
+        <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/fragment_board.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/fragment_chat.xml" value="0.3171875" />
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/fragment_dashboard.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/wsm42/AndroidStudioProjects/SMentor/app/src/main/res/layout/fragment_home.xml" value="0.3171875" />

@@ -4,6 +4,8 @@
     <string name="title_chat">RecentChat</string>
     <string name="title_list">List</string>
     <string name="title_mentoring">Mentoring</string>
+    <string name="title_board">Board</string>
+    <string name="title_write">질문 작성</string>
     <string name="major">전공</string>
     <string name="field">분야</string>
     <string name="search">검색</string>
@@ -11,6 +13,7 @@
     <string name="name_recentChat">채팅 목록</string>
     <string name="name_apply">멘토링 신청 목록</string>
     <string name="name_mentoring">멘토 목록</string>
+    <string name="name_board">멘티들의 질문</string>
     <string name="signUp">회원가입</string>
     <string name="name">이름</string>
     <string name="email">이메일 주소</string>
@@ -32,4 +35,5 @@
     <string name="send">send</string>
     <string name="text">text</string>
     <string name="my_mentoring">나의 멘토링</string>
+    <string name="board_hint">내용을 입력하세요.</string>
 </resources>

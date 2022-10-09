@@ -18,8 +18,16 @@
         tools:layout="@layout/fragment_recentchat" />
 
     <fragment
+        android:id="@+id/navigation_board"
+        android:name="com.example.s_mentor.ui.board.BoardFragment"
+        android:label="@string/title_board"
+        tools:layout="@layout/fragment_board" />
+
+    <fragment
         android:id="@+id/navigation_mentoring"
         android:name="com.example.s_mentor.ui.mentoring.MentoringFragment"
         android:label="@string/title_mentoring"
         tools:layout="@layout/fragment_mentoring" />
+
+
 </navigation>
