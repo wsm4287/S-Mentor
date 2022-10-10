@@ -1,4 +1,4 @@
-package com.example.s_mentor.ui.board;
+package com.example.s_mentor.ui.boardList;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +13,9 @@ import com.example.s_mentor.R;
 
 import java.util.ArrayList;
 
-public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.UserViewHolder> implements OnItemClickListener {
+public class BoardListAdapter extends RecyclerView.Adapter<BoardListAdapter.UserViewHolder> implements OnItemClickListener {
 
-    private ArrayList<Board> mDataSet;
+    private ArrayList<BoardList> mDataSet;
     OnItemClickListener boardListener;
 
     @Override
@@ -33,6 +33,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.UserViewHold
         TextView nameText;
         TextView timeText;
         TextView boardText;
+        TextView titleText;
         ImageView imageView;
 
         public UserViewHolder(View view, OnItemClickListener listener) {
@@ -41,13 +42,14 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.UserViewHold
             timeText = itemView.findViewById(R.id.timeText);
             imageView = itemView.findViewById(R.id.imageView);
             boardText = itemView.findViewById(R.id.boardText);
+            titleText = itemView.findViewById(R.id.titleText);
 
             // Define click listener for the ViewHolder's View
             view.setOnClickListener(v -> {
                 int pos = getAdapterPosition();
                 if (pos != RecyclerView.NO_POSITION) {
                     if (listener != null) {
-                        listener.onItemClick(BoardAdapter.UserViewHolder.this, v, pos);
+                        listener.onItemClick(BoardListAdapter.UserViewHolder.this, v, pos);
                     }
                 }
             });
@@ -55,30 +57,31 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.UserViewHold
 
     }
 
-    public BoardAdapter(ArrayList<Board> dataSet) {mDataSet = dataSet;}
+    public BoardListAdapter(ArrayList<BoardList> dataSet) {mDataSet = dataSet;}
 
     @NonNull
     @Override
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.board_view, viewGroup, false);
+                .inflate(R.layout.boardlist_view, viewGroup, false);
 
 
         return new UserViewHolder(view, this);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BoardAdapter.UserViewHolder holder, int position) {
-        Board board = mDataSet.get(position);
+    public void onBindViewHolder(@NonNull BoardListAdapter.UserViewHolder holder, int position) {
+        BoardList boardList = mDataSet.get(position);
 
-        holder.nameText.setText(board.getName());
-        holder.boardText.setText(board.getText());
-        holder.imageView.setImageBitmap(board.bitmap);
-        holder.timeText.setText(board.getTime());
+        holder.nameText.setText(boardList.getName());
+        holder.boardText.setText(boardList.getText());
+        holder.imageView.setImageBitmap(boardList.bitmap);
+        holder.timeText.setText(boardList.getTime());
+        holder.titleText.setText(boardList.getTitle());
 
     }
 
-    public void filterList(ArrayList<Board> filterList){
+    public void filterList(ArrayList<BoardList> filterList){
         mDataSet = filterList;
         notifyDataSetChanged();
     }
@@ -87,6 +90,8 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.UserViewHold
     public int getItemCount() {
         return mDataSet.size();
     }
+
+    public BoardList getBoard(int position) { return mDataSet.get(position); }
 
 
 }

@@ -1,12 +1,13 @@
-package com.example.s_mentor.ui.board;
+package com.example.s_mentor.ui.boardList;
 
 import android.graphics.Bitmap;
 
-public class Board {
+public class BoardList {
     public String name;
     public String email;
     public Bitmap bitmap;
     public String text;
+    public String title;
 
     public String getTime() {
         return time;
@@ -17,6 +18,14 @@ public class Board {
     }
 
     public String time;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getName() {
         return name;

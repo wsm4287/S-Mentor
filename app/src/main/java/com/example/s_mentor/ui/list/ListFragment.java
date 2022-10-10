@@ -76,11 +76,6 @@ public class ListFragment extends Fragment {
         return root;
     }
 
-    private Bitmap DecodeImage(String encodedImage){
-        byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-    }
-
     private void ListCreate(){
 
         database.collection("users")
@@ -552,6 +547,10 @@ public class ListFragment extends Fragment {
 
     }
 
+    private Bitmap DecodeImage(String encodedImage){
+        byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+    }
 
     @Override
     public void onDestroyView() {

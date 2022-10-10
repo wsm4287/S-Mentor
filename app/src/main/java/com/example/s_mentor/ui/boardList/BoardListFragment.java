@@ -1,4 +1,4 @@
-package com.example.s_mentor.ui.board;
+package com.example.s_mentor.ui.boardList;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,12 +17,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.s_mentor.WriteActivity;
+import com.example.s_mentor.board.BoardActivity;
+import com.example.s_mentor.board.BoardAddActivity;
 import com.example.s_mentor.MainActivity;
 import com.example.s_mentor.ProfileActivity;
 import com.example.s_mentor.R;
-import com.example.s_mentor.databinding.FragmentBoardBinding;
+import com.example.s_mentor.databinding.FragmentBoardlistBinding;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
@@ -30,29 +32,30 @@ import java.util.HashMap;
 import java.util.Objects;
 
 
-public class BoardFragment extends Fragment {
+public class BoardListFragment extends Fragment {
 
-    private FragmentBoardBinding binding;
+    private FragmentBoardlistBinding binding;
     View root;
 
-    String id, name, type, encodedImage, text;
+    String id, name, type, encodedImage, text, title, id2;
     EditText filter;
     Button setting, search, add;
     FirebaseFirestore database = FirebaseFirestore.getInstance();
-    BoardAdapter boardAdapter;
-    ArrayList<Board> boardList, filterList;
+    BoardListAdapter boardListAdapter;
+    ArrayList<BoardList> boardList, filterList;
     Boolean mark = true;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        binding = FragmentBoardBinding.inflate(inflater, container, false);
+        binding = FragmentBoardlistBinding.inflate(inflater, container, false);
         root = binding.getRoot();
 
         InitBoard();
         GetBoardList();
         SearchBoard();
         AddBoard();
+        SelectBoard();
 
         return root;
     }
@@ -81,8 +84,8 @@ public class BoardFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        boardAdapter = new BoardAdapter(boardList);
-        recyclerView.setAdapter(boardAdapter);
+        boardListAdapter = new BoardListAdapter(boardList);
+        recyclerView.setAdapter(boardListAdapter);
 
         setting.setOnClickListener(v -> {
             String[] array = {"프로필", "내가 작성한 게시글", "로그아웃"};
@@ -106,11 +109,11 @@ public class BoardFragment extends Fragment {
                                             filterList.add(boardList.get(i));
                                         }
                                     }
-                                    boardAdapter.filterList(filterList);
+                                    boardListAdapter.filterList(filterList);
                                     mark = false;
                                 }
                                 else{
-                                    boardAdapter.filterList(boardList);
+                                    boardListAdapter.filterList(boardList);
                                     mark = true;
                                 }
                             }
@@ -138,28 +141,51 @@ public class BoardFragment extends Fragment {
 
     private void GetBoardList(){
         database.collection("board")
+                .orderBy("time", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
+                        boardList.clear();
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            Board board = new Board();
-                            board.name = Objects.requireNonNull(document.getData().get("name")).toString();
-                            board.email = Objects.requireNonNull(document.getData().get("email")).toString();
-                            board.time = Objects.requireNonNull(document.getData().get("time")).toString();
-                            board.text = Objects.requireNonNull(document.getData().get("text")).toString();
+                            BoardList boardList = new BoardList();
+                            boardList.name = Objects.requireNonNull(document.getData().get("name")).toString();
+                            boardList.email = Objects.requireNonNull(document.getData().get("email")).toString();
+                            boardList.time = Objects.requireNonNull(document.getData().get("time")).toString();
+                            boardList.text = Objects.requireNonNull(document.getData().get("text")).toString();
                             encodedImage = Objects.requireNonNull(document.getData().get("image")).toString();
-                            board.bitmap = DecodeImage(encodedImage);
+                            boardList.bitmap = DecodeImage(encodedImage);
+                            boardList.title = Objects.requireNonNull(document.getData().get("title")).toString();
 
-                            boardList.add(board);
+                            this.boardList.add(boardList);
                         }
-                        boardAdapter.notifyDataSetChanged();
+                        boardListAdapter.notifyDataSetChanged();
                     }
+                });
+
+        database.collection("board")
+                .orderBy("time", Query.Direction.DESCENDING)
+                .limit(1)
+                .addSnapshotListener((value, error) -> {
+                    assert value != null;
+                    for (QueryDocumentSnapshot document : value) {
+                        BoardList boardList = new BoardList();
+                        boardList.name = Objects.requireNonNull(document.getData().get("name")).toString();
+                        boardList.email = Objects.requireNonNull(document.getData().get("email")).toString();
+                        boardList.time = Objects.requireNonNull(document.getData().get("time")).toString();
+                        boardList.text = Objects.requireNonNull(document.getData().get("text")).toString();
+                        encodedImage = Objects.requireNonNull(document.getData().get("image")).toString();
+                        boardList.bitmap = DecodeImage(encodedImage);
+                        boardList.title = Objects.requireNonNull(document.getData().get("title")).toString();
+
+                        this.boardList.add(boardList);
+                    }
+                    boardListAdapter.notifyDataSetChanged();
                 });
     }
 
     private void AddBoard(){
         add.setOnClickListener(v -> {
-            Intent in = new Intent(root.getContext(), WriteActivity.class);
+            Intent in = new Intent(root.getContext(), BoardAddActivity.class);
             in.putExtra("email", id);
             in.putExtra("name", name);
             startActivity(in);
@@ -170,17 +196,30 @@ public class BoardFragment extends Fragment {
         search.setOnClickListener(v -> {
             text = filter.getText().toString().toLowerCase();
             if(text.equals("")){
-                boardAdapter.filterList(boardList);
+                boardListAdapter.filterList(boardList);
                 return;
             }
             filterList.clear();
             for(int i=0; i<boardList.size(); i++){
-                if(boardList.get(i).text.toLowerCase().contains(text)){
+                if(boardList.get(i).title.toLowerCase().contains(text) || boardList.get(i).text.toLowerCase().contains(text)){
                     filterList.add(boardList.get(i));
                 }
             }
-            boardAdapter.filterList(filterList);
+            boardListAdapter.filterList(filterList);
         });
+    }
+
+    private void SelectBoard(){
+        boardListAdapter.setOnItemClickListener(((holder, view, position) -> {
+            id2 = boardListAdapter.getBoard(position).email;
+            title = boardListAdapter.getBoard(position).title;
+            Intent in = new Intent(getActivity(), BoardActivity.class);
+            in.putExtra("email1", id);
+            in.putExtra("email2", id2);
+            in.putExtra("title", title);
+            in.putExtra("name", name);
+            startActivity(in);
+        }));
     }
 
     private Bitmap DecodeImage(String encodedImage){

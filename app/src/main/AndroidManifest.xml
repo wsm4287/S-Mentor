@@ -15,7 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SMentor">
         <activity
-            android:name=".WriteActivity"
+            android:name=".board.BoardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".board.BoardAddActivity"
             android:exported="false" />
         <activity
             android:name=".apply.ApplyListActivity"

@@ -19,9 +19,9 @@
 
     <fragment
         android:id="@+id/navigation_board"
-        android:name="com.example.s_mentor.ui.board.BoardFragment"
+        android:name="com.example.s_mentor.ui.boardList.BoardListFragment"
         android:label="@string/title_board"
-        tools:layout="@layout/fragment_board" />
+        tools:layout="@layout/fragment_boardlist" />
 
     <fragment
         android:id="@+id/navigation_mentoring"
