@@ -15,6 +15,7 @@
     <string name="name_mentoring">멘토 목록</string>
     <string name="name_board">질문 게시판</string>
     <string name="signUp">회원가입</string>
+    <string name="find_password">비밀번호 찾기</string>
     <string name="name">이름</string>
     <string name="email">이메일 주소</string>
     <string name="password">비밀번호</string>
@@ -25,9 +26,10 @@
     <string name="mentor">멘토</string>
     <string name="introduction">자기소개</string>
     <string name="correction">정보 수정</string>
+    <string name="changePs">비밀번호 변경</string>
     <string name="S_Mentor">S-멘토</string>
     <string name="autoLogin">자동 로그인</string>
-    <string name="login">Login</string>
+    <string name="login">로그인</string>
     <string name="name_inform">추가 정보 등록</string>
     <string name="mentor_mentee">멘토 / 멘티</string>
     <string name="introduction_inform">자신에 대해 소개해주세요.</string>
@@ -37,4 +39,6 @@
     <string name="my_mentoring">나의 멘토링</string>
     <string name="board_hint">내용을 입력하세요.</string>
     <string name="title_hint">제목을 입력하세요.</string>
+    <string name="before_ps">이전 비밀번호</string>
+    <string name="new_ps">새로운 비밀번호</string>
 </resources>

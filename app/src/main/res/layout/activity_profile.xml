@@ -38,12 +38,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
         android:layout_marginTop="10dp"
-        android:textSize="20sp"
-        android:textColor="@color/teal_200"
         android:text="@string/name"
+        android:textColor="#1B3173"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_photo"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/profile_photo" />
 
     <TextView
         android:id="@+id/profile_userName"
@@ -66,7 +65,7 @@
         android:layout_marginTop="10dp"
         android:textSize="20sp"
         android:text="@string/major"
-        android:textColor="@color/teal_200"
+        android:textColor="#1B3173"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_name"/>
 
@@ -90,7 +89,7 @@
         android:layout_marginTop="10dp"
         android:textSize="20sp"
         android:text="@string/phone"
-        android:textColor="@color/teal_200"
+        android:textColor="#1B3173"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_major"/>
 
@@ -113,7 +112,7 @@
         android:layout_marginTop="10dp"
         android:textSize="20sp"
         android:text="@string/mentor"
-        android:textColor="@color/teal_200"
+        android:textColor="#1B3173"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_phone"/>
@@ -126,7 +125,7 @@
         android:layout_marginTop="10dp"
         android:textSize="20sp"
         android:text="@string/introduction"
-        android:textColor="@color/teal_200"
+        android:textColor="#1B3173"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_type"/>
@@ -157,21 +156,34 @@
             android:layout_height="wrap_content"
             android:choiceMode="multipleChoice"
             android:id="@+id/profile_list"
-            android:numColumns="3"/>
+            android:numColumns="4"/>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/changePs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/profile_choice"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:text="@string/changePs"
+        />
 
 
     <Button
         android:id="@+id/correct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/profile_choice"
+        app:layout_constraintTop_toBottomOf="@+id/changePs"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:text="@string/correction"
         />
+
+
 
 
 

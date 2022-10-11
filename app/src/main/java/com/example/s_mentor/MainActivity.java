@@ -1,20 +1,28 @@
 package com.example.s_mentor;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
@@ -25,10 +33,9 @@ public class MainActivity extends AppCompatActivity {
     String id, ps, type, token, name;
     CheckBox autoLogin;
     ProgressBar progressBar;
-    Button btLogin;
-    Button btReg;
+    Button btLogin, btReg, btFindPs;
     SharedPreferences Auto;
-    boolean logout;
+    boolean logout, check;
 
     private FirebaseAuth sAuth;
     private FirebaseFirestore database;
@@ -54,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressbar);
         btLogin = findViewById(R.id.btLogin);
         btReg = findViewById(R.id.btReg);
+        btFindPs = findViewById(R.id.btFindPs);
 
         Auto = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
         SharedPreferences.Editor AutoLoginEditor = Auto.edit();
@@ -72,6 +80,10 @@ public class MainActivity extends AppCompatActivity {
             Intent in = new Intent(MainActivity.this, RegActivity.class);
             startActivity(in);
         });
+
+        btFindPs.setOnClickListener(v ->{
+            FindPassword();
+        });
     }
 
     private void Login(){
@@ -82,6 +94,26 @@ public class MainActivity extends AppCompatActivity {
 
             if(!(id.contains("@"))){
                 Toast.makeText(MainActivity.this, "잘못된 이메일 형식입니다.",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            database.collection("users")
+                    .get()
+                    .addOnCompleteListener(task -> {
+                       if(task.isSuccessful()){
+                           for(QueryDocumentSnapshot document : task.getResult()){
+                               if(document.getId().equals(id)){
+                                   check = true;
+                                   return;
+                               }
+                           }
+                           check = false;
+                       }
+                    });
+
+            if(!check){
+                Toast.makeText(MainActivity.this, "존재하지 않는 이메일입니다.",
                         Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -191,6 +223,58 @@ public class MainActivity extends AppCompatActivity {
 
                     });
         }
+    }
+
+    private void FindPassword(){
+        check = false;
+
+        View view = View.inflate(this, R.layout.find_password, null);
+        EditText etName = view.findViewById(R.id.etName);
+        EditText etEmail = view.findViewById(R.id.etEmail);
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("사용자 정보 입력");
+        alert.setView(view);
+        alert.setPositiveButton("확인", null).setNegativeButton("취소", null);
+
+        AlertDialog dialog = alert.create();
+        dialog.show();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            String name = etName.getText().toString();
+            String email = etEmail.getText().toString();
+
+            database.collection("users")
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if(task.isSuccessful()){
+                            for(QueryDocumentSnapshot document : task.getResult()){
+                                if(document.getId().equals(email)){
+                                    check = true;
+                                    return;
+                                }
+                            }
+                            check = false;
+                        }
+                    });
+
+            if(!check){
+                Toast.makeText(MainActivity.this, "존재하지 않는 이메일입니다.",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            database.collection("users").document(email)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if(Objects.requireNonNull(Objects.requireNonNull(documentSnapshot.getData()).get("name")).toString().equals(name)){
+                            sAuth.sendPasswordResetEmail(email);
+                            Toast.makeText(MainActivity.this, "비밀번호 재설정 이메일을 전송하였습니다.", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        }
+                        else Toast.makeText(MainActivity.this, "사용자 정보가 맞지 않습니다.", Toast.LENGTH_SHORT).show();
+                    });
+        });
+
     }
 
     private void updateToken(){
