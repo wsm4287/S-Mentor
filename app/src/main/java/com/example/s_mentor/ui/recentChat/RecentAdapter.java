@@ -13,6 +13,8 @@ import com.example.s_mentor.R;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.RecentViewHolder> implements OnItemClickListener {
 
     private final ArrayList<RecentChat> lastChat;
@@ -35,7 +37,7 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.RecentView
 
     static class RecentViewHolder extends RecyclerView.ViewHolder{
         TextView nameText, lastText;
-        ImageView imageView;
+        CircleImageView imageView;
         public RecentViewHolder(View view, OnItemClickListener listener, OnItemLongClickListener Listener) {
             super(view);
             nameText = itemView.findViewById(R.id.nameText);

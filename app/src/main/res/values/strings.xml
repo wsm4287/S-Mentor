@@ -10,8 +10,8 @@
     <string name="field">분야</string>
     <string name="search">검색</string>
     <string name="todo">TODO</string>
-    <string name="name_recentChat">채팅 목록</string>
-    <string name="name_apply">멘토링 신청 목록</string>
+    <string name="name_recentChat">채팅</string>
+    <string name="name_apply">멘토링 신청</string>
     <string name="name_mentoring">멘토 목록</string>
     <string name="name_board">질문 게시판</string>
     <string name="signUp">회원가입</string>

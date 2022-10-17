@@ -3,6 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="4dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
@@ -11,21 +12,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:cardBackgroundColor="#FFFFFF"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="5dp"
-        app:cardUseCompatPadding="true">
+        app:cardBackgroundColor="#E8E4E4"
+        app:cardElevation="5dp">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageView"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:padding="5dp"
                 android:src="@mipmap/ic_launcher"
+                android:padding="5dp"
                 android:contentDescription="@string/todo" />
 
             <TextView
@@ -41,37 +40,20 @@
                 android:id="@+id/majorText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toBottomOf="@+id/nameText"
                 android:text=""
-                android:textColor="#FF0000FF"
-                android:textSize="13sp"/>
+                android:textColor="#9B9B9C"
+                android:textSize="13sp"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toBottomOf="@+id/nameText" />
 
             <Button
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:id="@+id/bookMark"
                 android:background="@drawable/ic_baseline_star_border_24"
                 />
-
-
-
-            <LinearLayout
-                android:layout_width="290dp"
-                android:layout_height="50dp"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:id="@+id/user_choice">
-
-                <GridView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/user_list"
-                    android:numColumns="4"/>
-
-            </LinearLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

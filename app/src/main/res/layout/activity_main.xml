@@ -4,105 +4,114 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#E8E4E4"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/ginkgo"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_margin="100dp"
+        android:background="@drawable/ginkgo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
+        android:id="@+id/mainTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/S_Mentor"
+        android:textColor="#A9DFA4"
         android:textSize="30sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_margin="120dp"
-        android:id="@+id/mainTitle" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ginkgo" />
 
     <EditText
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/mainTitle"
-        android:layout_margin="50dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/mainId"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress"
-        android:importantForAutofill="no"
-        />
-
-    <EditText
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/mainId"
-        android:layout_margin="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/mainPs"
-        android:hint="@string/password"
-        android:inputType="textPassword"
+        android:layout_margin="50dp"
+        android:hint="@string/email"
         android:importantForAutofill="no"
-        />
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainTitle" />
+
+    <EditText
+        android:id="@+id/mainPs"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/password"
+        android:importantForAutofill="no"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainId" />
 
     <CheckBox
+        android:id="@+id/autoLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/mainPs"
         android:layout_margin="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/autoLogin"
+        android:importantForAutofill="no"
         android:text="@string/autoLogin"
-        android:importantForAutofill="no"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainPs" />
 
     <Button
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/autoLogin"
-        android:layout_margin="40dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/btLogin"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:background="@drawable/radius_button"
+        android:backgroundTint="#A9DFA4"
+        android:importantForAutofill="no"
         android:text="@string/login"
-        android:importantForAutofill="no"
-        />
+        android:textColor="#FFF"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/autoLogin" />
 
     <Button
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/btLogin"
-        android:layout_margin="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/btReg"
-        android:text="@string/signUp"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:background="#00ff0000"
         android:importantForAutofill="no"
-        />
+        android:text="@string/signUp"
+        android:textColor="#9F9A9A"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/btReg"
-        android:layout_margin="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/btFindPs"
-        android:text="@string/find_password"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:background="#00ff0000"
         android:importantForAutofill="no"
-        />
+        android:text="@string/find_password"
+        android:textColor="#9F9A9A"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
     <ProgressBar
+        android:id="@+id/progressbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:id="@+id/progressbar"
         android:visibility="gone"
-        />
-
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

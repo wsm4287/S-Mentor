@@ -2,30 +2,27 @@ package com.example.s_mentor;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar progressBar;
     Button btLogin, btReg, btFindPs;
     SharedPreferences Auto;
-    boolean logout, check;
+    List<String> userList;
+    boolean logout;
 
     private FirebaseAuth sAuth;
     private FirebaseFirestore database;
@@ -67,6 +65,17 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor AutoLoginEditor = Auto.edit();
         logout = getIntent().getBooleanExtra("Logout", false);
 
+        userList = new ArrayList<>();
+
+        database.collection("users")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        for(QueryDocumentSnapshot document : task.getResult()){
+                            userList.add(document.getId());
+                        }
+                    }
+                });
 
         if(logout){
             Toast.makeText(MainActivity.this, "로그아웃 하였습니다.",
@@ -98,21 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            database.collection("users")
-                    .get()
-                    .addOnCompleteListener(task -> {
-                       if(task.isSuccessful()){
-                           for(QueryDocumentSnapshot document : task.getResult()){
-                               if(document.getId().equals(id)){
-                                   check = true;
-                                   return;
-                               }
-                           }
-                           check = false;
-                       }
-                    });
-
-            if(!check){
+            if(!userList.contains(id)){
                 Toast.makeText(MainActivity.this, "존재하지 않는 이메일입니다.",
                         Toast.LENGTH_SHORT).show();
                 return;
@@ -226,7 +221,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void FindPassword(){
-        check = false;
 
         View view = View.inflate(this, R.layout.find_password, null);
         EditText etName = view.findViewById(R.id.etName);
@@ -243,21 +237,7 @@ public class MainActivity extends AppCompatActivity {
             String name = etName.getText().toString();
             String email = etEmail.getText().toString();
 
-            database.collection("users")
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if(task.isSuccessful()){
-                            for(QueryDocumentSnapshot document : task.getResult()){
-                                if(document.getId().equals(email)){
-                                    check = true;
-                                    return;
-                                }
-                            }
-                            check = false;
-                        }
-                    });
-
-            if(!check){
+            if(!userList.contains(id)){
                 Toast.makeText(MainActivity.this, "존재하지 않는 이메일입니다.",
                         Toast.LENGTH_SHORT).show();
                 return;

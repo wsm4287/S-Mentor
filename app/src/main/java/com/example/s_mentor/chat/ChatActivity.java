@@ -183,7 +183,8 @@ public class ChatActivity extends AppCompatActivity {
                         chatArrayList.clear();
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Chat chat = new Chat();
-                            chat.datetime = Objects.requireNonNull(document.getData().get("time")).toString();
+                            String t = Objects.requireNonNull(document.getData().get("time")).toString();
+                            chat.datetime = t.substring(5,16);
                             chat.text = Objects.requireNonNull(document.getData().get("text")).toString();
                             chat.email = Objects.requireNonNull(document.getData().get("email")).toString();
                             chat.type = Objects.requireNonNull(document.getData().get("type")).toString();
@@ -209,7 +210,8 @@ public class ChatActivity extends AppCompatActivity {
                     assert value != null;
                     for (QueryDocumentSnapshot document : value) {
                         Chat chat = new Chat();
-                        chat.datetime = Objects.requireNonNull(document.getData().get("time")).toString();
+                        String t = Objects.requireNonNull(document.getData().get("time")).toString();
+                        chat.datetime = t.substring(5,16);
                         chat.text = Objects.requireNonNull(document.getData().get("text")).toString();
                         chat.email = Objects.requireNonNull(document.getData().get("email")).toString();
                         chat.type = Objects.requireNonNull(document.getData().get("type")).toString();

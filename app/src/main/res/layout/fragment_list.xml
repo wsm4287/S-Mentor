@@ -11,15 +11,15 @@
         android:layout_height="wrap_content"
         android:text=""
         android:id="@+id/listTitle"
-        android:textSize="30sp"
+        android:textSize="22sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         />
 
     <Button
         android:id="@+id/btLogOut"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:background="@drawable/settings_icon_128522"
         app:icon="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,8 +28,8 @@
     <TextView
         android:id="@+id/search_major"
         android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:textSize="25sp"
+        android:layout_height="30dp"
+        android:textSize="18sp"
         android:text="@string/major"
         android:gravity="center"
         app:layout_constraintTop_toBottomOf="@+id/listTitle"
@@ -37,16 +37,16 @@
     <Spinner
         android:id="@+id/major_spinner"
         android:layout_width="150dp"
-        android:layout_height="45dp"
-        android:textSize="20sp"
+        android:layout_height="30dp"
+        android:textSize="15sp"
         app:layout_constraintTop_toBottomOf="@+id/listTitle"
         app:layout_constraintStart_toEndOf="@id/search_major"/>
 
     <TextView
         android:id="@+id/search_field"
         android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:textSize="25sp"
+        android:layout_height="30dp"
+        android:textSize="18sp"
         android:text="@string/field"
         android:gravity="center"
         app:layout_constraintTop_toBottomOf="@+id/listTitle"
@@ -54,16 +54,16 @@
     <Spinner
         android:id="@+id/field_spinner"
         android:layout_width="100dp"
-        android:layout_height="45dp"
-        android:textSize="20sp"
+        android:layout_height="30dp"
+        android:textSize="15sp"
         app:layout_constraintTop_toBottomOf="@+id/listTitle"
         app:layout_constraintStart_toEndOf="@+id/search_field"/>
 
     <Button
         android:id="@+id/btSearch"
-        android:layout_width="65dp"
-        android:layout_height="45dp"
-        android:text="@string/search"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/ic_baseline_search_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/listTitle" />
 

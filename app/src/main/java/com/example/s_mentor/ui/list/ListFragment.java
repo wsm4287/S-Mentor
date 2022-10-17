@@ -110,6 +110,7 @@ public class ListFragment extends Fragment {
                 });
     }
 
+
     private void FavoriteCreate(){
 
         database.collection("users").document(id).collection("favorite")
@@ -477,6 +478,7 @@ public class ListFragment extends Fragment {
                 else{
                     major="";
                 }
+
 
             }
 

@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder> implements OnItemClickListener {
 
     private ArrayList<User> mDataSet;
@@ -53,8 +55,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
     static class UserViewHolder extends RecyclerView.ViewHolder{
         TextView nameText;
         TextView majorText;
-        ImageView imageView;
-        GridView gridView;
+        CircleImageView imageView;
+        //GridView gridView;
         Button favoriteView;
 
         public UserViewHolder(View view, OnItemClickListener listener) {
@@ -62,7 +64,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
             nameText = itemView.findViewById(R.id.nameText);
             majorText = itemView.findViewById(R.id.majorText);
             imageView = itemView.findViewById(R.id.imageView);
-            gridView = (GridView) itemView.findViewById(R.id.user_list);
+            //gridView = itemView.findViewById(R.id.user_list);
             favoriteView = itemView.findViewById(R.id.bookMark);
 
             // Define click listener for the ViewHolder's View
@@ -170,7 +172,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
                 }));
 
 
-        int count = user.getField().size();
+        /*int count = user.getField().size();
 
         String[] x = new String[count];
 
@@ -180,7 +182,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.field_view, x);
 
-        holder.gridView.setAdapter(adapter);
+        holder.gridView.setAdapter(adapter);*/
 
 
     }
