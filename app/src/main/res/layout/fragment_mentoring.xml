@@ -14,7 +14,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:textAlignment="center"
-        android:textSize="30sp"
+        android:textSize="22sp"
         android:text="@string/my_mentoring"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,16 +23,16 @@
 
     <Button
         android:id="@+id/btLogOut"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:background="@drawable/settings_icon_128522"
         app:icon="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:id="@+id/mentoring_photo"
         app:layout_constraintTop_toBottomOf="@+id/mentoring_title"
         android:layout_marginTop="30dp"
@@ -61,7 +61,7 @@
         android:layout_marginStart="80dp"
         android:layout_marginTop="30dp"
         android:textSize="20sp"
-        android:textColor="@color/teal_200"
+        android:textColor="#1B3173"
         android:text="@string/name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mentoring_date"
@@ -88,7 +88,7 @@
         android:layout_marginTop="10dp"
         android:textSize="20sp"
         android:text="@string/major"
-        android:textColor="@color/teal_200"
+        android:textColor="#1B3173"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mentoring_name"/>
 
@@ -112,7 +112,7 @@
         android:layout_marginTop="10dp"
         android:textSize="20sp"
         android:text="@string/phone"
-        android:textColor="@color/teal_200"
+        android:textColor="#1B3173"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mentoring_major"/>
 

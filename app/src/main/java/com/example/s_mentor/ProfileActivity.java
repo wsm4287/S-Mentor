@@ -128,7 +128,7 @@ public class ProfileActivity extends AppCompatActivity {
                 return;
             }
 
-            if(check.size()>4){
+            if(check.size()>5){
                 Toast.makeText(ProfileActivity.this, "멘토링 분야를 너무 많이 선택하셨습니다.", Toast.LENGTH_SHORT).show();
                 gridView.setAdapter(adapter);
                 return;

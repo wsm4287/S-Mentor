@@ -47,7 +47,7 @@ public class PushNotification extends FirebaseMessagingService {
                 .setSmallIcon(R.drawable.ic_baseline_message_24)
                 .setAutoCancel(true);
 
-        if (!type.equals("XX")) {
+/*        if (!type.equals("XX")) {
             Intent intent = new Intent(this, ChatActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.putExtra("email", id2);
@@ -56,6 +56,8 @@ public class PushNotification extends FirebaseMessagingService {
             @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
             notification.setContentIntent(pendingIntent);
         }
+
+ */
         NotificationManagerCompat.from(this).notify(1, notification.build());
 
 

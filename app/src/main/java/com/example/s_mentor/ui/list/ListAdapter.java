@@ -56,7 +56,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
         TextView nameText;
         TextView majorText;
         CircleImageView imageView;
-        //GridView gridView;
+        GridView gridView;
         Button favoriteView;
 
         public UserViewHolder(View view, OnItemClickListener listener) {
@@ -64,7 +64,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
             nameText = itemView.findViewById(R.id.nameText);
             majorText = itemView.findViewById(R.id.majorText);
             imageView = itemView.findViewById(R.id.imageView);
-            //gridView = itemView.findViewById(R.id.user_list);
+            gridView = itemView.findViewById(R.id.user_list);
             favoriteView = itemView.findViewById(R.id.bookMark);
 
             // Define click listener for the ViewHolder's View
@@ -172,7 +172,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
                 }));
 
 
-        /*int count = user.getField().size();
+        int count = user.getField().size();
 
         String[] x = new String[count];
 
@@ -180,10 +180,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.UserViewHolder
             x[i] = items[user.field.get(i)];
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.field_view, x);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.user_field_view, x);
 
-        holder.gridView.setAdapter(adapter);*/
-
+        holder.gridView.setAdapter(adapter);
 
     }
 

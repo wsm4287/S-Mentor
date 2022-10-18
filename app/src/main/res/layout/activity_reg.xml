@@ -5,103 +5,175 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#E8E4E4"
     tools:context=".RegActivity">
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/signUp"
         android:textSize="30sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_margin="40dp"
-        android:id="@+id/tvTitle" />
-
-    <EditText
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle"
         android:layout_margin="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/regNm"
-        android:hint="@string/name"
-        android:textSize="14sp"
-        android:inputType="text"
-        android:importantForAutofill="no"
-        />
-
-    <EditText
-        android:layout_width="200dp"
+        android:id="@+id/tvTitle" />
+    
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/regNm"
-        android:layout_margin="15dp"
+        app:layout_constraintVertical_weight="1"
+        android:background="@drawable/input_box"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/regId"
-        android:hint="@string/email"
-        android:textSize="14sp"
-        android:inputType="textEmailAddress"
+        android:layout_marginTop="30dp">
 
-        android:importantForAutofill="no"
-        />
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="4dp"
+            android:gravity="center"
+            android:text="@string/name"
+            android:textColor="#79070707"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/regId"
-        android:layout_margin="5dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/regPs"
-        android:hint="@string/password"
-        android:textSize="14sp"
-        android:inputType="textPassword"
-        android:importantForAutofill="no"
-        />
+        <EditText
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/name"
+            android:id="@+id/regNm"
+            android:backgroundTint="@color/cardview_shadow_start_color"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            android:inputType="text"
+            android:importantForAutofill="no"
+            />
 
-    <EditText
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/regPs"
-        android:layout_margin="5dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/regPs2"
-        android:hint="@string/passwordCheck"
-        android:textSize="14sp"
-        android:inputType="textPassword"
-        android:importantForAutofill="no"
-        />
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="4dp"
+            android:gravity="center"
+            android:text="@string/email"
+            android:textColor="#79070707"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/regNm" />
+
+        <EditText
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/email"
+            android:id="@+id/regId"
+            android:backgroundTint="@color/cardview_shadow_start_color"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            android:inputType="text"
+            android:importantForAutofill="no"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/email"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="4dp"
+            android:gravity="center"
+            android:text="@string/skku"
+            android:textColor="#79070707"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/password"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="4dp"
+            android:gravity="center"
+            android:text="@string/password"
+            android:textColor="#79070707"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/regId" />
+
+        <EditText
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/password"
+            android:id="@+id/regPs"
+            android:backgroundTint="@color/cardview_shadow_start_color"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            android:inputType="textPassword"
+            android:importantForAutofill="no"
+            />
+
+        <TextView
+            android:id="@+id/passwordCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="4dp"
+            android:gravity="center"
+            android:text="@string/passwordCheck"
+            android:textColor="#79070707"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/regPs" />
+
+        <EditText
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/passwordCheck"
+            android:id="@+id/regPs2"
+            android:backgroundTint="@color/cardview_shadow_start_color"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            android:inputType="textPassword"
+            android:importantForAutofill="no"
+            />
+
+        <TextView
+            android:id="@+id/phone"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="4dp"
+            android:gravity="center"
+            android:text="@string/phone"
+            android:textColor="#79070707"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/regPs2" />
+
+        <EditText
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/phone"
+            android:id="@+id/regPn"
+            android:backgroundTint="@color/cardview_shadow_start_color"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            android:inputType="number"
+            android:importantForAutofill="no"
+            />
 
 
 
-    <EditText
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/regPs2"
-        android:layout_margin="5dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/regPn"
-        android:hint="@string/phone"
-        android:maxLength="11"
-        android:inputType="number"
-        android:textSize="14sp"
-        android:importantForAutofill="no"
-        />
-
-    <TextView
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/regPn"
-        android:layout_marginTop="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/warning"
-        android:textSize="20sp"
-        android:importantForAutofill="no"
-        />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <Button

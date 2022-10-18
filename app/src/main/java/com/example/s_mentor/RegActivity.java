@@ -2,6 +2,7 @@ package com.example.s_mentor;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 public class RegActivity extends AppCompatActivity {
     EditText regId, regPs, regPs2, regNm, regPn;
@@ -48,6 +50,28 @@ public class RegActivity extends AppCompatActivity {
         btNext = findViewById(R.id.btNext);
         sAuth = FirebaseAuth.getInstance();
         database = FirebaseFirestore.getInstance();
+
+        regNm.setFilters(new InputFilter[]{
+                (source, start, end, dest, dstart, dend) -> {
+                    Pattern pattern = Pattern.compile("^[a-zA-Z가-힣ㄱ-ㅎㅏ-ㅣ]+$");
+                    if(source.equals("") || pattern.matcher(source).matches()){
+                        return source;
+                    }
+                    Toast.makeText(RegActivity.this, "한글, 영문만 입력 가능합니다.", Toast.LENGTH_SHORT).show();
+                    return "";
+                }
+        });
+
+        regId.setFilters(new InputFilter[]{
+                (source, start, end, dest, dstart, dend) -> {
+                    Pattern pattern = Pattern.compile("^[a-zA-Z0-9]+$");
+                    if(source.equals("") || pattern.matcher(source).matches()){
+                        return source;
+                    }
+                    Toast.makeText(RegActivity.this, "영문, 숫자만 입력 가능합니다.", Toast.LENGTH_SHORT).show();
+                    return "";
+                }
+        });
     }
 
     private boolean CheckInform(){
@@ -63,19 +87,19 @@ public class RegActivity extends AppCompatActivity {
             return false;
         }
 
-        if(!(id.contains("@skku.edu"))){
-            Toast.makeText(RegActivity.this, "이메일 형식이 잘못되었습니다.",
+        if(id.isEmpty()){
+            Toast.makeText(RegActivity.this, "이메일을 입력해주십시오.",
                     Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if(ps.length()<6){
-            Toast.makeText(RegActivity.this, "비밂번호가 너무 짧습니다.",
+            Toast.makeText(RegActivity.this, "비밀번호가 너무 짧습니다.",
                     Toast.LENGTH_SHORT).show();
             return false;
         }
         if(!(ps.equals(ps2))){
-            Toast.makeText(RegActivity.this, "비밂번호가 일치하지 않습니다.",
+            Toast.makeText(RegActivity.this, "비밀번호가 일치하지 않습니다.",
                     Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -85,6 +109,8 @@ public class RegActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
             return false;
         }
+
+        id = id + "@skku.edu";
 
         return true;
     }

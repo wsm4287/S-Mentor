@@ -161,7 +161,8 @@ public class ListFragment extends Fragment {
             iv.setImageBitmap(u.bitmap);
             final TextView et = new TextView(getContext());
             et.setText(u.introduction);
-            AlertDialog.Builder ad = new AlertDialog.Builder(requireContext())
+            et.setTextSize(20);
+            AlertDialog.Builder ad = new AlertDialog.Builder(requireContext(), R.style.MyDialog)
                     .setView(iv)
                     .setIcon(drawable)
                     .setTitle(u.name)
