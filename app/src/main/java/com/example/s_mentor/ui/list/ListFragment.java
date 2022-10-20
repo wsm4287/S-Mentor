@@ -162,6 +162,7 @@ public class ListFragment extends Fragment {
             final TextView et = new TextView(getContext());
             et.setText(u.introduction);
             et.setTextSize(20);
+            et.setPadding(40,0,40,0);
             AlertDialog.Builder ad = new AlertDialog.Builder(requireContext(), R.style.MyDialog)
                     .setView(iv)
                     .setIcon(drawable)

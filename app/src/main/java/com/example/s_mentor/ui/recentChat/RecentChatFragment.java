@@ -72,7 +72,7 @@ public class RecentChatFragment extends Fragment {
         recyclerView.setAdapter(recentAdapter);
 
         setting.setOnClickListener(v -> {
-            String[] array = {"프로필", "b", "로그아웃"};
+            String[] array = {"프로필", "로그아웃"};
 
             AlertDialog.Builder setting = new AlertDialog.Builder(requireContext())
                     .setItems(array, (dialog, which) -> {
@@ -81,7 +81,7 @@ public class RecentChatFragment extends Fragment {
                             in.putExtra("email", id);
                             startActivity(in);
                         }
-                        else if(which == 2){
+                        else if(which == 1){
                             HashMap<String, Object> user = new HashMap<>();
                             user.put("token", "");
                             database.collection("users").document(id)

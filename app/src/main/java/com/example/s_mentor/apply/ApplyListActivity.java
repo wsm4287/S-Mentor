@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.s_mentor.R;
 import com.example.s_mentor.notification.SendMessage;
@@ -23,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.TimeZone;
 
@@ -33,6 +35,7 @@ public class ApplyListActivity extends AppCompatActivity {
     ApplyListAdapter applyListAdapter;
     ArrayList<User> userArrayList;
     String encodedImage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,8 +104,10 @@ public class ApplyListActivity extends AppCompatActivity {
             iv.setImageBitmap(u.bitmap);
             final TextView et = new TextView(this);
             et.setText(u.major);
+            et.setTextSize(20);
+            et.setPadding(40,0,40,0);
             HashMap<String, Object> m = new HashMap<>();
-            AlertDialog.Builder ad = new AlertDialog.Builder(this)
+            AlertDialog.Builder ad = new AlertDialog.Builder(this, R.style.MyDialog)
                     .setView(iv)
                     .setIcon(drawable)
                     .setTitle(u.name)
@@ -123,8 +128,29 @@ public class ApplyListActivity extends AppCompatActivity {
                                 id2,
                                 "XX"
                         );
-                        database.collection("apply").document(u.docName)
-                                .delete();
+
+                        database.collection("apply")
+                                .whereEqualTo("from", id2)
+                                .get()
+                                .addOnCompleteListener(task -> {
+                                    if(task.isSuccessful()){
+                                        for(QueryDocumentSnapshot document : task.getResult()){
+                                            database.collection("apply").document(document.getId())
+                                                    .delete();                                        }
+                                    }
+                                });
+                        database.collection("apply")
+                                .whereEqualTo("to", id)
+                                .get()
+                                .addOnCompleteListener(task -> {
+                                    if(task.isSuccessful()){
+                                        for(QueryDocumentSnapshot document : task.getResult()){
+                                            database.collection("apply").document(document.getId())
+                                                    .delete();                                        }
+                                    }
+                                });
+
+
                         m.put("mentoring", id2);
                         m.put("mentoring_date", datetime);
                         database.collection("users").document(id)

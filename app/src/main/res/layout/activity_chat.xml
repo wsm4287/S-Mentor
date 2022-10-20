@@ -54,29 +54,11 @@
         android:id="@+id/recycler"
         />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:text="@string/send"
-        android:id="@+id/btSend"
-        />
 
-
-    <EditText
-        android:layout_width="280dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btSend"
-        android:id="@+id/etText"
-        android:importantForAutofill="no"
-        android:hint="@string/text"
-        android:inputType="text" />
 
     <Button
         android:layout_width="30dp"
-        android:layout_height="40dp"
+        android:layout_height="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/btImage"
@@ -85,14 +67,34 @@
 
     <Button
         android:layout_width="30dp"
-        android:layout_height="40dp"
+        android:layout_height="30dp"
         app:layout_constraintStart_toEndOf="@id/btImage"
-        app:layout_constraintEnd_toStartOf="@+id/etText"
         app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/btFile"
         android:background="@drawable/ic_baseline_attach_file_24"
         android:gravity="center"
         />
+
+    <EditText
+        android:layout_width="320dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btSend"
+        app:layout_constraintStart_toEndOf="@id/btFile"
+        android:id="@+id/etText"
+        android:importantForAutofill="no"
+        android:background="@drawable/radius_button"
+        android:inputType="text"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"/>
+
+    <Button
+        android:id="@+id/btSend"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/icon_send"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ProgressBar
         android:id="@+id/progress_file"

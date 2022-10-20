@@ -302,6 +302,8 @@ public class ChatActivity extends AppCompatActivity {
                 iv.setImageBitmap(bitmap);
                 final TextView et = new TextView(ChatActivity.this);
                 et.setText("멘토링을 신청하시겠습니까?");
+                et.setTextSize(20);
+                et.setPadding(40,0,40,0);
                 AlertDialog.Builder ad = new AlertDialog.Builder(ChatActivity.this, R.style.MyDialog)
                         .setView(iv)
                         .setIcon(drawable)
