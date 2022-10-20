@@ -48,53 +48,67 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@+id/opView"
-        app:layout_constraintBottom_toTopOf="@+id/btSend"
+        app:layout_constraintBottom_toTopOf="@+id/sendFrame"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/recycler"
         />
 
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/sendFrame"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <Button
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:id="@+id/btImage"
-        android:background="@drawable/ic_baseline_insert_photo_24"
-        />
+        <Button
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="3dp"
+            android:id="@+id/btImage"
+            android:background="@drawable/ic_baseline_insert_photo_24"
+            />
 
-    <Button
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        app:layout_constraintStart_toEndOf="@id/btImage"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:id="@+id/btFile"
-        android:background="@drawable/ic_baseline_attach_file_24"
-        android:gravity="center"
-        />
+        <Button
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            app:layout_constraintStart_toEndOf="@id/btImage"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="3dp"
+            android:id="@+id/btFile"
+            android:background="@drawable/ic_baseline_attach_file_24"
+            android:gravity="center"
+            />
 
-    <EditText
-        android:layout_width="320dp"
-        android:layout_height="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btSend"
-        app:layout_constraintStart_toEndOf="@id/btFile"
-        android:id="@+id/etText"
-        android:importantForAutofill="no"
-        android:background="@drawable/radius_button"
-        android:inputType="text"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"/>
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btSend"
+            app:layout_constraintStart_toEndOf="@id/btFile"
+            android:id="@+id/etText"
+            android:importantForAutofill="no"
+            android:background="@drawable/radius_button"
+            android:inputType="text"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"/>
 
-    <Button
-        android:id="@+id/btSend"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@drawable/icon_send"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <Button
+            android:id="@+id/btSend"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/icon_send"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
 
     <ProgressBar
         android:id="@+id/progress_file"

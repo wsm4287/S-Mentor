@@ -28,7 +28,7 @@
     <TextView
         android:id="@+id/search_major"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="35dp"
         android:textSize="18sp"
         android:text="@string/major"
         android:gravity="center"
@@ -37,7 +37,7 @@
     <Spinner
         android:id="@+id/major_spinner"
         android:layout_width="150dp"
-        android:layout_height="30dp"
+        android:layout_height="35dp"
         android:textSize="15sp"
         app:layout_constraintTop_toBottomOf="@+id/listTitle"
         app:layout_constraintStart_toEndOf="@id/search_major"/>
@@ -45,7 +45,7 @@
     <TextView
         android:id="@+id/search_field"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="35dp"
         android:textSize="18sp"
         android:text="@string/field"
         android:gravity="center"
@@ -53,8 +53,8 @@
         app:layout_constraintStart_toEndOf="@id/major_spinner"/>
     <Spinner
         android:id="@+id/field_spinner"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
+        android:layout_width="110dp"
+        android:layout_height="35dp"
         android:textSize="15sp"
         app:layout_constraintTop_toBottomOf="@+id/listTitle"
         app:layout_constraintStart_toEndOf="@+id/search_field"/>
@@ -62,7 +62,7 @@
     <Button
         android:id="@+id/btSearch"
         android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_height="35dp"
         android:background="@drawable/ic_baseline_search_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/listTitle" />
