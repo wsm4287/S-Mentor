@@ -1,5 +1,8 @@
 package com.example.s_mentor.board;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,7 +40,7 @@ public class BoardActivity extends AppCompatActivity {
     ImageView imageView, photoView;
     TextView nameView, timeView, titleView, boardView;
     EditText writeAnswer;
-    Button input;
+    Button input, menu;
     Bitmap bitmap, bitmap2;
     ArrayList<Answer> answerArrayList;
     AnswerAdapter answerAdapter;
@@ -68,6 +71,32 @@ public class BoardActivity extends AppCompatActivity {
         photoView.setVisibility(View.GONE);
         writeAnswer = findViewById(R.id.writeAnswer);
         input = findViewById(R.id.inputAnswer);
+        menu = findViewById(R.id.menu);
+
+        if(!id.equals(id2)) menu.setVisibility(View.GONE);
+
+        menu.setOnClickListener(v -> {
+            String[] array = {"수정", "삭제"};
+
+            AlertDialog.Builder menu = new AlertDialog.Builder(this)
+                    .setItems(array, (dialog, which) -> {
+                       if(which == 0){
+                           Intent in = new Intent(this, BoardAddActivity.class);
+                           in.putExtra("modify", true);
+                           in.putExtra("email", id);
+                           in.putExtra("name", name);
+                           in.putExtra("docId", docId);
+                           getResult.launch(in);
+                       }
+                       else{
+                           database.collection("board").document(docId).delete();
+                           finish();
+                       }
+                    });
+
+            AlertDialog alertDialog = menu.create();
+            alertDialog.show();
+        });
 
         answerArrayList = new ArrayList<>();
 
@@ -129,47 +158,30 @@ public class BoardActivity extends AppCompatActivity {
 
                     }
                 });
+
     }
 
     private void GetAnswer(){
 
         database.collection("board").document(docId).collection("answer")
                 .orderBy("time", Query.Direction.ASCENDING)
-                .get()
-                .addOnCompleteListener(task -> {
-                   if(task.isSuccessful()){
-                       answerArrayList.clear();
-                       for(DocumentSnapshot document : task.getResult()){
-                           Answer answer = new Answer();
-                           answer.email = Objects.requireNonNull(document.getData().get("email")).toString();
-                           answer.name = Objects.requireNonNull(document.getData().get("name")).toString();
-                           answer.text = Objects.requireNonNull(document.getData().get("text")).toString();
-                           answer.time = Objects.requireNonNull(document.getData().get("time")).toString();
-                           encodedImage2 = Objects.requireNonNull(document.getData().get("image")).toString();
-                           bitmap2 = DecodeImage(encodedImage2);
-                           answer.bitmap = bitmap2;
-
-                           answerArrayList.add(answer);
-                       }
-                       answerAdapter.notifyDataSetChanged();
-                   }
-                });
-
-        database.collection("board").document(docId).collection("answer")
-                .orderBy("time", Query.Direction.DESCENDING)
-                .limit(1)
                 .addSnapshotListener((value, error) -> {
                     assert value != null;
+                    answerArrayList.clear();
                     for (QueryDocumentSnapshot document : value) {
                         Answer answer = new Answer();
 
                         answer.email = Objects.requireNonNull(document.getData().get("email")).toString();
+                        if(id.equals(answer.email)) answer.check = true;
+                        else answer.check = false;
                         answer.name = Objects.requireNonNull(document.getData().get("name")).toString();
                         answer.text = Objects.requireNonNull(document.getData().get("text")).toString();
                         answer.time = Objects.requireNonNull(document.getData().get("time")).toString();
                         encodedImage2 = Objects.requireNonNull(document.getData().get("image")).toString();
                         bitmap2 = DecodeImage(encodedImage2);
                         answer.bitmap = bitmap2;
+                        answer.docId1 = docId;
+                        answer.docId2 = document.getId();
 
                         answerArrayList.add(answer);
                     }
@@ -218,6 +230,60 @@ public class BoardActivity extends AppCompatActivity {
 
         });
     }
+
+    private final ActivityResultLauncher<Intent> getResult
+            = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if(result.getResultCode() == 100) {
+                    InitAnswer();
+
+                    database.collection("users").document(id2)
+                            .get()
+                            .addOnSuccessListener(documentSnapshot -> {
+                                token = Objects.requireNonNull(documentSnapshot.getData().get("token")).toString();
+                                type = Objects.requireNonNull(documentSnapshot.getData().get("type")).toString();
+                            });
+
+
+                    docId = result.getData().getStringExtra("docId");
+
+                    database.collection("board").document(docId)
+                            .get()
+                            .addOnSuccessListener(documentSnapshot -> {
+                                name2 = Objects.requireNonNull(documentSnapshot.getData().get("name")).toString();
+                                text = Objects.requireNonNull(documentSnapshot.getData().get("text")).toString();
+                                time = Objects.requireNonNull(documentSnapshot.getData().get("time")).toString();
+                                encodedImage = Objects.requireNonNull(documentSnapshot.getData().get("image")).toString();
+                                bitmap = DecodeImage(encodedImage);
+                                image = Objects.requireNonNull(documentSnapshot.getData().get("uri")).toString();
+                                fileName = Objects.requireNonNull(documentSnapshot.getData().get("fileName")).toString();
+                                title = Objects.requireNonNull(documentSnapshot.getData().get("title")).toString();
+
+
+                                imageView.setImageBitmap(bitmap);
+                                nameView.setText(name2);
+                                timeView.setText(time);
+                                titleView.setText(title);
+                                boardView.setText(text);
+
+                                if(!image.equals("")){
+                                    Picasso.get().load(image).into(photoView);
+                                    photoView.setVisibility(View.VISIBLE);
+                                    photoView.setOnClickListener(v -> {
+                                        Intent in = new Intent(this, ImageActivity.class);
+                                        in.putExtra("image", image);
+                                        in.putExtra("fileName", fileName);
+                                        startActivity(in);
+                                    });
+                                }
+                            });
+
+
+                    GetAnswer();
+                }
+
+            });
+
 
 
     private Bitmap DecodeImage(String encodedImage){

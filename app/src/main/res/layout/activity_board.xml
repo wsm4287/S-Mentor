@@ -23,27 +23,29 @@
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent"
         android:text=""
-        android:textSize="30sp"/>
+        android:textSize="20sp"/>
+
+    <Button
+        android:id="@+id/menu"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/ic_baseline_more_vert_24"
+        />
 
     <TextView
         android:id="@+id/titleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageView"
         android:text=""
+        android:textAlignment="center"
+        android:textColor="#5959DF"
+        android:gravity="center"
         android:textSize="30sp"/>
-
-    <TextView
-        android:id="@+id/timeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text=""
-        android:textSize="20sp"/>
-
 
     <ScrollView
         android:layout_width="match_parent"
@@ -68,13 +70,23 @@
                 android:id="@+id/boardPhoto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 app:layout_constraintTop_toBottomOf="@id/boardText"
                 />
+
+            <TextView
+                android:id="@+id/timeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/boardPhoto"
+                android:text=""
+                android:textSize="12sp"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/boardPhoto"
+                app:layout_constraintTop_toBottomOf="@id/timeText"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:paddingBottom="?attr/actionBarSize"

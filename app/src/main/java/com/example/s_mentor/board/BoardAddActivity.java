@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -37,11 +38,12 @@ import java.util.TimeZone;
 
 public class BoardAddActivity extends AppCompatActivity {
 
-    Button upload, add_photo;
+    Button upload, add_photo, delete_photo;
     EditText write, title;
-    String id, name, text, encodedImage, text_title, downloadUri, fileName;
+    String id, name, text, encodedImage, text_title, downloadUri, fileName, docId, uri;
     Uri imageUri;
     ImageView photo;
+    Boolean modify;
 
     FirebaseFirestore database = FirebaseFirestore.getInstance();
     FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -58,15 +60,23 @@ public class BoardAddActivity extends AppCompatActivity {
     private void InitBoard(){
         id = getIntent().getStringExtra("email");
         name = getIntent().getStringExtra("name");
+        modify = getIntent().getBooleanExtra("modify", false);
         upload = findViewById(R.id.add_board);
         write = findViewById(R.id.write_board);
         title = findViewById(R.id.write_title);
         add_photo = findViewById(R.id.add_photo);
         photo = findViewById(R.id.photo_board);
+        delete_photo = findViewById(R.id.photo_delete);
         fileName = "";
         downloadUri = "";
 
         photo.setVisibility(View.GONE);
+        delete_photo.setVisibility(View.GONE);
+
+        if(modify){
+            docId = getIntent().getStringExtra("docId");
+            GetBoard();
+        }
 
         database.collection("users").document(id)
                 .get().addOnCompleteListener(task -> {
@@ -81,6 +91,34 @@ public class BoardAddActivity extends AppCompatActivity {
             UploadBoard();
         });
 
+        delete_photo.setOnClickListener(v -> {
+            photo.setImageResource(0);
+            fileName = "";
+            downloadUri = "";
+            delete_photo.setVisibility(View.GONE);
+        });
+
+    }
+
+    private void GetBoard(){
+        database.collection("board").document(docId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                   text_title = Objects.requireNonNull(documentSnapshot.getData().get("title")).toString();
+                   text = Objects.requireNonNull(documentSnapshot.getData().get("text")).toString();
+                   fileName = Objects.requireNonNull(documentSnapshot.getData().get("fileName")).toString();
+
+                   title.setText(text_title);
+                   write.setText(text);
+
+                   uri = Objects.requireNonNull(documentSnapshot.getData().get("uri")).toString();
+                   if(!uri.equals("")){
+                       photo.setVisibility(View.VISIBLE);
+                       delete_photo.setVisibility(View.VISIBLE);
+                       Picasso.get().load(uri).into(photo);
+                       downloadUri = uri;
+                   }
+                });
     }
 
     private void UploadPhoto(){
@@ -127,8 +165,14 @@ public class BoardAddActivity extends AppCompatActivity {
         question.put("fileName", fileName);
         question.put("uri", downloadUri);
 
-        database.collection("board").add(question);
+        if(modify){
+            database.collection("board").document(docId).update(question);
+            Intent in = new Intent(this, BoardActivity.class).putExtra("docId", docId);
+            setResult(100, in);
+            if(!isFinishing()) finish();
+        }
 
+        else database.collection("board").add(question);
         finish();
     }
 
@@ -159,6 +203,7 @@ public class BoardAddActivity extends AppCompatActivity {
             bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
             photo.setImageBitmap(bitmap);
             photo.setVisibility(View.VISIBLE);
+            delete_photo.setVisibility(View.VISIBLE);
         } catch (IOException e){
             e.printStackTrace();
         }

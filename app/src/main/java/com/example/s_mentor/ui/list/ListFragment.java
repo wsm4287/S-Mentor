@@ -145,7 +145,6 @@ public class ListFragment extends Fragment {
                             favoriteList.add(user.email);
                         }
                     }
-                    listAdapter.notifyDataSetChanged();
                     ListCreate();
                 });
 

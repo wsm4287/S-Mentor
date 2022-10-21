@@ -140,7 +140,7 @@ public class BoardListFragment extends Fragment {
     }
 
     private void GetBoardList(){
-        database.collection("board")
+/*        database.collection("board")
                 .orderBy("time", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
@@ -162,11 +162,12 @@ public class BoardListFragment extends Fragment {
                     }
                 });
 
+ */
         database.collection("board")
-                .orderBy("time", Query.Direction.DESCENDING)
-                .limit(1)
                 .addSnapshotListener((value, error) -> {
                     assert value != null;
+                    boardList.clear();
+                    filterList.clear();
                     for (QueryDocumentSnapshot document : value) {
                         BoardList boardList = new BoardList();
                         boardList.name = Objects.requireNonNull(document.getData().get("name")).toString();

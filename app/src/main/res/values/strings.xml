@@ -17,7 +17,7 @@
     <string name="signUp">회원가입</string>
     <string name="find_password">비밀번호 찾기</string>
     <string name="name">이름</string>
-    <string name="email">이메일 주소</string>
+    <string name="email">아이디</string>
     <string name="skkuEmail">(인증메일을 보내니 성균관대 메일 아이디로 하세요)</string>
     <string name="skku">\@skku.edu</string>
     <string name="password">비밀번호</string>

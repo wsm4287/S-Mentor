@@ -101,11 +101,7 @@ public class MainActivity extends AppCompatActivity {
             id = mainId.getText().toString();
             ps = mainPs.getText().toString();
 
-            if(!(id.contains("@"))){
-                Toast.makeText(MainActivity.this, "잘못된 이메일 형식입니다.",
-                        Toast.LENGTH_SHORT).show();
-                return;
-            }
+            id = id + "@skku.edu";
 
             if(!userList.contains(id)){
                 Toast.makeText(MainActivity.this, "존재하지 않는 이메일입니다.",
