@@ -162,6 +162,14 @@ public class MentoringFragment extends Fragment {
                     long diffSec = (c.getTime().getTime() -date.getTime()) / 1000;
                     long diffDays = diffSec / (24*60*60) +1;
 
+                    if(diffDays > 180){
+                        HashMap<String, Object> reset = new HashMap<>();
+                        reset.put("mentoring", " ");
+                        reset.put("mentoring_date", " ");
+                        database.collection("users").document(id).update(reset);
+                        database.collection("users").document(id2).update(reset);
+                    }
+
                     pro_date.setText("D+ " + diffDays);
 
                     String[] x = {"", "", "", "", "", "", ""};

@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                 .addOnCompleteListener(MainActivity.this, task -> {
                     progressBar.setVisibility(View.GONE);
                     if(task.isSuccessful()){
-                            /*if(sAuth.getCurrentUser().isEmailVerified()){
+                            if(sAuth.getCurrentUser().isEmailVerified()){
                                 SharedPreferences auto = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
                                 SharedPreferences.Editor autoLoginEditor = auto.edit();
 
@@ -139,11 +139,11 @@ public class MainActivity extends AppCompatActivity {
                                     autoLoginEditor.putString("email", id);
                                     autoLoginEditor.putString("password", ps);
                                     autoLoginEditor.putBoolean("check", true);
-                                    autoLoginEditor.commit();
+                                    autoLoginEditor.apply();
                                 }
                                 else{
                                     autoLoginEditor.clear();
-                                    autoLoginEditor.commit();
+                                    autoLoginEditor.apply();
                                 }
 
                                 updateToken();
@@ -157,9 +157,8 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.makeText(MainActivity.this, "먼저 이메일 인증을 완료해주세요.",
                                         Toast.LENGTH_SHORT).show();
                             }
-                            */
 
-
+/*
                         SharedPreferences auto = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
                         SharedPreferences.Editor autoLoginEditor = auto.edit();
 
@@ -180,11 +179,14 @@ public class MainActivity extends AppCompatActivity {
                         in.putExtra("type", type);
                         in.putExtra("name", name);
                         startActivity(in);
+
+ */
                     }
                     else{
                         Toast.makeText(MainActivity.this, "이메일 혹은 비밀번호가 잘못 되었습니다.",
                                 Toast.LENGTH_SHORT).show();
                     }
+
 
                 });
     }
